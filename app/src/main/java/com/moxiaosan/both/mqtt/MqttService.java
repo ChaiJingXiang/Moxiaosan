@@ -55,6 +55,9 @@ import consumer.model.mqttobj.MQPickup;
 import consumer.model.obj.RespUserInfo;
 import consumer.model.obj.RespUserOrder;
 
+/**
+ *
+ */
 public class MqttService extends Service {
     // this is the log tag
     public static final String TAG = "MoXiaoSanMqttService";

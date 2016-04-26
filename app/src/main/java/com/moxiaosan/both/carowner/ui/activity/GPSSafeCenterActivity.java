@@ -98,6 +98,9 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
     public void onResume() {
         super.onResume();
 
+        CarReqUtils.checkdeviced(this,this,null,new BindDevice(),"checkdeviced",true,StringUrlUtils.geturl(new HashMapUtils().putValue("username",AppData.getInstance().getUserEntity().getUsername()).createMap()));
+
+
     }
 
     @Override
@@ -286,7 +289,6 @@ public boolean onKeyDown(int keyCode, KeyEvent event) {
                 BindDevice device =(BindDevice)output;
 
                 if(device.getRes().equals("0")){
-
 
                     RespUserInfo userInfo = AppData.getInstance().getUserEntity();
                     userInfo.setBind(1);

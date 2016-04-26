@@ -1,0 +1,18 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="7">
+
+    <ListView
+        android:id="@+id/lv_popup"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:cacheColorHint="@android:color/transparent"
+        style="@style/listview"
+        android:background="@android:color/white"
+        android:layout_marginBottom="5dp"
+        android:divider="@null"/>
+</LinearLayout>

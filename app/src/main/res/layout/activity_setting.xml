@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_backgroud">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/txt_white"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/value_10dp"
+            android:text="成为车主"
+            android:textColor="@color/txt_666666" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioGroup
+                android:id="@+id/setting_radio_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/value_20dp"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/setting_radio_btn_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/setting_radio_btn_style"
+                    android:button="@null"
+                    android:checked="true" />
+
+                <RadioButton
+                    android:id="@+id/setting_radio_btn_car"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/value_10dp"
+                    android:background="@drawable/setting_radio_btn_style"
+                    android:button="@null" />
+            </RadioGroup>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/value_10dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/value_2dp"
+                    android:text="用户"
+                    android:textColor="@color/txt_666666" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/value_16dp"
+                    android:text="车主"
+                    android:textColor="@color/txt_666666" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/value_1dp"
+            android:layout_marginLeft="@dimen/value_10dp"
+            android:layout_marginTop="@dimen/value_5dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/divider_line_horizonal" />
+
+        <RelativeLayout
+            android:id="@+id/setting_clear_cache_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/value_40dp"
+            android:padding="@dimen/value_10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="清除缓存"
+                android:textColor="@color/txt_666666" />
+
+            <ImageView
+                android:id="@+id/setting_right_img"
+                android:layout_width="@dimen/value_20dp"
+                android:layout_height="@dimen/value_20dp"
+                android:layout_alignParentRight="true"
+                android:src="@mipmap/right_direction_grey" />
+
+            <TextView
+                android:id="@+id/setting_cache_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/setting_right_img"
+                android:text="0.00k"
+                android:textColor="@color/txt_666666" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/setting_logout_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/value_10dp"
+        android:background="@mipmap/publish_ensure_back"
+        android:gravity="center"
+        android:text="退出当前账号"
+        android:textColor="@color/txt_white"
+        android:textSize="@dimen/value_16sp" />
+</RelativeLayout>

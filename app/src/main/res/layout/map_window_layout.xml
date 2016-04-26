@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@mipmap/map_window_blue"
+        android:gravity="center"
+        >
+
+        <TextView
+            android:id="@+id/speedId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="85"
+            android:textColor="@color/txt_white"
+            android:textSize="@dimen/value_18sp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Km/H"
+            android:textColor="@color/txt_white"
+            android:textSize="@dimen/value_14sp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/value_10dp"
+        android:background="@mipmap/map_window_white">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/nameId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SandWich"
+                android:textColor="@color/txt_333333"
+                android:textSize="@dimen/value_18sp"
+                android:layout_marginBottom="@dimen/value_5dp"
+                />
+
+            <TextView
+                android:id="@+id/timeId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2015-3-16 14:55"
+                android:textColor="@color/txt_333333"
+                android:textSize="@dimen/value_14sp"
+                android:layout_marginBottom="@dimen/value_15dp"
+                />
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/openId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/right_direction_grey"
+            android:padding="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="80dp"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

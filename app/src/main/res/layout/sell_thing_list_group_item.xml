@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/txt_white"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/value_10dp"
+    android:paddingRight="@dimen/value_10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/value_5dp"
+        android:paddingTop="@dimen/value_5dp">
+
+        <ImageView
+            android:id="@+id/sell_thing_list_group_delete"
+            android:layout_width="@dimen/value_20dp"
+            android:layout_height="@dimen/value_20dp"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/delete_grey_icon" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="需要:"
+                    android:textColor="@color/main_color" />
+
+                <TextView
+                    android:id="@+id/sell_thing_list_group_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/value_5dp"
+                    android:text="泥瓦工"
+                    android:textColor="@color/txt_333333" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/sell_thing_list_group_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2016-5-25 16：00"
+                android:textColor="@color/txt_666666" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/sell_thing_list_group_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="描述描述描述描述描述描述描述描述描述"
+        android:textColor="@color/txt_333333" />
+
+    <LinearLayout
+        android:id="@+id/sell_thing_list_group_pics_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_60dp"
+        android:layout_marginBottom="@dimen/value_5dp"
+        android:layout_marginTop="@dimen/value_5dp"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        >
+
+        <ImageView
+            android:id="@+id/sell_thing_list_group_pic1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            />
+
+        <ImageView
+            android:id="@+id/sell_thing_list_group_pic2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/value_10dp"
+            android:layout_marginRight="@dimen/value_10dp"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            />
+
+        <ImageView
+            android:id="@+id/sell_thing_list_group_pic3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/sell_thing_list_group_people_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="人数：2人"
+            android:textColor="@color/txt_333333" />
+
+        <TextView
+            android:id="@+id/sell_thing_list_group_salary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/value_20dp"
+            android:text="薪资：面议"
+            android:textColor="@color/txt_333333" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/value_5dp">
+
+        <ImageView
+            android:id="@+id/group_item_location_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/location_tag_grey" />
+
+        <TextView
+            android:id="@+id/sell_thing_list_group_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/value_5dp"
+            android:layout_toRightOf="@+id/group_item_location_tag"
+            android:layout_toLeftOf="@+id/sell_thing_list_group_edit"
+            android:layout_marginRight="@dimen/value_3dp"
+            android:singleLine="true"
+            android:text="地址：深圳市科技园"
+            android:textColor="@color/txt_666666" />
+
+        <ImageView
+            android:id="@+id/sell_thing_list_group_talk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/talk_icon" />
+
+        <ImageView
+            android:id="@+id/sell_thing_list_group_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/value_20dp"
+            android:layout_toLeftOf="@+id/sell_thing_list_group_talk"
+            android:src="@mipmap/edit_icon" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/sell_thing_list_group_item_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_10dp"
+        android:background="@color/main_backgroud"
+        android:orientation="vertical"
+        android:visibility="visible" />
+</LinearLayout>

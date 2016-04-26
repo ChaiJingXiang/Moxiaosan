@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/value_80dp"
+    android:gravity="center_vertical">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:gravity="right|center_vertical"
+        android:layout_marginRight="@dimen/value_10dp"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/timeId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10.12/10:20"
+            android:textColor="@color/txt_666666"
+            android:textSize="@dimen/value_14sp"
+            android:layout_marginBottom="@dimen/value_5dp"
+            />
+
+        <TextView
+            android:id="@+id/addressId"
+            android:layout_width="@dimen/value_160dp"
+            android:layout_height="wrap_content"
+            android:text="深圳市宝安区南山路16号华翰科技大厦D座516"
+            android:textColor="@color/txt_666666"
+            android:textSize="@dimen/value_14sp"
+            android:gravity="right"
+            android:paddingLeft="5dp"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/value_10dp"
+        android:paddingRight="@dimen/value_10dp"
+        android:orientation="vertical"
+        android:gravity="bottom|center_horizontal">
+
+        <TextView
+            android:id="@+id/topId"
+            android:layout_width="@dimen/value_5dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/main_color"
+            />
+        <com.utils.image.RoundImageView
+            android:id="@+id/centerId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/order_state_light"
+            />
+
+        <TextView
+            android:id="@+id/bottomId"
+            android:layout_width="@dimen/value_5dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/main_color"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:gravity="left|center_vertical"
+        android:layout_marginLeft="@dimen/value_10dp"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/nameId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="接单人"
+            android:textColor="@color/txt_666666"
+            android:textSize="@dimen/value_14sp"
+            android:layout_marginBottom="@dimen/value_5dp"
+            />
+
+        <TextView
+            android:id="@+id/phoneId"
+            android:layout_width="@dimen/value_160dp"
+            android:layout_height="wrap_content"
+            android:text="13684592354"
+            android:textColor="@color/txt_666666"
+            android:textSize="@dimen/value_14sp"
+            android:gravity="left"
+            />
+
+    </LinearLayout>
+
+
+</LinearLayout>

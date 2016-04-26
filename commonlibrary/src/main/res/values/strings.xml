@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">CommonLibrary</string>
+    <!-- 时间处理 -->
+    <string name="str_yearago">年前</string>
+    <string name="str_monthago">月前</string>
+    <string name="str_daysago">天前</string>
+    <string name="str_hoursago">小时前</string>
+    <string name="str_minsago">分钟前</string>
+    <string name="str_secondago">秒前</string>
+</resources>

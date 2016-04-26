@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_backgroud"
+    >
+
+    <me.maxwin.view.XExpandableListView
+        android:id="@+id/sell_thing_expandablelistview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@null"
+        android:scrollbars="none"
+        android:groupIndicator="@null" />
+
+    <LinearLayout
+        android:id="@+id/sell_thing_no_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/no_data_img" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/value_10dp"
+            android:text="您还没有发布商品"
+            android:textColor="@color/txt_999999"
+            android:textSize="@dimen/value_16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/value_10dp"
+            android:text="请点击右上角 + 添加商品"
+            android:textColor="@color/txt_999999"
+            android:textSize="@dimen/value_16sp" />
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/sell_thing_comment_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/main_backgroud"
+        android:paddingBottom="@dimen/value_8dp"
+        android:paddingLeft="@dimen/value_10dp"
+        android:paddingRight="@dimen/value_10dp"
+        android:paddingTop="@dimen/value_8dp"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:id="@+id/sell_thing_comment_send"
+            android:layout_width="@dimen/value_40dp"
+            android:layout_height="@dimen/value_30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/comment_send_back"
+            android:gravity="center"
+            android:text="发送"
+            android:textColor="@color/txt_666666" />
+
+        <ImageView
+            android:id="@+id/sell_thing_expression"
+            android:layout_width="@dimen/value_30dp"
+            android:layout_height="@dimen/value_30dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/sell_thing_comment_send"
+            android:gravity="center"
+            android:paddingBottom="@dimen/value_5dp"
+            android:paddingTop="@dimen/value_5dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/chat_expression_btn"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/sell_thing_comment_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:maxHeight="@dimen/value_100dp"
+            android:layout_toLeftOf="@+id/sell_thing_expression"
+            android:background="@mipmap/chat_input_bg"
+            android:gravity="left|center_vertical"
+            android:hint="评论"
+            android:layout_marginRight="@dimen/value_10dp"
+            android:padding="@dimen/value_5dp"
+            android:textSize="@dimen/value_16sp" />
+    </RelativeLayout>
+</RelativeLayout>

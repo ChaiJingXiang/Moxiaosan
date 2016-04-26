@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_backgroud"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/value_10dp">
+
+    <RelativeLayout
+        android:id="@+id/person_info_photo_modify_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_40dp"
+        android:paddingRight="@dimen/value_10dp">
+
+        <com.utils.image.RoundImageView
+            android:id="@+id/person_info_user_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/icon_default_head"
+
+            />
+
+        <ImageView
+            android:id="@+id/person_info_photo_modify_right_img"
+            android:layout_width="@dimen/value_20dp"
+            android:layout_height="@dimen/value_20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/right_direction_grey" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/value_10dp"
+            android:layout_toLeftOf="@+id/person_info_photo_modify_right_img"
+            android:text="修改"
+            android:textColor="@color/main_color" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_1dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/divider_line_horizonal" />
+
+    <RelativeLayout
+        android:id="@+id/person_info_nick_modify_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_40dp"
+        android:paddingRight="@dimen/value_10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="昵称"
+            android:textColor="@color/txt_666666" />
+
+        <ImageView
+            android:id="@+id/person_info_nick_modify_right_img"
+            android:layout_width="@dimen/value_20dp"
+            android:layout_height="@dimen/value_20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/right_direction_grey" />
+
+        <TextView
+            android:id="@+id/person_info_nick_modify_name_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/value_10dp"
+            android:layout_toLeftOf="@+id/person_info_nick_modify_right_img"
+            android:textColor="@color/txt_999999" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_1dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/divider_line_horizonal" />
+
+    <RelativeLayout
+        android:id="@+id/person_info_phone_mdify_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_40dp"
+        android:paddingRight="@dimen/value_10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="电话"
+            android:textColor="@color/txt_666666" />
+
+        <ImageView
+            android:id="@+id/person_info_phone_modify_right_img"
+            android:layout_width="@dimen/value_20dp"
+            android:layout_height="@dimen/value_20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/right_direction_grey" />
+
+        <TextView
+            android:id="@+id/person_info_nick_modify_phone_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/value_10dp"
+            android:layout_toLeftOf="@+id/person_info_phone_modify_right_img"
+            android:textColor="@color/txt_999999" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_1dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/divider_line_horizonal" />
+
+    <RelativeLayout
+        android:id="@+id/person_info_password_modify_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_40dp"
+        android:paddingRight="@dimen/value_10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="密码"
+            android:textColor="@color/txt_666666" />
+
+        <ImageView
+            android:id="@+id/person_info_password_modify_right_img"
+            android:layout_width="@dimen/value_20dp"
+            android:layout_height="@dimen/value_20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/right_direction_grey" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/value_10dp"
+            android:layout_toLeftOf="@+id/person_info_password_modify_right_img"
+            android:text="修改"
+            android:textColor="@color/main_color" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_1dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/divider_line_horizonal" />
+</LinearLayout>

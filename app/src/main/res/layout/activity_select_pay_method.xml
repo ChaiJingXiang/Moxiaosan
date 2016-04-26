@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_30dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/value_10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/txt_666666"
+            android:text="支付金额：" />
+
+        <TextView
+            android:id="@+id/pay_method_cost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/txt_666666"
+            android:text="0元" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/value_10dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/withdraw_money_weixin" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/value_10dp"
+                    android:text="微信支付"
+                    android:textColor="@color/txt_333333" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/value_20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/withdraw_money_zhifubao" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/value_10dp"
+                    android:text="支付宝支付"
+                    android:textColor="@color/txt_333333" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/value_20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/value_25dp"
+                    android:layout_height="@dimen/value_25dp"
+                    android:src="@mipmap/wallet_icon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/value_10dp"
+                    android:text="余额支付"
+                    android:textColor="@color/txt_333333" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <RadioGroup
+            android:id="@+id/pay_method_radiogroup"
+            android:layout_width="@dimen/value_25dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/pay_method_radiobtn_weixin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/setting_radio_btn_style"
+                android:button="@null"
+                android:checked="true" />
+
+            <RadioButton
+                android:id="@+id/pay_method_radiobtn_zhifubao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/value_15dp"
+                android:background="@drawable/setting_radio_btn_style"
+                android:button="@null" />
+            <RadioButton
+                android:id="@+id/pay_method_radiobtn_leave_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/value_15dp"
+                android:background="@drawable/setting_radio_btn_style"
+                android:button="@null" />
+        </RadioGroup>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <TextView
+            android:id="@+id/pay_method_ensure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="确定"
+            android:textSize="@dimen/value_18sp"
+            android:textColor="@color/txt_white"
+            android:background="@mipmap/publish_ensure_back"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/value_10dp"
+            android:layout_centerHorizontal="true"
+            />
+    </RelativeLayout>
+</LinearLayout>

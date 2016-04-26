@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/value_48dp"
+    android:orientation="vertical"
+    android:background="@color/main_color"
+    >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+
+            <ImageView
+                android:id="@+id/title_top_backId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/value_10dp"
+                android:paddingRight="@dimen/value_10dp"
+                android:paddingTop="@dimen/value_5dp"
+                android:paddingBottom="@dimen/value_5dp"
+                android:src="@drawable/title_back_no"
+                android:scaleType="centerInside"
+                />
+
+            <TextView
+                android:id="@+id/title_top_textId"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="首页"
+                android:textSize="20sp"
+                android:textColor="@color/txt_white"
+                />
+
+            <ImageView
+                android:id="@+id/title_top_menuId"
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:scaleType="centerInside"
+                />
+
+        </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#DDDDDD"
+        />
+
+</LinearLayout>

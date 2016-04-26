@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/main_backgroud"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_40dp"
+        android:background="@color/txt_white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/value_10dp"
+        android:paddingRight="@dimen/value_10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="提现："
+            android:textColor="@color/txt_666666" />
+
+        <EditText
+            android:id="@+id/withdraw_money_num"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/value_10dp"
+            android:background="@color/txt_white"
+            android:hint="元"
+            android:numeric="decimal"
+            android:textColorHint="@color/txt_999999"
+            android:textSize="@dimen/value_16sp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/value_10dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/withdraw_money_weixin" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/value_10dp"
+                    android:text="提现到微信"
+                    android:textColor="@color/txt_333333" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/value_20dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/withdraw_money_zhifubao" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/value_10dp"
+                    android:text="提现到支付宝"
+                    android:textColor="@color/txt_333333" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <RadioGroup
+            android:id="@+id/withdraw_money_radiogroup"
+            android:layout_width="@dimen/value_25dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/withdraw_money_radiobtn_weixin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/setting_radio_btn_style"
+                android:button="@null"
+                android:checked="true" />
+
+            <RadioButton
+                android:id="@+id/withdraw_money_radiobtn_zhifubao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/value_15dp"
+                android:background="@drawable/setting_radio_btn_style"
+                android:button="@null" />
+        </RadioGroup>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <TextView
+            android:id="@+id/with_draw_money_ensure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="确定"
+            android:textSize="@dimen/value_18sp"
+            android:textColor="@color/txt_white"
+            android:background="@mipmap/publish_ensure_back"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/value_10dp"
+            android:layout_centerHorizontal="true"
+            />
+    </RelativeLayout>
+</LinearLayout>

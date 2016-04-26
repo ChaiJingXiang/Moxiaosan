@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/value_5dp"
+        android:paddingLeft="@dimen/value_10dp"
+        android:paddingRight="@dimen/value_10dp"
+        >
+
+        <TextView
+            android:id="@+id/nameId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="门到门速递"
+            android:textColor="@color/txt_333333"
+            android:textSize="@dimen/value_16sp"
+            />
+
+        <TextView
+            android:id="@+id/timeId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="6-25 16:00"
+            android:textColor="@color/txt_999999"
+            android:textSize="@dimen/value_14sp"
+            android:gravity="end"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/value_5dp"
+        android:paddingLeft="@dimen/value_10dp"
+        android:paddingRight="@dimen/value_10dp"
+        >
+
+        <TextView
+            android:id="@+id/danhaoId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="82626254625"
+            android:textColor="@color/txt_999999"
+            android:textSize="@dimen/value_14sp"
+            />
+
+        <TextView
+            android:id="@+id/priceId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="¥60元"
+            android:textColor="@color/txt_orange"
+            android:textSize="@dimen/value_16sp"
+            android:gravity="end"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/value_5dp"
+        android:paddingLeft="@dimen/value_10dp"
+        android:paddingRight="@dimen/value_10dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="出发地："
+            android:textColor="@color/txt_999999"
+            android:textSize="@dimen/value_14sp"
+            android:layout_marginRight="@dimen/value_5dp"
+            />
+
+        <TextView
+            android:id="@+id/chufadiId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text=""
+            android:textColor="@color/txt_999999"
+            android:textSize="@dimen/value_14sp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/value_5dp"
+        android:paddingLeft="@dimen/value_10dp"
+        android:paddingRight="@dimen/value_10dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="目的地："
+            android:textColor="@color/txt_999999"
+            android:textSize="@dimen/value_14sp"
+            android:layout_marginRight="@dimen/value_5dp"
+            />
+
+        <TextView
+            android:id="@+id/mudidiId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text=""
+            android:textColor="@color/txt_999999"
+            android:textSize="@dimen/value_14sp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/value_5dp"
+        android:paddingLeft="@dimen/value_10dp"
+        android:paddingRight="@dimen/value_10dp"
+        android:gravity="end"
+        android:paddingBottom="@dimen/value_10dp"
+        >
+
+        <TextView
+            android:id="@+id/zhidajiedanId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="直达接单"
+            android:textColor="@color/txt_orange"
+            android:textSize="@dimen/value_14sp"
+            android:padding="@dimen/value_5dp"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/qingqiujieliId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请求接力"
+            android:textColor="@color/txt_orange"
+            android:textSize="@dimen/value_14sp"
+            android:padding="@dimen/value_5dp"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/woyaojiedanId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我要接单"
+            android:textColor="@color/txt_orange"
+            android:textSize="@dimen/value_14sp"
+            android:padding="@dimen/value_5dp"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/jieliId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="接力"
+            android:textColor="@color/txt_orange"
+            android:textSize="@dimen/value_14sp"
+            android:padding="@dimen/value_5dp"
+            android:visibility="gone"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/main_backgroud"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/user_help_service"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_40dp"
+        android:background="@color/txt_white"
+        android:orientation="horizontal"
+        android:padding="@dimen/value_10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="客服信息"
+            android:textColor="@color/txt_333333" />
+
+        <ImageView
+            android:layout_width="@dimen/value_15dp"
+            android:layout_height="@dimen/value_30dp"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/right_direction_grey" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_1dp"
+        android:paddingLeft="@dimen/value_10dp"
+        android:scaleType="centerCrop"
+        android:background="@color/txt_white"
+        android:src="@mipmap/divider_line_horizonal" />
+
+    <RelativeLayout
+        android:id="@+id/user_help_rules"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_40dp"
+        android:background="@color/txt_white"
+        android:orientation="horizontal"
+        android:padding="@dimen/value_10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="法律条款"
+            android:textColor="@color/txt_333333" />
+
+        <ImageView
+            android:layout_width="@dimen/value_15dp"
+            android:layout_height="@dimen/value_30dp"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/right_direction_grey" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_1dp"
+        android:paddingLeft="@dimen/value_10dp"
+        android:scaleType="centerCrop"
+        android:background="@color/txt_white"
+        android:src="@mipmap/divider_line_horizonal" />
+
+    <RelativeLayout
+        android:id="@+id/user_help_question"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_40dp"
+        android:background="@color/txt_white"
+        android:orientation="horizontal"
+        android:padding="@dimen/value_10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="常见问题"
+            android:textColor="@color/txt_333333" />
+
+        <ImageView
+            android:layout_width="@dimen/value_15dp"
+            android:layout_height="@dimen/value_30dp"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/right_direction_grey" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_1dp"
+        android:layout_marginLeft="@dimen/value_10dp"
+        android:scaleType="centerCrop" />
+</LinearLayout>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/txt_black">
+
+    <picture.view.MyHackyViewPager
+        android:id="@+id/image_check_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_50dp"
+        android:background="@color/txt_black"
+        android:layout_alignParentBottom="true"/>
+
+    <TextView
+        android:id="@+id/image_num"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/value_50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/txt_white"
+        android:gravity="center"
+        android:textSize="@dimen/value_18sp" />
+    <TextView
+        android:id="@+id/down_load"
+        android:layout_width="@dimen/value_50dp"
+        android:layout_height="@dimen/value_50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:text="下载"
+        android:textColor="@color/txt_white"
+        android:textSize="@dimen/value_18sp"
+        android:layout_marginRight="@dimen/value_15dp" />
+
+</RelativeLayout>

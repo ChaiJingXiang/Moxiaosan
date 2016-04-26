@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f2f1f1"
+    >
+
+    <RelativeLayout
+        android:id="@+id/person_info_photo_modify_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_40dp"
+        android:paddingLeft="@dimen/value_10dp"
+        android:background="#fff"
+        android:paddingRight="@dimen/value_10dp">
+
+        <com.utils.image.RoundImageView
+            android:id="@+id/person_info_user_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/icon_default_head"
+
+            />
+
+        <ImageView
+            android:id="@+id/person_info_photo_modify_right_img"
+            android:layout_width="@dimen/value_10dp"
+            android:layout_height="@dimen/value_20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/right_direction_grey" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/value_10dp"
+            android:layout_toLeftOf="@+id/person_info_photo_modify_right_img"
+            android:text="修改"
+            android:textColor="@color/main_color" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_1dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/divider_line_horizonal" />
+
+    <RelativeLayout
+        android:id="@+id/person_info_nick_modify_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_40dp"
+        android:paddingLeft="@dimen/value_10dp"
+        android:background="#fff"
+        android:paddingRight="@dimen/value_10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="昵称"
+            android:textColor="@color/txt_666666" />
+
+        <ImageView
+            android:id="@+id/person_info_nick_modify_right_img"
+            android:layout_width="@dimen/value_10dp"
+            android:layout_height="@dimen/value_20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/right_direction_grey" />
+
+        <TextView
+            android:id="@+id/person_info_nick_modify_name_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/value_10dp"
+            android:layout_toLeftOf="@+id/person_info_nick_modify_right_img"
+            android:text="李美蓉"
+            android:textColor="@color/txt_999999" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_1dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/divider_line_horizonal" />
+
+    <RelativeLayout
+        android:id="@+id/person_info_phone_mdify_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_40dp"
+        android:paddingLeft="@dimen/value_10dp"
+        android:background="#fff"
+        android:paddingRight="@dimen/value_10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="电话"
+            android:textColor="@color/txt_666666" />
+
+        <ImageView
+            android:id="@+id/person_info_phone_modify_right_img"
+            android:layout_width="@dimen/value_10dp"
+            android:layout_height="@dimen/value_20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/right_direction_grey" />
+
+        <TextView
+            android:id="@+id/person_info_nick_modify_phone_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/value_10dp"
+            android:layout_toLeftOf="@+id/person_info_phone_modify_right_img"
+            android:text="12345678980"
+            android:textColor="@color/txt_999999" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_1dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/divider_line_horizonal" />
+
+    <RelativeLayout
+        android:id="@+id/person_info_password_modify_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_40dp"
+        android:paddingLeft="@dimen/value_10dp"
+        android:background="#fff"
+        android:paddingRight="@dimen/value_10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="密码"
+            android:textColor="@color/txt_666666" />
+
+        <ImageView
+            android:id="@+id/person_info_password_modify_right_img"
+            android:layout_width="@dimen/value_10dp"
+            android:layout_height="@dimen/value_20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/right_direction_grey" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/value_10dp"
+            android:layout_toLeftOf="@+id/person_info_password_modify_right_img"
+            android:text="修改"
+            android:textColor="@color/main_color" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_1dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/divider_line_horizonal" />
+
+    <RelativeLayout
+        android:id="@+id/person_info_address_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_40dp"
+        android:paddingLeft="@dimen/value_10dp"
+        android:background="#fff"
+        android:paddingRight="@dimen/value_10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="地址"
+            android:textColor="@color/txt_666666" />
+
+        <ImageView
+            android:id="@+id/person_info_address_right_img"
+            android:layout_width="@dimen/value_10dp"
+            android:layout_height="@dimen/value_20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/right_direction_grey" />
+
+        <TextView
+            android:id="@+id/person_info_address_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/value_10dp"
+            android:layout_toLeftOf="@+id/person_info_address_right_img"
+            android:text="12345678980"
+            android:textColor="@color/txt_999999" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#f2f1f1"
+        />
+
+    <RelativeLayout
+        android:id="@+id/person_info_car_type_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_40dp"
+        android:paddingLeft="@dimen/value_10dp"
+        android:background="#fff"
+        android:paddingRight="@dimen/value_10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="车的品牌"
+            android:textColor="@color/txt_666666" />
+
+        <ImageView
+            android:id="@+id/person_info_car_type_right_img"
+            android:layout_width="@dimen/value_10dp"
+            android:layout_height="@dimen/value_20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/right_direction_grey" />
+
+        <TextView
+            android:id="@+id/person_info_car_type_name_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/value_10dp"
+            android:layout_toLeftOf="@+id/person_info_car_type_right_img"
+            android:text="宝马"
+            android:textColor="@color/txt_999999" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_1dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/divider_line_horizonal" />
+
+    <RelativeLayout
+        android:id="@+id/person_info_baoyang_km_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_40dp"
+        android:paddingLeft="@dimen/value_10dp"
+        android:background="#fff"
+        android:paddingRight="@dimen/value_10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="保养里程"
+            android:textColor="@color/txt_666666" />
+
+        <ImageView
+            android:id="@+id/person_info_baoyang_km_txt"
+            android:layout_width="@dimen/value_10dp"
+            android:layout_height="@dimen/value_20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/right_direction_grey" />
+
+        <TextView
+            android:id="@+id/person_info_car_baoyang_km_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/value_10dp"
+            android:layout_toLeftOf="@+id/person_info_baoyang_km_txt"
+            android:text="200"
+            android:textColor="@color/txt_999999" />
+    </RelativeLayout>
+
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_1dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/divider_line_horizonal" />
+
+    <RelativeLayout
+        android:id="@+id/person_info_car_photo_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_40dp"
+        android:paddingLeft="@dimen/value_10dp"
+        android:background="#fff"
+        android:paddingRight="@dimen/value_10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="车的照片"
+            android:textColor="@color/txt_666666" />
+
+        <ImageView
+            android:id="@+id/person_info_car_photo_right_img"
+            android:layout_width="@dimen/value_10dp"
+            android:layout_height="@dimen/value_20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/right_direction_grey" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_1dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/divider_line_horizonal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/value_10dp"
+        android:orientation="vertical"
+        android:background="@color/txt_white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="身份切换"
+            android:textColor="@color/txt_666666" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/value_10dp"
+            android:layout_marginBottom="@dimen/value_10dp"
+
+            >
+
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                >
+
+
+                    <RadioButton
+                        android:id="@+id/radioConsumer"
+                        android:layout_width="@dimen/value_20dp"
+                        android:layout_height="@dimen/value_20dp"
+                        android:layout_margin="@dimen/value_5dp"
+                        android:background="@drawable/setting_radio_btn_style"
+                        android:button="@null"
+                        android:gravity="center"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="用户"
+                        android:textColor="@color/txt_666666"
+                        android:layout_marginRight="@dimen/value_20dp"/>
+
+                    <RadioButton
+                        android:id="@+id/radioCar"
+                        android:layout_width="@dimen/value_20dp"
+                        android:layout_height="@dimen/value_20dp"
+                        android:layout_margin="@dimen/value_5dp"
+                        android:background="@drawable/setting_radio_btn_style"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:checked="true"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="车主"
+                        android:textColor="@color/txt_666666" />
+
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/close"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/value_10dp"
+            android:layout_marginRight="@dimen/value_20dp"
+            android:layout_marginLeft="@dimen/value_20dp"
+            android:background="@mipmap/register_register_back"
+            android:padding="@dimen/value_15dp"
+            android:gravity="center"
+            android:text="退出当前账号"
+            android:textSize="@dimen/value_16sp"
+            android:textColor="@color/txt_white"
+            />
+    </RelativeLayout>
+
+</LinearLayout>

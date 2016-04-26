@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <me.maxwin.view.XListView
+        android:id="@+id/orderListId"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:dividerHeight="@dimen/value_10dp"
+        android:divider="#f2f1f1"
+        android:listSelector="@android:color/transparent"
+        >
+
+    </me.maxwin.view.XListView>
+
+</LinearLayout>

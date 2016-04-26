@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/main_backgroud"
+    >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/value_40dp"
+    android:orientation="horizontal"
+    android:background="@color/txt_white"
+    android:gravity="center_vertical"
+    android:paddingLeft="@dimen/value_10dp"
+    android:paddingRight="@dimen/value_10dp"
+    android:layout_marginTop="@dimen/value_5dp"
+    >
+    <TextView
+        android:id="@+id/city_position_city_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="深圳"
+        android:textColor="@color/main_color"
+        />
+    <TextView
+        android:id="@+id/city_position_city_name_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GPS定位"
+        android:textColor="@color/txt_999999"
+        android:layout_marginLeft="@dimen/value_10dp"
+        />
+</LinearLayout>
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <ListView
+            android:id="@+id/friend_frag_contact_book_listview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:scrollbars="none"
+            />
+
+        <TextView
+            android:id="@+id/friend_frag_text_dialog"
+            android:layout_width="80.0dip"
+            android:layout_height="80.0dip"
+            android:layout_gravity="center"
+            android:background="@drawable/show_head_toast_bg"
+            android:gravity="center"
+            android:textColor="#ffffffff"
+            android:textSize="30.0dip"
+            android:visibility="invisible" />
+
+        <com.moxiaosan.both.common.ui.customView.sortlistview.SideBar
+            android:id="@+id/friend_frag_sidebar"
+            android:layout_width="30.0dip"
+            android:layout_height="fill_parent"
+            android:layout_gravity="right|center" />
+    </FrameLayout>
+</LinearLayout>

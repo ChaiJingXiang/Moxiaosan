@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <com.baidu.mapapi.map.MapView
+            android:id="@+id/mapViewId"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+        </com.baidu.mapapi.map.MapView>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#60000000"
+            android:layout_alignParentBottom="true"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/value_20dp"
+                    android:paddingLeft="@dimen/value_10dp"
+                    android:paddingRight="@dimen/value_10dp"
+                    android:gravity="center_vertical"
+                    android:background="#000000">
+
+                    <ProgressBar
+                        android:id="@+id/progressBarId"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/value_5dp"
+                        style="@style/ProgressBar_Mini"
+                        android:max="100"
+                        android:progress="10"
+                        />
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/value_10dp"
+                    >
+
+                    <CheckBox
+                        android:id="@+id/guiji_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/guiji_btn_bg"
+                        android:button="@null"
+                        android:checked="false"
+                        android:layout_centerInParent="true"
+                        />
+
+                    <RelativeLayout
+                        android:layout_width="@dimen/value_80dp"
+                        android:layout_height="@dimen/value_30dp"
+                        android:background="@mipmap/guiji_time_bg"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center_vertical"
+                        >
+
+                        <Spinner android:id="@+id/spinnerId"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#00ffffff">
+
+                        </Spinner>
+
+                        <ImageView
+                            android:src="@mipmap/guiji_up_img"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="@dimen/value_5dp"
+                            android:layout_marginBottom="@dimen/value_5dp"/>
+                    </RelativeLayout>
+
+
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_200dp"
+        android:padding="@dimen/value_10dp"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="轨迹统计"
+            android:textColor="@color/txt_333333"
+            android:textSize="@dimen/value_16sp"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="行程"
+                android:textColor="@color/txt_999999"
+                android:textSize="@dimen/value_16sp"
+                />
+
+
+            <TextView
+                android:id="@+id/allKimId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2000km"
+                android:textColor="@color/main_color"
+                android:textSize="@dimen/value_16sp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="最高时速"
+                android:textColor="@color/txt_999999"
+                android:textSize="@dimen/value_16sp"
+                />
+
+
+            <TextView
+                android:id="@+id/maxSpeedId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="300km/h"
+                android:textColor="@color/main_color"
+                android:textSize="@dimen/value_16sp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=",平均时速"
+                android:textColor="@color/txt_999999"
+                android:textSize="@dimen/value_16sp"
+                />
+
+
+            <TextView
+                android:id="@+id/averageSpeedId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="200km/h"
+                android:textColor="@color/main_color"
+                android:textSize="@dimen/value_16sp"
+                />
+
+
+        </LinearLayout>
+
+        <lecho.lib.hellocharts.view.LineChartView
+            android:id="@+id/chart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </lecho.lib.hellocharts.view.LineChartView>
+
+
+    </LinearLayout>
+
+</LinearLayout>

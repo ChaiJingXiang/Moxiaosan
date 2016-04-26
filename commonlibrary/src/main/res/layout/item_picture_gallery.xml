@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <picture.view.MySquareImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:maxWidth="200dp"
+            android:maxHeight="200dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:scaleType="centerCrop" />
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignLeft="@id/icon"
+            android:layout_alignRight="@id/icon"
+            android:layout_alignTop="@id/icon"
+            android:layout_alignBottom="@id/icon"
+            android:gravity="center"
+            android:button="@null"
+            android:background="@null" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="right|top"
+        android:clickable="false"
+        android:gravity="right|top"
+        android:weightSum="4">
+
+        <ImageView
+            android:id="@+id/zoomIn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="4dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/picture_seleced"
+            android:visibility="gone"/>
+    </LinearLayout>
+</FrameLayout>

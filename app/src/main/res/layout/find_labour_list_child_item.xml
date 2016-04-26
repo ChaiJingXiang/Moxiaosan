@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/txt_white"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/value_10dp"
+        android:paddingRight="@dimen/value_10dp">
+
+        <TextView
+            android:id="@+id/find_labour_list_child_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="石头："
+            android:textColor="@color/main_color" />
+
+        <TextView
+            android:id="@+id/find_labour_list_child_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="这个东西我好喜欢"
+            android:textColor="@color/txt_666666" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/find_labour_list_child_open_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/txt_white"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/value_10dp"
+        android:paddingRight="@dimen/value_10dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="展开评论"
+            android:textColor="@color/txt_666666" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/open_comment" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/find_labour_list_child_item_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_10dp"
+        android:background="@color/main_backgroud"
+        android:orientation="vertical"
+        android:visibility="gone" />
+</LinearLayout>

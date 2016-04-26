@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_backgroud"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_30dp"
+        android:layout_marginLeft="@dimen/value_10dp"
+        android:gravity="center_vertical"
+        android:text="您的评价对我们改善服务至关重要，请不吝啬留下您的评价"
+        android:textColor="@color/txt_999999"
+        android:textSize="@dimen/value_12sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/txt_white"
+        android:paddingTop="@dimen/value_10dp"
+        android:paddingBottom="@dimen/value_10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/value_20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="速度"
+                android:textColor="@color/txt_333333" />
+
+            <RatingBar
+                android:id="@+id/order_comment_ratingbar_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/value_30dp"
+                android:rating="0"
+                style="@style/commentRatingbar"
+                android:layout_marginLeft="@dimen/value_20dp"
+                />
+
+            <TextView
+                android:id="@+id/order_comment_speed_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/value_10dp"
+                android:text="一般"
+                android:textColor="@color/txt_333333" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/value_20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="服务"
+                android:textColor="@color/txt_333333" />
+
+            <RatingBar
+                android:id="@+id/order_comment_ratingbar_service"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/value_30dp"
+                style="@style/commentRatingbar"
+                android:rating="0"
+                android:layout_marginLeft="@dimen/value_20dp"
+                />
+
+            <TextView
+                android:id="@+id/order_comment_service_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="一般"
+                android:layout_marginLeft="@dimen/value_10dp"
+                android:textColor="@color/txt_333333" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/value_20dp"
+        android:background="@color/txt_white"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/order_comment_content"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/value_180dp"
+            android:background="@mipmap/big_edit_back"
+            android:gravity="top"
+            android:textSize="@dimen/value_14sp"
+            android:hint="说点什么吧"
+            android:padding="@dimen/value_10dp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/order_comment_ensure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/value_10dp"
+            android:background="@mipmap/publish_ensure_back"
+            android:gravity="center"
+            android:text="确定"
+            android:textColor="@color/txt_white"
+            android:textSize="@dimen/value_18sp" />
+    </RelativeLayout>
+</LinearLayout>

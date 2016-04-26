@@ -1,0 +1,4 @@
+证书密码
+123456
+查看证书信息
+keytool -list -v -keystore moxiaosan.keystore

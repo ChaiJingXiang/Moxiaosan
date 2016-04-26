@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f2f1f1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <include layout="@layout/b_takeorder_head"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/value_10dp"
+                    android:background="#f2f1f1"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/value_10dp"
+                    android:background="#fff"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/value_5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="接棒信息"
+                            android:textColor="@color/txt_333333"
+                            android:textSize="@dimen/value_16sp"
+                            android:layout_marginRight="@dimen/value_5dp"
+                            />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#f2f1f1"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/value_5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="交接地点："
+                            android:textColor="@color/txt_333333"
+                            android:textSize="@dimen/value_16sp"
+                            android:layout_marginRight="@dimen/value_5dp"
+                            />
+
+                        <TextView
+                            android:id="@+id/jiaojiedidiId"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textColor="@color/txt_333333"
+                            android:textSize="@dimen/value_16sp"
+                            android:background="#fff"
+                            />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#f2f1f1"/>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/value_5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="时间："
+                            android:textColor="@color/txt_333333"
+                            android:textSize="@dimen/value_16sp"
+                            android:layout_marginRight="@dimen/value_5dp"
+                            />
+
+                        <EditText
+                            android:id="@+id/shijianId"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textColor="@color/txt_333333"
+                            android:textSize="@dimen/value_16sp"
+                            android:background="#fff"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="#f2f1f1"/>
+
+                <include layout="@layout/b_takeorder_foot"/>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/value_10dp"
+        >
+
+        <TextView
+            android:id="@+id/sureId"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/value_50dp"
+            android:text="确定"
+            android:textSize="@dimen/value_18sp"
+            android:textColor="@color/txt_white"
+            android:background="@mipmap/activity_sign_up_btn_back"
+            android:gravity="center"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

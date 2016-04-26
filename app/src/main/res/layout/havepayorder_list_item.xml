@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/txt_white"
+        android:orientation="vertical"
+        android:padding="@dimen/value_10dp">
+
+        <TextView
+            android:id="@+id/have_payed_listview_item_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="门到门速递"
+            android:textColor="@color/txt_333333" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/value_3dp">
+
+            <TextView
+                android:id="@+id/have_payed_listview_item_order_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="xxx"
+                android:textColor="@color/txt_999999" />
+
+            <TextView
+                android:id="@+id/have_payed_listview_item_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="¥ 00"
+                android:textColor="@color/txt_orange" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/value_3dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="下单时间："
+                android:textColor="@color/txt_999999" />
+
+            <TextView
+                android:id="@+id/have_payed_listview_item_down_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00：00"
+                android:textColor="@color/txt_999999" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/value_20dp"
+            android:layout_marginTop="@dimen/value_3dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="始发地："
+                android:textColor="@color/txt_999999" />
+
+            <TextView
+                android:id="@+id/have_payed_listview_item_start_place"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="8J"
+                android:textColor="@color/txt_999999" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/value_20dp"
+            android:layout_marginTop="@dimen/value_3dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="目的地："
+                android:textColor="@color/txt_999999" />
+
+            <TextView
+                android:id="@+id/have_payed_listview_item_end_place"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="8J"
+                android:textColor="@color/txt_999999" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/value_3dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="取件时间："
+                android:textColor="@color/txt_999999" />
+
+            <TextView
+                android:id="@+id/have_payed_listview_item_take_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:textColor="@color/txt_999999" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/value_5dp">
+
+            <ImageView
+                android:id="@+id/have_payed_listview_item_location_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/order_luxian_icon" />
+
+            <TextView
+                android:id="@+id/have_payed_listview_item_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/value_5dp"
+                android:layout_toRightOf="@+id/have_payed_listview_item_location_tag"
+                android:background="@mipmap/order_txt_back"
+                android:gravity="center"
+                android:text="查看详情"
+                android:textColor="@color/txt_orange" />
+
+            <TextView
+                android:id="@+id/have_payed_listview_item_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@mipmap/order_txt_back"
+                android:gravity="center"
+                android:text="评价"
+                android:textColor="@color/txt_orange" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/value_5dp"
+        android:background="@color/main_backgroud"/>
+</LinearLayout>

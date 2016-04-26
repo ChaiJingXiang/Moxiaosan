@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="guiji_time">
+        <item>1小时</item>
+        <item>3小时</item>
+        <item>6小时</item>
+        <item>12小时</item>
+
+    </string-array>
+
+</resources>

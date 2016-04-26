@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff">
+
+    <me.maxwin.view.XListView
+        android:id="@+id/w_listViewId"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:dividerHeight="@dimen/value_1dp"
+        android:divider="#f2f1f1"
+        android:listSelector="@android:color/transparent"
+        >
+
+    </me.maxwin.view.XListView>
+
+
+    <TextView
+        android:id="@+id/noData"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="暂无警情"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/txt_666666"
+        android:visibility="gone"
+        />
+
+</RelativeLayout>

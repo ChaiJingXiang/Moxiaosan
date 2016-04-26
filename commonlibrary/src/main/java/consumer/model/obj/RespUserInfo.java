@@ -22,6 +22,7 @@ public class RespUserInfo implements Serializable {
     private String mileage;
     private String IMEI;
     private int userType;
+    private int bind=3;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -131,6 +132,14 @@ public class RespUserInfo implements Serializable {
         this.userType = userType;
     }
 
+    public int getBind() {
+        return bind;
+    }
+
+    public void setBind(int bind) {
+        this.bind = bind;
+    }
+
     @Override
     public String toString() {
         return "RespUserInfo{" +
@@ -147,6 +156,7 @@ public class RespUserInfo implements Serializable {
                 ", mileage='" + mileage + '\'' +
                 ", IMEI='" + IMEI + '\'' +
                 ", userType=" + userType +
+                ", bind=" + bind +
                 '}';
     }
 }

@@ -137,7 +137,13 @@ public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickLis
                 startActivity(new Intent(getActivity(), AboutUsActivity.class));
                 break;
             case R.id.left_frag_menu_layout7:
-                startActivity(new Intent(getActivity(), SettingActivity.class));
+                if(AppData.getInstance().getUserEntity().getBind()==1){
+                    startActivity(new Intent(getActivity(), SettingActivity.class));
+                }else{
+
+                    EUtil.showToast("未绑定设备,请先绑定设备");
+                }
+
                 break;
             case R.id.left_frag_menu_layout8:
                 Intent shareIntent = new Intent(getActivity(), ShareActivity.class);

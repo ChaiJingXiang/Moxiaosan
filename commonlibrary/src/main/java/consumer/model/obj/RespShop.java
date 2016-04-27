@@ -18,6 +18,7 @@ public class RespShop implements Serializable {
     private String address;
     private String pictures;
     private List<RespShopComment> comments;
+    private boolean isOpenComments = false;
     private String username;
 
     public String getAddress() {
@@ -98,5 +99,13 @@ public class RespShop implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public boolean isOpenComments() {
+        return isOpenComments;
+    }
+
+    public void setOpenComments(boolean openComments) {
+        isOpenComments = openComments;
     }
 }

@@ -123,6 +123,7 @@ public class ShunFengCheActivity extends BaseActivity implements View.OnClickLis
 
         if (locClient != null) {
             locClient.start();  //开始定位自己
+            showLoadingDialog();
         }
     }
 
@@ -351,6 +352,8 @@ public class ShunFengCheActivity extends BaseActivity implements View.OnClickLis
         option.setScanSpan(30000);
         option.setIsNeedAddress(true);
         option.setIsNeedLocationDescribe(true);
+        option.setNeedDeviceDirect(true);
+        option.setIsNeedAltitude(true);
         option.setAddrType("all");
         locClient.setLocOption(option);
         locClient.registerLocationListener(new MyLocationListenner());
@@ -364,10 +367,12 @@ public class ShunFengCheActivity extends BaseActivity implements View.OnClickLis
         @Override
         public void onReceiveLocation(BDLocation location) {
             if (!ShunFengCheActivity.this.isFinishing()) {  //当前Activity没有被销毁
+                if (isLoadingDialogShowing()){
+                    dismissLoadingDialog();
+                }
                 if (location == null) {
                     return;
                 }
-
                 if (fromPoiInfo == null) {
                     fromPoiInfo = new MyPoiInfo();
                 }

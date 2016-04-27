@@ -72,8 +72,15 @@ public class SellThingListAdapter extends BaseExpandableListAdapter {
     @Override
     public int getChildrenCount(int groupPosition) {
         if (respShopList.get(groupPosition) != null) {
-            return respShopList.get(groupPosition).getComments() == null ? 0 :
-                    respShopList.get(groupPosition).getComments().size() > 3 ? 3 : respShopList.get(groupPosition).getComments().size();
+            if (respShopList.get(groupPosition).getComments() != null) {
+                if (respShopList.get(groupPosition).isOpenComments()) {
+                    return respShopList.get(groupPosition).getComments().size();
+                } else {
+                    return respShopList.get(groupPosition).getComments().size() > 3 ? 3 : respShopList.get(groupPosition).getComments().size();
+                }
+            } else {
+                return 0;
+            }
         } else {
             return 0;
         }
@@ -178,9 +185,9 @@ public class SellThingListAdapter extends BaseExpandableListAdapter {
             groupViewHolder.picsLayout.setVisibility(View.VISIBLE);
             String[] pics = respShop.getPictures().split(",");
 
-            ImageLoader imageLoader=ImageLoader.getInstance();
+            ImageLoader imageLoader = ImageLoader.getInstance();
 
-            if (pics.length>0){
+            if (pics.length > 0) {
                 groupViewHolder.imgPic1.setVisibility(View.VISIBLE);
                 groupViewHolder.imgPic2.setVisibility(View.GONE);
                 groupViewHolder.imgPic3.setVisibility(View.GONE);
@@ -189,7 +196,7 @@ public class SellThingListAdapter extends BaseExpandableListAdapter {
                     groupViewHolder.imgPic1.setImageResource(0);
                 } else {
                     groupViewHolder.imgPic1.setTag(pics[0]);
-                    imageLoader.displayImage(pics[0], groupViewHolder.imgPic1,options);
+                    imageLoader.displayImage(pics[0], groupViewHolder.imgPic1, options);
                 }
             }
 
@@ -203,7 +210,7 @@ public class SellThingListAdapter extends BaseExpandableListAdapter {
                     groupViewHolder.imgPic2.setImageResource(0);
                 } else {
                     groupViewHolder.imgPic2.setTag(pics[1]);
-                    imageLoader.displayImage(pics[1], groupViewHolder.imgPic2,options);
+                    imageLoader.displayImage(pics[1], groupViewHolder.imgPic2, options);
                 }
             }
             if (pics.length > 2) {
@@ -215,7 +222,7 @@ public class SellThingListAdapter extends BaseExpandableListAdapter {
                     groupViewHolder.imgPic3.setImageResource(0);
                 } else {
                     groupViewHolder.imgPic3.setTag(pics[2]);
-                    imageLoader.displayImage(pics[2], groupViewHolder.imgPic3,options);
+                    imageLoader.displayImage(pics[2], groupViewHolder.imgPic3, options);
                 }
             }
         }
@@ -224,7 +231,7 @@ public class SellThingListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         ChildViewHolder childViewHolder = null;
         if (convertView == null) {
             childViewHolder = new ChildViewHolder();
@@ -233,6 +240,8 @@ public class SellThingListAdapter extends BaseExpandableListAdapter {
             childViewHolder.openCommentLayout = (LinearLayout) convertView.findViewById(R.id.sell_thing_list_child_open_comment);
             childViewHolder.tvName = (TextView) convertView.findViewById(R.id.sell_thing_list_child_name);
             childViewHolder.tvComment = (TextView) convertView.findViewById(R.id.sell_thing_list_child_content);
+            childViewHolder.tvOpenOrClose = (TextView) convertView.findViewById(R.id.sell_thing_list_child_open_comment_txt);
+            childViewHolder.imgOpenOrClose = (ImageView) convertView.findViewById(R.id.sell_thing_list_child_open_comment_img);
 
             convertView.setTag(childViewHolder);
         } else {
@@ -240,22 +249,45 @@ public class SellThingListAdapter extends BaseExpandableListAdapter {
         }
         if (isLastChild) {
             childViewHolder.dividerLayout.setVisibility(View.VISIBLE);
+        } else {
+            childViewHolder.dividerLayout.setVisibility(View.GONE);
         }
         RespShopComment respShopComment = respShopList.get(groupPosition).getComments().get(childPosition);
         childViewHolder.tvName.setText(respShopComment.getUsername() + "：");
         childViewHolder.tvComment.setText(respShopComment.getCommentstext());
-        if (respShopList.get(groupPosition).getComments().size() > 3) {
+
+        if (respShopList.get(groupPosition).isOpenComments()) { //展开
             if (isLastChild) {
                 childViewHolder.openCommentLayout.setVisibility(View.VISIBLE);
+                childViewHolder.tvOpenOrClose.setText("收起评论");
+                childViewHolder.imgOpenOrClose.setImageResource(R.mipmap.close_comment);
                 childViewHolder.openCommentLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        EUtil.showToast("展开更多");
+                        respShopList.get(groupPosition).setOpenComments(false);
+                        notifyDataSetChanged();
                     }
                 });
+            } else {
+                childViewHolder.openCommentLayout.setVisibility(View.GONE);
             }
-        } else {
-            childViewHolder.openCommentLayout.setVisibility(View.GONE);
+        } else { //  不展开
+            if (respShopList.get(groupPosition).getComments().size() > 3) {
+                if (isLastChild) {
+                    childViewHolder.openCommentLayout.setVisibility(View.VISIBLE);
+                    childViewHolder.tvOpenOrClose.setText("展开评论");
+                    childViewHolder.imgOpenOrClose.setImageResource(R.mipmap.open_comment);
+                    childViewHolder.openCommentLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            respShopList.get(groupPosition).setOpenComments(true);
+                            notifyDataSetChanged();
+                        }
+                    });
+                } else {
+                    childViewHolder.openCommentLayout.setVisibility(View.GONE);
+                }
+            }
         }
         return convertView;
     }
@@ -273,7 +305,8 @@ public class SellThingListAdapter extends BaseExpandableListAdapter {
 
     class ChildViewHolder {
         private LinearLayout dividerLayout, openCommentLayout;
-        private TextView tvName, tvComment;
+        private TextView tvName, tvComment, tvOpenOrClose;
+        private ImageView imgOpenOrClose;
     }
 
     IApiCallback iApiCallback = new IApiCallback() {

@@ -121,6 +121,7 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
 
         if (locClient != null) {
             locClient.start();  //开始定位自己
+            showLoadingDialog();
         }
     }
 
@@ -433,7 +434,10 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
         option.setCoorType("gcj02"); //设置坐标类型//bd09ll  //gcj02
         option.setScanSpan(30000);
         option.setIsNeedAddress(true);
+//        option.setPriority(LocationClientOption.NetWorkFirst);
         option.setIsNeedLocationDescribe(true);
+        option.setNeedDeviceDirect(true);
+        option.setIsNeedAltitude(true);
         option.setAddrType("all");
         locClient.setLocOption(option);
         locClient.registerLocationListener(new MyLocationListenner());
@@ -447,6 +451,9 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
         @Override
         public void onReceiveLocation(BDLocation location) {
             if (!GateToGateActivity.this.isFinishing()) {  //当前Activity没有被销毁
+                if (isLoadingDialogShowing()){
+                    dismissLoadingDialog();
+                }
                 if (location == null) {
                     return;
                 }

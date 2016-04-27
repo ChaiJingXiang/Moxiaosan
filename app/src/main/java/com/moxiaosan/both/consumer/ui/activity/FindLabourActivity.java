@@ -185,7 +185,7 @@ public class FindLabourActivity extends BaseActivity implements ExpandableListVi
                         RespLabourComment respLabourComment = new RespLabourComment();
                         respLabourComment.setContent(commentContent);
                         respLabourComment.setUsername(AppData.getInstance().getUserEntity().getUsername());
-                        respLabourList.get(i).getComments().add(respLabourComment);
+                        respLabourList.get(i).getComments().add(0,respLabourComment);
                         findLabourListAdapter.refreshData(respLabourList);
                         break;
                     }

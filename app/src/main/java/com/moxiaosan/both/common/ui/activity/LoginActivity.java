@@ -17,9 +17,12 @@ import com.utils.common.AppData;
 import com.utils.common.EUtil;
 import com.utils.ui.base.BaseActivity;
 
+import consumer.HashMapUtils;
 import consumer.Interface;
 import consumer.StringUrlUtils;
+import consumer.api.CarReqUtils;
 import consumer.api.UserReqUtil;
+import consumer.model.BindDevice;
 import consumer.model.Login;
 import consumer.model.Register;
 import consumer.model.obj.RespUserInfo;
@@ -102,11 +105,33 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     userInfo.setUserType(AppData.getInstance().getUserEntity().getType());
                     AppData.getInstance().saveUserEntity(userInfo);
 
-                    finish();
+                    CarReqUtils.checkdeviced(this,this,null,new BindDevice(),"checkdeviced",true, StringUrlUtils.geturl(new HashMapUtils().putValue("username",AppData.getInstance().getUserEntity().getUsername()).createMap()));
+
                 }else {
                     dismissLoadingDialog();
                     EUtil.showToast(login.getErr());
                 }
+            }
+
+            if(output instanceof BindDevice){
+                BindDevice device =(BindDevice)output;
+
+                if(device.getRes().equals("0")){
+
+                    RespUserInfo userInfo = AppData.getInstance().getUserEntity();
+                    userInfo.setBind(1);
+                    AppData.getInstance().saveUserEntity(userInfo);
+
+                }else{
+
+                    RespUserInfo userInfo = AppData.getInstance().getUserEntity();
+                    userInfo.setBind(2);
+                    AppData.getInstance().saveUserEntity(userInfo);
+
+                }
+
+                finish();
+
             }
 
         }else{

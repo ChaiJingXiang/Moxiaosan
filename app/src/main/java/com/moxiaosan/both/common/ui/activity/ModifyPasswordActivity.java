@@ -1,5 +1,6 @@
 package com.moxiaosan.both.common.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -9,15 +10,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.moxiaosan.both.R;
+import com.moxiaosan.both.carowner.ui.activity.CarOwnerInfoActivity;
 import com.utils.api.IApiCallback;
 import com.utils.common.AppData;
 import com.utils.common.EUtil;
+import com.utils.ui.base.ActivityHolder;
 import com.utils.ui.base.BaseActivity;
 
 import consumer.StringUrlUtils;
 import consumer.api.UserReqUtil;
 import consumer.model.PhoneCode;
 import consumer.model.UpdatePassword;
+import consumer.model.obj.RespUserInfo;
 
 public class ModifyPasswordActivity extends BaseActivity implements View.OnClickListener,IApiCallback{
     private EditText etPhoneNum,etVerifyCode, etPassword, etRepassword;
@@ -137,7 +141,10 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
                 UpdatePassword password =(UpdatePassword)output;
                 EUtil.showToast(password.getErr());
                 if(password.getRes()==0){
-                    finish();
+                    ActivityHolder.getInstance().finishAllActivity();
+                    RespUserInfo respUserInfo = null;
+                    AppData.getInstance().saveUserEntity(respUserInfo);
+                    startActivity(new Intent(this,LoginActivity.class));
                 }
             }
 

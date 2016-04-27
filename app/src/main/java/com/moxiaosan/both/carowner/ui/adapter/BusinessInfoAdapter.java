@@ -195,18 +195,23 @@ public class BusinessInfoAdapter extends BaseExpandableListAdapter{
         }
         if (isLastChild) {
             childViewHolder.dividerLayout.setVisibility(View.VISIBLE);
+        }else {
+            childViewHolder.dividerLayout.setVisibility(View.GONE);
         }
         RespShopComment respShopComment = lists.get(groupPosition).getComments().get(childPosition);
         childViewHolder.tvName.setText(respShopComment.getUsername() + "：");
         childViewHolder.tvComment.setText(respShopComment.getCommentstext());
         if (lists.get(groupPosition).getComments().size() > 3) {
-            childViewHolder.openCommentLayout.setVisibility(View.VISIBLE);
-            childViewHolder.openCommentLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    EUtil.showToast("展开更多");
-                }
-            });
+            if(isLastChild){
+                childViewHolder.openCommentLayout.setVisibility(View.VISIBLE);
+                childViewHolder.openCommentLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        EUtil.showToast("展开更多");
+                    }
+                });
+            }
+
         } else {
             childViewHolder.openCommentLayout.setVisibility(View.GONE);
         }

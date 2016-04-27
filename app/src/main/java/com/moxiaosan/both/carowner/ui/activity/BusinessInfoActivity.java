@@ -216,7 +216,7 @@ public class BusinessInfoActivity extends BaseActivity implements ExpandableList
                         RespShopComment respShopComment = new RespShopComment();
                         respShopComment.setCommentstext(commentContent);
                         respShopComment.setUsername(AppData.getInstance().getUserEntity().getUsername());
-                        businessList.get(i).getComments().add(respShopComment);
+                        businessList.get(i).getComments().add(0,respShopComment);
                         businessInfoAdapter.refreshData(businessList);
                         break;
                     }

@@ -41,7 +41,9 @@ import consumer.HashMapUtils;
 import consumer.StringUrlUtils;
 import consumer.api.CarReqUtils;
 import consumer.model.Achievement;
+import consumer.model.BindDevice;
 import consumer.model.SetOrder;
+import consumer.model.obj.RespUserInfo;
 
 /**
  * Created by chris on 16/2/29.
@@ -71,6 +73,8 @@ public class BusinessMainActivity extends BaseFragmentActivity implements View.O
 
         setContentView(R.layout.b_activity_main);
         showActionBar(false);
+
+        CarReqUtils.checkdeviced(this,this,null,new BindDevice(),"checkdeviced",true,StringUrlUtils.geturl(new HashMapUtils().putValue("username",AppData.getInstance().getUserEntity().getUsername()).createMap()));
 
         //友盟自动更新
         UmengUpdateAgent.update(this);
@@ -333,6 +337,25 @@ public class BusinessMainActivity extends BaseFragmentActivity implements View.O
 
                 }
             }
+
+            if(output instanceof BindDevice){
+                BindDevice device =(BindDevice)output;
+
+                if(device.getRes().equals("0")){
+
+                    RespUserInfo userInfo = AppData.getInstance().getUserEntity();
+                    userInfo.setBind(1);
+                    AppData.getInstance().saveUserEntity(userInfo);
+
+                }else{
+
+                    RespUserInfo userInfo = AppData.getInstance().getUserEntity();
+                    userInfo.setBind(2);
+                    AppData.getInstance().saveUserEntity(userInfo);
+
+                }
+            }
+
 
             if(output instanceof SetOrder){
                 SetOrder setOrder =(SetOrder)output;

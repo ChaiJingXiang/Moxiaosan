@@ -62,8 +62,6 @@ public class NowLocationActivity extends BaseActivity implements IApiCallback {
     private GeoCoder geoCoder;
     private ExitDialog dialog;
     private Timer timer ;
-    private OverlayOptions ooA =null;
-    private MapStatusUpdate u =null;
 
 
     private Handler handler = new Handler(){
@@ -71,6 +69,8 @@ public class NowLocationActivity extends BaseActivity implements IApiCallback {
         public void handleMessage(Message msg) {
 
             super.handleMessage(msg);
+
+            mBaiduMap.clear();
 
             CarReqUtils.currentposi(NowLocationActivity.this,NowLocationActivity.this, null, new RespLocation(), "Position", true,
                     StringUrlUtils.geturl(new HashMapUtils().putValue("username", AppData.getInstance().getUserEntity().getUsername()).createMap()));
@@ -172,7 +172,7 @@ public class NowLocationActivity extends BaseActivity implements IApiCallback {
 
                     LatLng llA = new LatLng(db[0], db[1]);
 
-                    ooA = new MarkerOptions().position(llA).icon(BitmapDescriptorFactory
+                    OverlayOptions ooA = new MarkerOptions().position(llA).icon(BitmapDescriptorFactory
                             .fromResource(R.mipmap.location_indicator)).zIndex(4).draggable(false);
                     if (mBaiduMap != null) {
 
@@ -207,7 +207,8 @@ public class NowLocationActivity extends BaseActivity implements IApiCallback {
                     currentInfoWindow = new InfoWindow(view, llA, DisplayUtil.dip2px(NowLocationActivity.this, -60.0f)); //第三个参数表示要显示的View和设置的坐标(position)之间的y轴偏移量
                     mBaiduMap.showInfoWindow(currentInfoWindow);
 
-                    u= MapStatusUpdateFactory.newLatLngZoom(llA, 18.0f);
+                    MapStatusUpdate u= MapStatusUpdateFactory.newLatLngZoom(llA, 18.0f);
+
                     mBaiduMap.animateMapStatus(u);
 
 

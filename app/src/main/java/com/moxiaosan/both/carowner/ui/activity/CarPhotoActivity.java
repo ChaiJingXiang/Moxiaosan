@@ -27,6 +27,7 @@ import com.utils.ui.base.BaseActivity;
 
 import java.util.ArrayList;
 
+import consumer.model.obj.RespUserInfo;
 import picture.PictureGalleryActivity;
 
 /**
@@ -129,6 +130,10 @@ public class CarPhotoActivity extends BaseActivity implements FileUploader.OnFil
 //        EUtil.showToast("上传成功");
 
                     Toast.makeText(CarPhotoActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
+
+                    RespUserInfo userInfo = AppData.getInstance().getUserEntity();
+                    userInfo.setCarimg(mFileUrl);
+                    AppData.getInstance().saveUserEntity(userInfo);
 
                     break;
 

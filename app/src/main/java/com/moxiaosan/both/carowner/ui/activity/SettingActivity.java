@@ -156,14 +156,19 @@ public class SettingActivity extends BaseActivity implements IApiCallback{
 
                     etHour.setText(status.getData().getHour());
                     etOwnPhone.setText(status.getData().getSos1());
-                    etOwnPhone.setText(status.getData().getSos2());
-                    etOwnPhone.setText(status.getData().getSos3());
+                    etfamilyPhoe.setText(status.getData().getSos2());
+                    etFriendsPhone.setText(status.getData().getSos3());
                     etMilter.setText(status.getData().getCircle());
                     if(status.getData().getHour().equals("0")){
                         sleepCB.setChecked(false);
                     }
 
-                    selectType =Integer.parseInt(status.getData().getVbsen());
+                    if(!TextUtils.isEmpty(status.getData().getVbsen())){
+                        selectType =Integer.parseInt(status.getData().getVbsen());
+
+                    }else{
+                        selectType =3;
+                    }
 
                     if(selectType ==1){
                         buttonOne.setChecked(true);

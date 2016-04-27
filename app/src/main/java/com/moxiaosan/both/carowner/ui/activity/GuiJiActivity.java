@@ -252,9 +252,9 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
 
                         Log.i("info---==--",list.size()+"");
 
-                        tvAllKm.setText(guiji.getJourney());
-                        tvMAxSpeed.setText(guiji.getMaxspeed());
-                        tvAverageSpeed.setText(guiji.getAveragespeed());
+                        tvAllKm.setText(guiji.getJourney()+"km");
+                        tvMAxSpeed.setText(guiji.getMaxspeed()+"km/h");
+                        tvAverageSpeed.setText(guiji.getAveragespeed()+"km/h");
 
                         reset();
 
@@ -301,9 +301,9 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
 
                         Log.i("info-----",list.toString());
 
-                        tvAllKm.setText(guiji.getJourney());
-                        tvMAxSpeed.setText(guiji.getMaxspeed());
-                        tvAverageSpeed.setText(guiji.getAveragespeed());
+                        tvAllKm.setText(guiji.getJourney()+"km");
+                        tvMAxSpeed.setText(guiji.getMaxspeed()+"km/h");
+                        tvAverageSpeed.setText(guiji.getAveragespeed()+"km/h");
 
 
                         OverlayOptions ooStart = new MarkerOptions().position(new LatLng(points.get(0).latitude,points.get(0).longitude)).icon(BitmapDescriptorFactory

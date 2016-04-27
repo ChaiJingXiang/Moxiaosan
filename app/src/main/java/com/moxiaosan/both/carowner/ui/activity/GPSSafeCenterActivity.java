@@ -33,6 +33,7 @@ import java.util.TimerTask;
 import consumer.HashMapUtils;
 import consumer.StringUrlUtils;
 import consumer.api.CarReqUtils;
+import consumer.model.BindDevice;
 import consumer.model.Mqtt;
 import consumer.model.RespAlarmnums;
 import consumer.model.RespCut;
@@ -55,6 +56,7 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
     private int type;
     private ImageView imgWarn;
     private TextView tvMessage,tvNote;
+    private TextView tvStutas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,10 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
 
         checkBox = (CheckBox) findViewById(R.id.checkBoxSafeId);
 
+        showLoadingDialog();
+
+        CarReqUtils.checkdeviced(this,this,null,new BindDevice(),"checkdeviced",true,StringUrlUtils.geturl(new HashMapUtils().putValue("username",AppData.getInstance().getUserEntity().getUsername()).createMap()));
+
         CarReqUtils.getguard(this,this,null,new RespGuard(),"getguard",true,
                 StringUrlUtils.geturl(hashMapUtils.putValue("username",AppData.getInstance().getUserEntity().getUsername()).createMap()));
 
@@ -71,6 +77,7 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
                 StringUrlUtils.geturl(hashMapUtils.putValue("username",AppData.getInstance().getUserEntity().getUsername()).createMap()));
 
         CarReqUtils.alarmnums(this,this,null,new RespAlarmnums(),"alarmnums",true,StringUrlUtils.geturl(new HashMapUtils().putValue("username",AppData.getInstance().getUserEntity().getUsername()).createMap()));
+
 
         tvLocation =(TextView)findViewById(R.id.tvLocationId);
 
@@ -84,8 +91,18 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
 
         tvMessage =(TextView)findViewById(R.id.main_my_message_count);
         tvNote =(TextView)findViewById(R.id.noteId);
+        tvStutas =(TextView)findViewById(R.id.open_close);
 
         showSlidingMenu();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        CarReqUtils.checkdeviced(this,this,null,new BindDevice(),"checkdeviced",true,StringUrlUtils.geturl(new HashMapUtils().putValue("username",AppData.getInstance().getUserEntity().getUsername()).createMap()));
+
+
     }
 
     @Override
@@ -121,17 +138,23 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
 
             case R.id.imgFindId:
 
-                if(type ==1){
+                if(AppData.getInstance().getUserEntity().getBind() ==1){
+                    if(type ==1){
 
-                    Toast.makeText(GPSSafeCenterActivity.this,"已经断电断油",Toast.LENGTH_SHORT).show();
-                    Intent intent2 = new Intent(GPSSafeCenterActivity.this, FindLocationActivity.class);
-                    startActivity(intent2);
+                        Toast.makeText(GPSSafeCenterActivity.this,"已经断电断油",Toast.LENGTH_SHORT).show();
+                        Intent intent2 = new Intent(GPSSafeCenterActivity.this, FindLocationActivity.class);
+                        startActivity(intent2);
+                    }else{
+
+                        dialog = new ExitDialog(this,3);
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.show();
+                    }
+
                 }else{
-
-                    dialog = new ExitDialog(this,3);
-                    dialog.setCanceledOnTouchOutside(false);
-                    dialog.show();
+                    EUtil.showToast("未绑定设备,请先绑定设备");
                 }
+
 
                 break;
 
@@ -238,12 +261,14 @@ public boolean onKeyDown(int keyCode, KeyEvent event) {
                     if(mqtt.getRes().equals("0")){
                         dialog.dismiss();
                         EUtil.showToast(mqtt.getErr());
+                        tvStutas.setText("开启防盗模式");
                     }else{
                         EUtil.showToast(mqtt.getErr());
                     }
                 }else if(input.equals("open")){
 
                     if(mqtt.getRes().equals("0")){
+                        tvStutas.setText("关闭防盗模式");
 
                         EUtil.showToast(mqtt.getErr());
                     }else{
@@ -264,6 +289,24 @@ public boolean onKeyDown(int keyCode, KeyEvent event) {
 
             }
 
+            if(output instanceof BindDevice){
+                BindDevice device =(BindDevice)output;
+
+                if(device.getRes().equals("0")){
+
+                    RespUserInfo userInfo = AppData.getInstance().getUserEntity();
+                    userInfo.setBind(1);
+                    AppData.getInstance().saveUserEntity(userInfo);
+
+                }else{
+
+                    RespUserInfo userInfo = AppData.getInstance().getUserEntity();
+                    userInfo.setBind(2);
+                    AppData.getInstance().saveUserEntity(userInfo);
+
+                }
+            }
+
             if(output instanceof RespCut){
 
                 RespCut cut =(RespCut)output;
@@ -280,32 +323,46 @@ public boolean onKeyDown(int keyCode, KeyEvent event) {
                 RespGuard guard =(RespGuard)output;
                 if(guard.getRes().equals("0")){
 
-                    if(guard.getData().getGuard().equals("1")){
-                        checkBox.setChecked(false);
+                   if(AppData.getInstance().getUserEntity().getBind()==1){
+                       if(guard.getData().getGuard().equals("1")){
+                           checkBox.setChecked(false);
+                           tvStutas.setText("关闭防盗模式");
 
-                    }else{
+                       }else{
 
-                        checkBox.setChecked(true);
-                    }
+                           checkBox.setChecked(true);
+                           tvStutas.setText("开启防盗模式");
 
-                    checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                       }
 
-                            if (isChecked) {
-                                dialog = new ExitDialog(GPSSafeCenterActivity.this,2);
-                                dialog.setCanceledOnTouchOutside(false);
-                                dialog.show();
-                            } else {
-                                showLoadingDialog();
-                                CarReqUtils.guard(GPSSafeCenterActivity.this,GPSSafeCenterActivity.this,null,new Mqtt(),"open",true,
-                                        StringUrlUtils.geturl(new HashMapUtils().putValue("username",AppData.getInstance().getUserEntity().getUsername()).
-                                                putValue("type",1).createMap()));
+                       checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                           @Override
+                           public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                               if (isChecked) {
+                                   dialog = new ExitDialog(GPSSafeCenterActivity.this,2);
+                                   dialog.setCanceledOnTouchOutside(false);
+                                   dialog.show();
+                               } else {
+                                   showLoadingDialog();
+                                   CarReqUtils.guard(GPSSafeCenterActivity.this,GPSSafeCenterActivity.this,null,new Mqtt(),"open",true,
+                                           StringUrlUtils.geturl(new HashMapUtils().putValue("username",AppData.getInstance().getUserEntity().getUsername()).
+                                                   putValue("type",1).createMap()));
 
 
-                            }
-                        }
-                    });
+                               }
+                           }
+                       });
+                   }else{
+                       checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                           @Override
+                           public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                               checkBox.setChecked(false);
+                               EUtil.showToast("未绑定设备,请先绑定设备");
+                           }
+                       });
+
+                   }
 
                 }
             }
@@ -365,6 +422,7 @@ public boolean onKeyDown(int keyCode, KeyEvent event) {
                         CarReqUtils.guard(GPSSafeCenterActivity.this,GPSSafeCenterActivity.this,null,new Mqtt(),"Close",true,
                                 StringUrlUtils.geturl(hashMapUtils.putValue("username",AppData.getInstance().getUserEntity().getUsername()).
                                         putValue("type",2).createMap()));
+
                     }else if(index ==3){
                         CarReqUtils.recoverlost(GPSSafeCenterActivity.this,GPSSafeCenterActivity.this,null,new Mqtt(),"r_close",true,
                                 StringUrlUtils.geturl(new HashMapUtils().putValue("username",AppData.getInstance().getUserEntity().getUsername()).

@@ -81,6 +81,16 @@ public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickLis
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(!TextUtils.isEmpty(AppData.getInstance().getUserEntity().getHeadportrait())){
+            ImageLoader.getInstance().displayImage(AppData.getInstance().getUserEntity().getHeadportrait(),imgHead);
+        }
+
+    }
+
     private void initView(View view){
         view.findViewById(R.id.left_frag_user_layout).setOnClickListener(this);
         view.findViewById(R.id.left_frag_menu_layout1).setOnClickListener(this);

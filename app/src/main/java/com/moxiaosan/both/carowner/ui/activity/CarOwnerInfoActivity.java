@@ -272,6 +272,10 @@ public class CarOwnerInfoActivity extends BaseActivity implements View.OnClickLi
                             StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).
                                     putValue("headportrait", mFileUrl).createMap()));
 
+                    RespUserInfo userInfo = AppData.getInstance().getUserEntity();
+                    userInfo.setHeadportrait(mFileUrl);
+                    AppData.getInstance().saveUserEntity(userInfo);
+
                     break;
 
                 case UPLOAD_FAIL:

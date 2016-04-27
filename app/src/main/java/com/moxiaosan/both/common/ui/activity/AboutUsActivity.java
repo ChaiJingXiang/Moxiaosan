@@ -53,7 +53,7 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.about_us_official:
-                openLocalBrowser("www.moxiaosan.com");
+                openLocalBrowser("https://www.moxiaosan.com");
                 break;
             case R.id.about_us_weixin:
                 openLocalBrowser("https://www.baidu.com");

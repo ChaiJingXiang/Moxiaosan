@@ -1,7 +1,9 @@
 package com.moxiaosan.both.carowner.ui.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -87,16 +89,33 @@ public class SettingActivity extends BaseActivity implements IApiCallback{
             }
         });
 
+        SharedPreferences sp =getSharedPreferences("request", Activity.MODE_PRIVATE);
+
+        boolean flag =sp.getBoolean("sleep",false);
+
+        if(flag){
+            sleepCB.setChecked(true);
+        }else{
+            sleepCB.setChecked(false);
+        }
         sleepCB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
+                SharedPreferences sp =getSharedPreferences("request", Activity.MODE_PRIVATE);
+
+                SharedPreferences.Editor editor =sp.edit();
+
                 if(isChecked){
                     hour =etHour.getText().toString();
+                    editor.putBoolean("sleep",true);
                 }else{
                     hour ="0";
-                    etHour.setText(0+"");
+//                    etHour.setText(0+"");
+                    editor.putBoolean("sleep",false);
                 }
+
+                editor.commit();
 
             }
         });
@@ -159,9 +178,7 @@ public class SettingActivity extends BaseActivity implements IApiCallback{
                     etfamilyPhoe.setText(status.getData().getSos2());
                     etFriendsPhone.setText(status.getData().getSos3());
                     etMilter.setText(status.getData().getCircle());
-                    if(status.getData().getHour().equals("0")){
-                        sleepCB.setChecked(false);
-                    }
+
 
                     if(!TextUtils.isEmpty(status.getData().getVbsen())){
                         selectType =Integer.parseInt(status.getData().getVbsen());
@@ -239,7 +256,12 @@ public class SettingActivity extends BaseActivity implements IApiCallback{
                     showLoadingDialog();
 
                     if(index ==1){
-                        hour =etHour.getText().toString();
+                        if(sleepCB.isChecked()){
+                            hour =etHour.getText().toString();
+                        }else{
+                            hour ="0";
+                        }
+
                         String sos1,sos2,sos3;
 
                         if(!TextUtils.isEmpty(etOwnPhone.getText().toString().trim())){

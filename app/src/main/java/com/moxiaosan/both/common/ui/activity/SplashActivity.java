@@ -2,10 +2,12 @@ package com.moxiaosan.both.common.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
+import com.baidu.mapapi.map.Text;
 import com.moxiaosan.both.R;
 import com.moxiaosan.both.carowner.ui.activity.BusinessMainActivity;
 import com.moxiaosan.both.carowner.ui.activity.GPSSafeCenterActivity;
@@ -28,7 +30,13 @@ public class SplashActivity extends BaseActivity implements IApiCallback{
         final View view = View.inflate(this, R.layout.activity_splash, null);
         setContentView(view);
 
-        CarReqUtils.checkdeviced(this,this,null,new BindDevice(),"checkdeviced",true, StringUrlUtils.geturl(new HashMapUtils().putValue("username",AppData.getInstance().getUserEntity().getUsername()).createMap()));
+        if(AppData.getInstance().getUserEntity() != null){
+            CarReqUtils.checkdeviced(this,this,null,new BindDevice(),"checkdeviced",true, StringUrlUtils.geturl(new HashMapUtils().putValue("username",AppData.getInstance().getUserEntity().getUsername()).createMap()));
+
+        }else {
+            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+            SplashActivity.this.finish();
+        }
 
         //渐变展示启动屏
         AlphaAnimation aa = new AlphaAnimation(0.3f,1.0f);
@@ -88,9 +96,6 @@ public class SplashActivity extends BaseActivity implements IApiCallback{
                         SplashActivity.this.finish();
                     }
 
-                } else {
-                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                    SplashActivity.this.finish();
                 }
 
             }

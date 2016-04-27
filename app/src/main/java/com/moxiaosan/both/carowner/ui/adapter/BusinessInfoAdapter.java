@@ -58,8 +58,15 @@ public class BusinessInfoAdapter extends BaseExpandableListAdapter{
     @Override
     public int getChildrenCount(int groupPosition) {
         if (lists.get(groupPosition) != null) {
-            return lists.get(groupPosition).getComments() == null ? 0 :
-                    lists.get(groupPosition).getComments().size() > 3 ? 3 : lists.get(groupPosition).getComments().size();
+            if (lists.get(groupPosition).getComments() != null) {
+                if (lists.get(groupPosition).isOpenComments()) {
+                    return lists.get(groupPosition).getComments().size();
+                } else {
+                    return lists.get(groupPosition).getComments().size() > 3 ? 3 : lists.get(groupPosition).getComments().size();
+                }
+            } else {
+                return 0;
+            }
         } else {
             return 0;
         }
@@ -179,7 +186,7 @@ public class BusinessInfoAdapter extends BaseExpandableListAdapter{
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         ChildViewHolder childViewHolder = null;
         if (convertView == null) {
             childViewHolder = new ChildViewHolder();
@@ -188,6 +195,8 @@ public class BusinessInfoAdapter extends BaseExpandableListAdapter{
             childViewHolder.openCommentLayout = (LinearLayout) convertView.findViewById(R.id.sell_thing_list_child_open_comment);
             childViewHolder.tvName = (TextView) convertView.findViewById(R.id.sell_thing_list_child_name);
             childViewHolder.tvComment = (TextView) convertView.findViewById(R.id.sell_thing_list_child_content);
+            childViewHolder.tvOpenOrClose = (TextView) convertView.findViewById(R.id.sell_thing_list_child_open_comment_txt);
+            childViewHolder.imgOpenOrClose = (ImageView) convertView.findViewById(R.id.sell_thing_list_child_open_comment_img);
 
             convertView.setTag(childViewHolder);
         } else {
@@ -201,20 +210,43 @@ public class BusinessInfoAdapter extends BaseExpandableListAdapter{
         RespShopComment respShopComment = lists.get(groupPosition).getComments().get(childPosition);
         childViewHolder.tvName.setText(respShopComment.getUsername() + "：");
         childViewHolder.tvComment.setText(respShopComment.getCommentstext());
-        if (lists.get(groupPosition).getComments().size() > 3) {
-            if(isLastChild){
+
+        if (lists.get(groupPosition).isOpenComments()) { //展开
+            if (isLastChild) {
                 childViewHolder.openCommentLayout.setVisibility(View.VISIBLE);
+                childViewHolder.tvOpenOrClose.setText("收起评论");
+                childViewHolder.imgOpenOrClose.setImageResource(R.mipmap.close_comment);
                 childViewHolder.openCommentLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        EUtil.showToast("展开更多");
+                        lists.get(groupPosition).setOpenComments(false);
+                        notifyDataSetChanged();
                     }
                 });
+            } else {
+                childViewHolder.openCommentLayout.setVisibility(View.GONE);
             }
-
-        } else {
-            childViewHolder.openCommentLayout.setVisibility(View.GONE);
+        } else { //  不展开
+            if (lists.get(groupPosition).getComments().size() > 3) {
+                if (isLastChild) {
+                    childViewHolder.openCommentLayout.setVisibility(View.VISIBLE);
+                    childViewHolder.tvOpenOrClose.setText("展开评论");
+                    childViewHolder.imgOpenOrClose.setImageResource(R.mipmap.open_comment);
+                    childViewHolder.openCommentLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            lists.get(groupPosition).setOpenComments(true);
+                            notifyDataSetChanged();
+                        }
+                    });
+                } else {
+                    childViewHolder.openCommentLayout.setVisibility(View.GONE);
+                }
+            }else{
+                childViewHolder.openCommentLayout.setVisibility(View.GONE);
+            }
         }
+
         return convertView;
     }
 
@@ -231,7 +263,8 @@ public class BusinessInfoAdapter extends BaseExpandableListAdapter{
 
     class ChildViewHolder {
         private LinearLayout dividerLayout, openCommentLayout;
-        private TextView tvName, tvComment;
+        private TextView tvName, tvComment, tvOpenOrClose;
+        private ImageView imgOpenOrClose;
     }
 
     IApiCallback iApiCallback = new IApiCallback() {

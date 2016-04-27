@@ -68,8 +68,6 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
 
         showLoadingDialog();
 
-        CarReqUtils.checkdeviced(this,this,null,new BindDevice(),"checkdeviced",true,StringUrlUtils.geturl(new HashMapUtils().putValue("username",AppData.getInstance().getUserEntity().getUsername()).createMap()));
-
         CarReqUtils.getguard(this,this,null,new RespGuard(),"getguard",true,
                 StringUrlUtils.geturl(hashMapUtils.putValue("username",AppData.getInstance().getUserEntity().getUsername()).createMap()));
 
@@ -289,24 +287,6 @@ public boolean onKeyDown(int keyCode, KeyEvent event) {
 
             }
 
-            if(output instanceof BindDevice){
-                BindDevice device =(BindDevice)output;
-
-                if(device.getRes().equals("0")){
-
-                    RespUserInfo userInfo = AppData.getInstance().getUserEntity();
-                    userInfo.setBind(1);
-                    AppData.getInstance().saveUserEntity(userInfo);
-
-                }else{
-
-                    RespUserInfo userInfo = AppData.getInstance().getUserEntity();
-                    userInfo.setBind(2);
-                    AppData.getInstance().saveUserEntity(userInfo);
-
-                }
-            }
-
             if(output instanceof RespCut){
 
                 RespCut cut =(RespCut)output;
@@ -357,7 +337,7 @@ public boolean onKeyDown(int keyCode, KeyEvent event) {
                        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                            @Override
                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                               checkBox.setChecked(false);
+                               checkBox.setChecked(true);
                                EUtil.showToast("未绑定设备,请先绑定设备");
                            }
                        });

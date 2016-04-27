@@ -216,6 +216,8 @@ public class FindLabourListAdapter extends BaseExpandableListAdapter {
                 } else {
                     childViewHolder.openCommentLayout.setVisibility(View.GONE);
                 }
+            }else {
+                childViewHolder.openCommentLayout.setVisibility(View.GONE);
             }
         }
         return convertView;

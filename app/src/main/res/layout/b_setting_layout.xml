@@ -243,7 +243,7 @@
                     android:padding="@dimen/value_10dp">
 
                     <TextView
-                        android:layout_width="@dimen/value_80dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/value_5dp"
                         android:text="车主本人："
@@ -268,7 +268,7 @@
                     android:padding="@dimen/value_10dp">
 
                     <TextView
-                        android:layout_width="@dimen/value_80dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/value_5dp"
                         android:gravity="center"

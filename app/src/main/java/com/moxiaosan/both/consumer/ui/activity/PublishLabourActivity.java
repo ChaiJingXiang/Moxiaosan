@@ -50,8 +50,8 @@ import consumer.model.obj.RespLabour;
 
 public class PublishLabourActivity extends BaseActivity {
     private EditText etTitle, etNum, etTime, etSalary, etTechnique, etAddress;
-    private String title="";
-    private RespLabour respLabour=null;
+    private String title = "";
+    private RespLabour respLabour = null;
 
     private Spinner provinceSpinner = null;  //省级（省、直辖市）
     private Spinner citySpinner = null;     //地级市
@@ -86,11 +86,11 @@ public class PublishLabourActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish_labour);
         showActionBar(true);
-        title=getIntent().getStringExtra("title");
-        respLabour= (RespLabour) getIntent().getSerializableExtra("respLabour");
-        if (TextUtils.isEmpty(title)){
+        title = getIntent().getStringExtra("title");
+        respLabour = (RespLabour) getIntent().getSerializableExtra("respLabour");
+        if (TextUtils.isEmpty(title)) {
             setActionBarName("发布劳力");
-        }else {
+        } else {
             setActionBarName(title);
         }
         citycodeUtil = CitycodeUtil.getSingleton();
@@ -154,9 +154,9 @@ public class PublishLabourActivity extends BaseActivity {
         etTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Date date=new Date();
-                DateFormat format=new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
-                String time=format.format(date);
+                Date date = new Date();
+                DateFormat format = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
+                String time = format.format(date);
 
                 DateTimePickDialogUtil dateTimePicKDialog = new DateTimePickDialogUtil(PublishLabourActivity.this, time);
                 dateTimePicKDialog.dateTimePicKDialog(etTime);
@@ -165,7 +165,7 @@ public class PublishLabourActivity extends BaseActivity {
         etSalary = (EditText) findViewById(R.id.publish_labour_salary);
         etTechnique = (EditText) findViewById(R.id.publish_labour_technique);
         etAddress = (EditText) findViewById(R.id.publish_labour_address);
-        if (respLabour != null){
+        if (respLabour != null) {
             etTitle.setText(respLabour.getTitle());
             etNum.setText(respLabour.getNums());
             etTime.setText(respLabour.getFb_datetime());
@@ -190,6 +190,8 @@ public class PublishLabourActivity extends BaseActivity {
                                         time = format2.format(date2);
                                     } catch (ParseException e) {
                                         e.printStackTrace();
+                                        //修改劳力
+                                        time = respLabour.getFb_datetime();
                                     }
 
                                     if (respLabour != null) {  //修改 劳力
@@ -202,8 +204,8 @@ public class PublishLabourActivity extends BaseActivity {
                                         ConsumerReqUtil.labour(PublishLabourActivity.this, iApiCallback, null, new Labour(), "PublishLabourActivity", true,
                                                 StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).putValue("title", etTitle.getText().toString())
                                                         .putValue("salary", etSalary.getText().toString()).putValue("nums", etNum.getText().toString()).putValue("technique", etTechnique.getText().toString())
-                                                        .putValue("address", provinceSpinner.getSelectedItem().toString()+citySpinner.getSelectedItem().toString()+countySpinner.getSelectedItem().toString()
-                                                                +etAddress.getText().toString()).putValue("datetime", time).createMap()));
+                                                        .putValue("address", provinceSpinner.getSelectedItem().toString() + citySpinner.getSelectedItem().toString() + countySpinner.getSelectedItem().toString()
+                                                                + etAddress.getText().toString()).putValue("datetime", time).createMap()));
                                     }
                                     showLoadingDialog();
                                 } else {
@@ -307,7 +309,7 @@ public class PublishLabourActivity extends BaseActivity {
 
     // 获取城市信息
     private void getaddressinfo() {
-        JSONParser jsonParser=new JSONParser();
+        JSONParser jsonParser = new JSONParser();
         // 读取城市信息string
         String area_str = FileUtil.readAssets(this, "area.json");
         province_list = jsonParser.getJSONParserResult(area_str, "area0");
@@ -331,8 +333,8 @@ public class PublishLabourActivity extends BaseActivity {
                     finish();
                 }
             }
-            if (output instanceof Modiylabour){
-                Modiylabour modiylabour= (Modiylabour) output;
+            if (output instanceof Modiylabour) {
+                Modiylabour modiylabour = (Modiylabour) output;
                 EUtil.showToast(modiylabour.getErr());
                 if ("0".equals(modiylabour.getRes())) {
                     finish();

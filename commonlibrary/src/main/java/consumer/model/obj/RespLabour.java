@@ -17,6 +17,7 @@ public class RespLabour implements Serializable {
     private String salary;
     private String address;
     private List<RespLabourComment> comments;
+    private boolean isOpenComments = false;  //是否展开评论
     private String username;
 
     public String getTitle() {
@@ -89,5 +90,13 @@ public class RespLabour implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public boolean isOpenComments() {
+        return isOpenComments;
+    }
+
+    public void setOpenComments(boolean openComments) {
+        isOpenComments = openComments;
     }
 }

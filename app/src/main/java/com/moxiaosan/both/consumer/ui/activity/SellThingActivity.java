@@ -198,7 +198,7 @@ public class SellThingActivity extends BaseActivity implements ExpandableListVie
                         RespShopComment respShopComment = new RespShopComment();
                         respShopComment.setCommentstext(commentContent);
                         respShopComment.setUsername(AppData.getInstance().getUserEntity().getUsername());
-                        respShops.get(i).getComments().add(respShopComment);
+                        respShops.get(i).getComments().add(0,respShopComment);
                         sellThingListAdapter.refreshData(respShops);
                         break;
                     }

@@ -53,8 +53,15 @@ public class FindLabourListAdapter extends BaseExpandableListAdapter {
     @Override
     public int getChildrenCount(int groupPosition) {
         if (respLabourList.get(groupPosition) != null) {
-            return respLabourList.get(groupPosition).getComments() == null ? 0 :
-                    respLabourList.get(groupPosition).getComments().size() > 3 ? 3 : respLabourList.get(groupPosition).getComments().size();
+            if (respLabourList.get(groupPosition).getComments() != null) {
+                if (respLabourList.get(groupPosition).isOpenComments()) { //展开评论
+                    return respLabourList.get(groupPosition).getComments().size();
+                } else {
+                    return respLabourList.get(groupPosition).getComments().size() > 3 ? 3 : respLabourList.get(groupPosition).getComments().size();
+                }
+            } else {
+                return 0;
+            }
         } else {
             return 0;
         }
@@ -153,7 +160,7 @@ public class FindLabourListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         ChildViewHolder childViewHolder = null;
         if (convertView == null) {
             childViewHolder = new ChildViewHolder();
@@ -162,6 +169,8 @@ public class FindLabourListAdapter extends BaseExpandableListAdapter {
             childViewHolder.openCommentLayout = (LinearLayout) convertView.findViewById(R.id.find_labour_list_child_open_comment);
             childViewHolder.tvName = (TextView) convertView.findViewById(R.id.find_labour_list_child_name);
             childViewHolder.tvComment = (TextView) convertView.findViewById(R.id.find_labour_list_child_content);
+            childViewHolder.tvOpenOrClose = (TextView) convertView.findViewById(R.id.find_labour_list_child_open_comment_txt);
+            childViewHolder.imgOpenOrClose = (ImageView) convertView.findViewById(R.id.find_labour_list_child_open_comment_img);
 
             convertView.setTag(childViewHolder);
         } else {
@@ -169,22 +178,45 @@ public class FindLabourListAdapter extends BaseExpandableListAdapter {
         }
         if (isLastChild) {
             childViewHolder.dividerLayout.setVisibility(View.VISIBLE);
+        } else {
+            childViewHolder.dividerLayout.setVisibility(View.GONE);
         }
         RespLabourComment respLabourComment = respLabourList.get(groupPosition).getComments().get(childPosition);
         childViewHolder.tvName.setText(respLabourComment.getUsername() + "：");
         childViewHolder.tvComment.setText(respLabourComment.getContent());
-        if (respLabourList.get(groupPosition).getComments().size() > 3) {
+
+        if (respLabourList.get(groupPosition).isOpenComments()) { //展开
             if (isLastChild) {
                 childViewHolder.openCommentLayout.setVisibility(View.VISIBLE);
+                childViewHolder.tvOpenOrClose.setText("收起评论");
+                childViewHolder.imgOpenOrClose.setImageResource(R.mipmap.close_comment);
                 childViewHolder.openCommentLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        EUtil.showToast("展开更多");
+                        respLabourList.get(groupPosition).setOpenComments(false);
+                        notifyDataSetChanged();
                     }
                 });
+            } else {
+                childViewHolder.openCommentLayout.setVisibility(View.GONE);
             }
-        } else {
-            childViewHolder.openCommentLayout.setVisibility(View.GONE);
+        } else { //  不展开
+            if (respLabourList.get(groupPosition).getComments().size() > 3) {
+                if (isLastChild) {
+                    childViewHolder.openCommentLayout.setVisibility(View.VISIBLE);
+                    childViewHolder.tvOpenOrClose.setText("展开评论");
+                    childViewHolder.imgOpenOrClose.setImageResource(R.mipmap.open_comment);
+                    childViewHolder.openCommentLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            respLabourList.get(groupPosition).setOpenComments(true);
+                            notifyDataSetChanged();
+                        }
+                    });
+                } else {
+                    childViewHolder.openCommentLayout.setVisibility(View.GONE);
+                }
+            }
         }
         return convertView;
     }
@@ -202,7 +234,8 @@ public class FindLabourListAdapter extends BaseExpandableListAdapter {
 
     class ChildViewHolder {
         private LinearLayout dividerLayout, openCommentLayout;
-        private TextView tvName, tvComment;
+        private TextView tvName, tvComment, tvOpenOrClose;
+        private ImageView imgOpenOrClose;
     }
 
     IApiCallback iApiCallback = new IApiCallback() {

@@ -1,10 +1,14 @@
 package com.moxiaosan.both.common.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 
 import com.moxiaosan.both.R;
 import com.moxiaosan.both.common.ui.adapter.MessageListAdapter;
+import com.moxiaosan.both.consumer.ui.activity.FindLabourActivity;
+import com.moxiaosan.both.consumer.ui.activity.SellThingActivity;
 import com.utils.api.IApiCallback;
 import com.utils.common.AppData;
 import com.utils.common.EUtil;
@@ -98,6 +102,17 @@ public class MessagesActivity extends BaseActivity implements IXListViewRefreshL
         messageListView.setOverScrollMode(View.OVER_SCROLL_NEVER);
         messageListView.setPullRefreshEnable(this); //刷新
         messageListView.startRefresh();
+        messageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int pos = position - 1;
+                if (resMynewsList.get(pos).getType().equals("1")) {
+                    startActivity(new Intent(MessagesActivity.this, SellThingActivity.class));
+                } else if (resMynewsList.get(pos).getType().equals("11")) {
+                    startActivity(new Intent(MessagesActivity.this, FindLabourActivity.class));
+                }
+            }
+        });
     }
 
     @Override

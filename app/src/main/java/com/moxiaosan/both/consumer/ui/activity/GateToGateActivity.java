@@ -460,11 +460,18 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
                 if (fromPoiInfo == null) {
                     fromPoiInfo = new MyPoiInfo();
                 }
-                fromPoiInfo.setAddress(location.getAddress().city+location.getAddress().district+location.getAddress().street+location.getAddress().streetNumber+"号");
+                String address = location.getAddress().city + location.getAddress().district + location.getAddress().street;
+                if (!TextUtils.isEmpty(location.getAddress().streetNumber)) {
+                    address=address+location.getAddress().streetNumber+"号";
+                }
+                if (!TextUtils.isEmpty(location.getSemaAptag())){
+                    address=address+"("+location.getSemaAptag()+")";
+                }
+                fromPoiInfo.setAddress(address);
                 fromPoiInfo.setLatitude(location.getLatitude());
                 fromPoiInfo.setLongitude(location.getLongitude());
                 fromCity = location.getCity();
-                tvFromAddress.setText(location.getAddress().city+location.getAddress().district+location.getAddress().street+location.getAddress().streetNumber+"号");
+                tvFromAddress.setText(address);
 
                 if (lastLocation != null) {
                     if (lastLocation.getLatitude() == location.getLatitude() && lastLocation.getLongitude() == location.getLongitude()) {

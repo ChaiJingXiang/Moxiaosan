@@ -73,6 +73,7 @@ public class WarningActivity extends BaseActivity implements IApiCallback,Adapte
                 if(alarmList.getRes().equals("0")){
 
                     if(input.equals("onFirst")){
+                        lists =alarmList.getData();
 
                         if(lists.size()==0){
 
@@ -80,7 +81,7 @@ public class WarningActivity extends BaseActivity implements IApiCallback,Adapte
 
                         }else{
 
-                            lists =alarmList.getData();
+
                             adapter =new WarningListAdapter(this,lists);
 
                             listView.setAdapter(adapter);

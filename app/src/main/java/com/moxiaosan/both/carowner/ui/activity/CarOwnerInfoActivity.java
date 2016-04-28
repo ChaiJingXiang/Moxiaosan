@@ -356,7 +356,7 @@ public class CarOwnerInfoActivity extends BaseActivity implements View.OnClickLi
                         tvName.setText(userinfo.getData().getNickname());
                         tvPhone.setText(userinfo.getData().getContact());
                         tvAddress.setText(userinfo.getData().getAddress());
-                        tvKim.setText(userinfo.getData().getMileage());
+                        tvKim.setText(userinfo.getData().getMileage()+"km");
                         tvCarType.setText(userinfo.getData().getCarbrand());
 
                         carImg =userinfo.getData().getCarimg();

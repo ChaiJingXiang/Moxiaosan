@@ -32,15 +32,15 @@ public class UseHelpActivity extends BaseActivity implements View.OnClickListene
         switch (v.getId()){
             case R.id.user_help_rules:
                 intent.putExtra("title","法律条款");
-                intent.putExtra("webUrl","https://www.baidu.com");
+                intent.putExtra("webUrl","http://www.moxiaosan.com");
                 break;
             case R.id.user_help_service:
                 intent.putExtra("title","客服信息");
-                intent.putExtra("webUrl","https://www.baidu.com");
+                intent.putExtra("webUrl","http://www.moxiaosan.com");
                 break;
             case R.id.user_help_question:
                 intent.putExtra("title","常见问题");
-                intent.putExtra("webUrl","https://www.baidu.com");
+                intent.putExtra("webUrl","http://www.moxiaosan.com");
                 break;
         }
         startActivity(intent);

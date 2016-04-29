@@ -41,7 +41,6 @@ public class CardMoneyActivity extends BaseActivity implements IApiCallback{
             @Override
             public void onClick(View v) {
 
-
                 if(!TextUtils.isEmpty(etCardType.getText().toString())){
                     if(!TextUtils.isEmpty(etCardNum.getText().toString())){
                         if(!TextUtils.isEmpty(etNmae.getText().toString())){

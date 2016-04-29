@@ -99,7 +99,6 @@ public class CarOwnerInfoActivity extends BaseActivity implements View.OnClickLi
         findViewById(R.id.person_info_password_modify_layout).setOnClickListener(this);
         findViewById(R.id.person_info_address_layout).setOnClickListener(this);
         findViewById(R.id.person_info_car_type_layout).setOnClickListener(this);
-        findViewById(R.id.person_info_baoyang_km_layout).setOnClickListener(this);
         findViewById(R.id.person_info_car_photo_layout).setOnClickListener(this);
         findViewById(R.id.close).setOnClickListener(this);
 
@@ -110,7 +109,6 @@ public class CarOwnerInfoActivity extends BaseActivity implements View.OnClickLi
         tvName = (TextView) findViewById(R.id.person_info_nick_modify_name_txt);
         tvPhone = (TextView) findViewById(R.id.person_info_nick_modify_phone_txt);
 
-        tvKim = (TextView) findViewById(R.id.person_info_car_baoyang_km_txt);
         tvAddress = (TextView) findViewById(R.id.person_info_address_txt);
         tvCarType = (TextView) findViewById(R.id.person_info_car_type_name_txt);
 
@@ -164,10 +162,6 @@ public class CarOwnerInfoActivity extends BaseActivity implements View.OnClickLi
 
             case R.id.person_info_car_type_layout:
                 startActivity(new Intent(CarOwnerInfoActivity.this, CarTypeActivity.class));
-                break;
-
-            case R.id.person_info_baoyang_km_layout:
-                startActivity(new Intent(CarOwnerInfoActivity.this, BaoYangActivity.class));
                 break;
 
 
@@ -356,7 +350,6 @@ public class CarOwnerInfoActivity extends BaseActivity implements View.OnClickLi
                         tvName.setText(userinfo.getData().getNickname());
                         tvPhone.setText(userinfo.getData().getContact());
                         tvAddress.setText(userinfo.getData().getAddress());
-                        tvKim.setText(userinfo.getData().getMileage()+"km");
                         tvCarType.setText(userinfo.getData().getCarbrand());
 
                         carImg =userinfo.getData().getCarimg();

@@ -7,9 +7,10 @@ import java.io.Serializable;
  */
 public class ResMynews implements Serializable {
     private static final long serialVersionUID = -6901028208508449999L;
-    private int Id;
+    private String Id;
     private String content;
     private String datetime;
+    private String type;
 
     public String getContent() {
         return content;
@@ -27,11 +28,19 @@ public class ResMynews implements Serializable {
         this.datetime = datetime;
     }
 
-    public int getId() {
+    public String getId() {
         return Id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         Id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

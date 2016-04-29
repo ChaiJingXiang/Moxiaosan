@@ -197,6 +197,20 @@
             android:name=".carowner.ui.activity.FindLocationActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".common.ui.activity.WeChatMoneyActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".common.ui.activity.CardMoneyActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".common.ui.activity.WithdrawHistoryActivity"
+            android:screenOrientation="portrait" />
+
+
+
         //扫描二维码
         <activity
             android:name=".zxing.MipcaActivityCapture"

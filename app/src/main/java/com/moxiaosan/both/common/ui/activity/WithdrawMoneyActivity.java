@@ -1,10 +1,12 @@
 package com.moxiaosan.both.common.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 
 import com.moxiaosan.both.R;
 import com.utils.common.EUtil;
@@ -14,9 +16,8 @@ import com.utils.ui.base.BaseActivity;
  * 提现界面
  */
 public class WithdrawMoneyActivity extends BaseActivity implements View.OnClickListener {
-    private EditText etMoney;
-    private RadioGroup radioGroup;
-    private int chooseType = 1; //默认微信
+
+    private RelativeLayout wechat,zhifubao,card;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,23 +25,18 @@ public class WithdrawMoneyActivity extends BaseActivity implements View.OnClickL
         setContentView(R.layout.activity_withdraw_money);
         showActionBar(true);
         setActionBarName("提现");
-        initView();
-    }
 
-    private void initView() {
-        etMoney = (EditText) findViewById(R.id.withdraw_money_num);
-        radioGroup = (RadioGroup) findViewById(R.id.withdraw_money_radiogroup);
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        findViewById(R.id.wechat_layout).setOnClickListener(this);
+        findViewById(R.id.zhifubao_layout).setOnClickListener(this);
+        findViewById(R.id.card_layout).setOnClickListener(this);
+
+        getActionBarRightTXT("提现记录").setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.withdraw_money_radiobtn_weixin) {  //微信
-                    chooseType = 1;
-                } else if (checkedId == R.id.withdraw_money_radiobtn_zhifubao){  //支付宝
-                    chooseType = 2;
-                }
+            public void onClick(View v) {
+                startActivity(new Intent(WithdrawMoneyActivity.this,WithdrawHistoryActivity.class));
             }
         });
-        findViewById(R.id.with_draw_money_ensure).setOnClickListener(this);
+
     }
 
     @Override
@@ -51,16 +47,23 @@ public class WithdrawMoneyActivity extends BaseActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.with_draw_money_ensure:
-                if (!TextUtils.isEmpty(etMoney.getText().toString())){
+            case R.id.wechat_layout:
 
-
-                }else {
-                    EUtil.showToast("提现金额不能为空");
-                }
+                startActivity(new Intent(this,WeChatMoneyActivity.class).putExtra("type",1));
 
                 break;
-        }
-    }
+            case R.id.zhifubao_layout:
 
+                startActivity(new Intent(this,WeChatMoneyActivity.class).putExtra("type",2));
+
+                break;
+            case R.id.card_layout:
+
+                startActivity(new Intent(this,CardMoneyActivity.class));
+
+                break;
+
+        }
+
+    }
 }

@@ -301,6 +301,96 @@ public class UserReqUtil extends ReqBase {
         }
     }
 
+
+    /**
+     * @des 88、	申请提现(微信支付宝)
+     * @param context
+     * @param callback
+     * @param handler
+     * @param modelBase
+     * @param input
+     * @param isNetWork 当需要获取网络数据是的时候发送true,当只需要获取缓存数据的时候放发送
+     * @return 如果是需要换成的， 返回ModelBaseCache对象，否则返回null；如果当前没缓存数据， 也返回null
+     */
+    public static ModelBaseCache cashapp(Context context, IApiCallback callback,
+                                        Handler handler, ModelBase modelBase, Object input, boolean isNetWork, String str) {
+
+        String requestStr = "";
+        String url = null;
+
+        try{
+            url = getFullUrl("cashapp.php?"+str);
+
+            return doExecute(context, callback, modelBase,
+                    url, requestStr, handler, input,isNetWork);
+
+        } catch (Exception e) {
+            Log.d(TAG, e.getMessage());
+            return null;
+        }
+    }
+
+
+    /**
+     * @des 89、	申请提现(银行)
+
+     * @param context
+     * @param callback
+     * @param handler
+     * @param modelBase
+     * @param input
+     * @param isNetWork 当需要获取网络数据是的时候发送true,当只需要获取缓存数据的时候放发送
+     * @return 如果是需要换成的， 返回ModelBaseCache对象，否则返回null；如果当前没缓存数据， 也返回null
+     */
+    public static ModelBaseCache cashappbank(Context context, IApiCallback callback,
+                                        Handler handler, ModelBase modelBase, Object input, boolean isNetWork, String str) {
+
+        String requestStr = "";
+        String url = null;
+
+        try{
+            url = getFullUrl("cashappbank.php?"+str);
+
+            return doExecute(context, callback, modelBase,
+                    url, requestStr, handler, input,isNetWork);
+
+        } catch (Exception e) {
+            Log.d(TAG, e.getMessage());
+            return null;
+        }
+    }
+
+
+    /**
+     * @des 90、	申请提现记录
+     * @param context
+     * @param callback
+     * @param handler
+     * @param modelBase
+     * @param input
+     * @param isNetWork 当需要获取网络数据是的时候发送true,当只需要获取缓存数据的时候放发送
+     * @return 如果是需要换成的， 返回ModelBaseCache对象，否则返回null；如果当前没缓存数据， 也返回null
+     */
+    public static ModelBaseCache cashapprec(Context context, IApiCallback callback,
+                                        Handler handler, ModelBase modelBase, Object input, boolean isNetWork, String str) {
+
+        String requestStr = "";
+        String url = null;
+
+        try{
+            url = getFullUrl("cashapprec.php?"+str);
+
+            return doExecute(context, callback, modelBase,
+                    url, requestStr, handler, input,isNetWork);
+
+        } catch (Exception e) {
+            Log.d(TAG, e.getMessage());
+            return null;
+        }
+    }
+
+
+
     private static String getFullUrl(String method) {
         return EAPIConsts.getUserUrl() + method;
     }

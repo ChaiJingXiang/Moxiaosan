@@ -56,7 +56,7 @@ public class EHttpAgent {
     /**
      * 检查当前网络状态是否可用
      */
-    private static boolean isAvailable(Context context) {
+    public static boolean isAvailable(Context context) {
         final ConnectivityManager cwjManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cwjManager != null) {
             final NetworkInfo[] info = cwjManager.getAllNetworkInfo();

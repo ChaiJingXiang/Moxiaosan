@@ -2,18 +2,18 @@ package com.moxiaosan.both.common.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
-import com.baidu.mapapi.map.Text;
 import com.moxiaosan.both.R;
 import com.moxiaosan.both.carowner.ui.activity.BusinessMainActivity;
 import com.moxiaosan.both.carowner.ui.activity.GPSSafeCenterActivity;
 import com.moxiaosan.both.consumer.ui.activity.ConsumerMainActivity;
 import com.utils.api.IApiCallback;
 import com.utils.common.AppData;
+import com.utils.common.EUtil;
+import com.utils.http.EHttpAgent;
 import com.utils.ui.base.BaseActivity;
 
 import consumer.HashMapUtils;
@@ -31,6 +31,9 @@ public class SplashActivity extends BaseActivity implements IApiCallback{
         setContentView(view);
 
         if(AppData.getInstance().getUserEntity() != null){
+            if (!EHttpAgent.isAvailable(this)){
+                EUtil.showLongToast("请开启网络后重启进入！");
+            }
             CarReqUtils.checkdeviced(this,this,null,new BindDevice(),"checkdeviced",true, StringUrlUtils.geturl(new HashMapUtils().putValue("username",AppData.getInstance().getUserEntity().getUsername()).createMap()));
 
         }else {

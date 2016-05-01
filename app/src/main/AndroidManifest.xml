@@ -183,9 +183,6 @@
             android:name=".carowner.ui.activity.GuiJiActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".carowner.ui.activity.BaoYangActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".carowner.ui.activity.WarningActivity"
             android:screenOrientation="portrait" />
 

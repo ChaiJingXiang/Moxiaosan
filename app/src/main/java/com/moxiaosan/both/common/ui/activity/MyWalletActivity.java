@@ -33,7 +33,6 @@ public class MyWalletActivity extends BaseActivity implements View.OnClickListen
     private TextView tvLeave;
     private int userType = 0;  //用户类型  调用不同的接口
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +50,15 @@ public class MyWalletActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void initView() {
+        TextView tvWithdarwHistory=getActionBarRightTXT("提现记录");
+        tvWithdarwHistory.setTextColor(getResources().getColor(R.color.txt_white));
+        tvWithdarwHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MyWalletActivity.this,WithdrawHistoryActivity.class));
+            }
+        });
+
         tvLeave = (TextView) findViewById(R.id.my_wallet_leave_money_txt);
         walletListView = (XListView) findViewById(R.id.my_wallet_listview);
         walletListAdapter = new WalletListAdapter(this, respMybalanceList);

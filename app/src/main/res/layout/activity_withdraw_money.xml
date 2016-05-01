@@ -111,7 +111,7 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/card_photo"
             android:layout_marginLeft="20dp"
-            android:text="提现到支付宝"
+            android:text="提现到银行卡"
             android:textSize="@dimen/value_16sp"
             android:textColor="@color/txt_333333" />
     </RelativeLayout>

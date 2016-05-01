@@ -45,7 +45,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/withdraw_money_weixin" />
+                    android:src="@mipmap/wechat" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -65,7 +65,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/withdraw_money_zhifubao" />
+                    android:src="@mipmap/zhifubao" />
 
                 <TextView
                     android:layout_width="wrap_content"

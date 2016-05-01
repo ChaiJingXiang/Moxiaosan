@@ -11,7 +11,6 @@ import com.moxiaosan.both.R;
 
 import java.util.List;
 
-import consumer.model.obj.RespMybalance;
 import consumer.model.obj.WithdrawObj;
 
 /**
@@ -25,7 +24,6 @@ public class WithdrawHisListAdapter extends BaseAdapter {
         this.mContext = mContext;
         this.lists =lists;
     }
-
 
     @Override
     public int getCount() {
@@ -59,17 +57,12 @@ public class WithdrawHisListAdapter extends BaseAdapter {
             viewHolder= (ViewHolder) convertView.getTag();
 
         }
-
-
         final WithdrawObj withdrawObj =lists.get(position);
-
         viewHolder.tvTime.setText(withdrawObj.getDatetime());
         viewHolder.tvType.setText(withdrawObj.getType());
         viewHolder.tvNum.setText(withdrawObj.getAccount());
-        viewHolder.tvMoney.setText(withdrawObj.getMoney());
+        viewHolder.tvMoney.setText("¥"+withdrawObj.getMoney());
         viewHolder.tvStatus.setText(withdrawObj.getStatus());
-
-
         return convertView;
     }
 

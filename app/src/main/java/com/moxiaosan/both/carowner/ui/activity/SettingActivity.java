@@ -221,7 +221,9 @@ public class SettingActivity extends BaseActivity implements IApiCallback, View.
             super.onCreate(savedInstanceState);
             setContentView(R.layout.dialog_device_setting);
             LinearLayout linearLayout = (LinearLayout) findViewById(R.id.device_setting_main_layout);
+            TextView tvTitle= (TextView) findViewById(R.id.device_setting_title);
             if (index == 1) { //熄火后取电
+                tvTitle.setText("电瓶取电时长");
                 view = LayoutInflater.from(SettingActivity.this).inflate(R.layout.shutdown_time, null);
                 final EditText etTime = (EditText) view.findViewById(R.id.shut_down_time_edit);
                 if (!TextUtils.isEmpty(status.getData().getHour())) {
@@ -237,6 +239,7 @@ public class SettingActivity extends BaseActivity implements IApiCallback, View.
                     }
                 });
             } else if (index == 2) { //报警电话
+                tvTitle.setText("报警电话设置");
                 view = LayoutInflater.from(SettingActivity.this).inflate(R.layout.alarm_phone, null);
                 final EditText etOwnPhone, etfamilyPhoe, etFriendsPhone;
                 etOwnPhone = (EditText) view.findViewById(R.id.alarm_phone_car_owner_phone);
@@ -257,6 +260,7 @@ public class SettingActivity extends BaseActivity implements IApiCallback, View.
                     }
                 });
             } else if (index == 3) { //电子围栏
+                tvTitle.setText("电子围栏设置");
                 view = LayoutInflater.from(SettingActivity.this).inflate(R.layout.dianzi_weilan, null);
                 final EditText etLong = (EditText) view.findViewById(R.id.dianzi_weilan_edit);
                 etLong.setText(status.getData().getCircle());
@@ -270,6 +274,7 @@ public class SettingActivity extends BaseActivity implements IApiCallback, View.
                     }
                 });
             } else if (index == 4) { // 保养里程
+                tvTitle.setText("保养里程设置");
                 view = LayoutInflater.from(SettingActivity.this).inflate(R.layout.take_care_mileage, null);
                 final EditText etMileage= (EditText) view.findViewById(R.id.take_care_mileage_edit);
                 etMileage.setText(status.getData().getMlieage());

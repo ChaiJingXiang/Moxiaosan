@@ -2,21 +2,17 @@ package com.moxiaosan.both.carowner.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.LinearLayout;
 
-import com.moxiaosan.both.APP;
 import com.moxiaosan.both.R;
 import com.moxiaosan.both.utils.AvatarUploader;
 import com.moxiaosan.both.utils.FileUploader;
@@ -44,8 +40,8 @@ public class CarPhotoActivity extends BaseActivity implements FileUploader.OnFil
     private final static int UPLOAD_OK = 1;
     private final static int UPLOAD_FAIL = 2;
     private ImageView imgCar;
+    private LinearLayout layoutShowCar;
     private String carImg;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,17 +52,17 @@ public class CarPhotoActivity extends BaseActivity implements FileUploader.OnFil
         showActionBar(true);
         setActionBarName("机车照片");
 
-        Intent intent=getIntent();
-        carImg =intent.getStringExtra("carImg");
+        Intent intent = getIntent();
+        carImg = intent.getStringExtra("carImg");
 
         imageView = (ImageView) findViewById(R.id.photoId);
 
-        imgCar =(ImageView)findViewById(R.id.showCarPhotoId);
+        imgCar = (ImageView) findViewById(R.id.showCarPhotoId);
+        layoutShowCar = (LinearLayout) findViewById(R.id.show_CarPhoto_layout);
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 startActivityForResult(new Intent(CarPhotoActivity.this, PictureGalleryActivity.class).putExtra("maxNum", 1), 111);
 
             }
@@ -80,13 +76,12 @@ public class CarPhotoActivity extends BaseActivity implements FileUploader.OnFil
         // 文件上传对象
         mUploader = new AvatarUploader(this);
 
-        if(!TextUtils.isEmpty(AppData.getInstance().getUserEntity().getCarimg())){
-            Log.i("info-=-=-=",AppData.getInstance().getUserEntity().getCarimg());
-            ImageLoader.getInstance().displayImage(AppData.getInstance().getUserEntity().getCarimg(),imgCar);
-        }else{
-            if(!TextUtils.isEmpty(carImg)){
-                ImageLoader.getInstance().displayImage(carImg,imgCar);
-            }
+        if (!TextUtils.isEmpty(AppData.getInstance().getUserEntity().getCarimg())) {
+            ImageLoader.getInstance().displayImage(AppData.getInstance().getUserEntity().getCarimg(), imgCar);
+        } else if (!TextUtils.isEmpty(carImg)) {
+            ImageLoader.getInstance().displayImage(carImg, imgCar);
+        } else {
+            layoutShowCar.setVisibility(View.GONE);
         }
     }
 
@@ -111,7 +106,6 @@ public class CarPhotoActivity extends BaseActivity implements FileUploader.OnFil
         }
     }
 
-
     @Override
     protected String getUrl(String nameUrl) {
         return null;
@@ -127,20 +121,13 @@ public class CarPhotoActivity extends BaseActivity implements FileUploader.OnFil
 
                 case UPLOAD_OK:
                     dismissLoadingDialog();
-//        EUtil.showToast("上传成功");
-
-                    Toast.makeText(CarPhotoActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
-
+                    EUtil.showToast("上传成功");
                     RespUserInfo userInfo = AppData.getInstance().getUserEntity();
                     userInfo.setCarimg(mFileUrl);
                     AppData.getInstance().saveUserEntity(userInfo);
-
                     break;
-
                 case UPLOAD_FAIL:
-
-                    Toast.makeText(CarPhotoActivity.this, "上传失败，稍后重试", Toast.LENGTH_SHORT).show();
-
+                    EUtil.showToast("上传失败，稍后重试");
                     break;
             }
         }
@@ -169,9 +156,7 @@ public class CarPhotoActivity extends BaseActivity implements FileUploader.OnFil
     @Override
     public void onSuccess(String fileUrl) {
         mFileUrl = fileUrl;
-
         handler.sendEmptyMessage(UPLOAD_OK);
-
     }
 
     @Override
@@ -179,5 +164,4 @@ public class CarPhotoActivity extends BaseActivity implements FileUploader.OnFil
         handler.sendEmptyMessage(UPLOAD_FAIL);
 
     }
-
 }

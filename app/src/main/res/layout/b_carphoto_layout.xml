@@ -1,44 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F2F1F1"
     android:gravity="center"
-    >
+    android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/show_CarPhoto_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="机车照片"
-        android:textColor="@color/txt_333333"
-        android:textSize="@dimen/value_14sp"
-        android:layout_marginBottom="@dimen/value_5dp"
-        />
-
-    <ImageView
-        android:id="@+id/showCarPhotoId"
-        android:layout_width="@dimen/value_120dp"
-        android:layout_height="@dimen/value_80dp"
-        android:src="@mipmap/add_pic"
-        android:scaleType="fitXY"
+        android:gravity="center"
         android:layout_marginBottom="40dp"
-        />
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/value_5dp"
+            android:text="机车照片"
+            android:textColor="@color/txt_333333"
+            android:textSize="@dimen/value_14sp" />
+
+        <ImageView
+            android:id="@+id/showCarPhotoId"
+            android:layout_width="@dimen/value_120dp"
+            android:layout_height="@dimen/value_80dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/add_pic" />
+    </LinearLayout>
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/value_5dp"
         android:text="上传机车照片"
         android:textColor="@color/txt_333333"
-        android:textSize="@dimen/value_14sp"
-        android:layout_marginBottom="@dimen/value_5dp"
-        />
+        android:textSize="@dimen/value_14sp" />
 
     <ImageView
         android:id="@+id/photoId"
         android:layout_width="@dimen/value_120dp"
         android:layout_height="@dimen/value_80dp"
-        android:src="@mipmap/add_pic"
         android:scaleType="fitXY"
-        />
+        android:src="@mipmap/add_pic" />
 </LinearLayout>

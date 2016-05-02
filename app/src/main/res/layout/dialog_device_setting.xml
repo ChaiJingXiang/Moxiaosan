@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/txt_white"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#e6e7e8"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/value_5dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/set_setting" />
+
+        <TextView
+            android:id="@+id/device_setting_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/value_5dp"
+            android:text="电瓶取电时长"
+            android:textColor="@color/txt_666666" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/device_setting_main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"></LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/value_20dp"
+        android:layout_marginBottom="@dimen/value_20dp"
+        >
+        <TextView
+            android:id="@+id/device_setting_dialog_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="取消"
+            android:gravity="center"
+            android:textColor="@color/txt_666666"
+            android:background="@mipmap/yisongda_pic"
+            />
+        <TextView
+            android:id="@+id/device_setting_dialog_ensure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="确定"
+            android:gravity="center"
+            android:textColor="@color/txt_white"
+            android:background="@mipmap/yiquhuo_pic"
+            android:layout_marginLeft="@dimen/value_10dp"
+            />
+    </LinearLayout>
+</LinearLayout>

@@ -1033,6 +1033,114 @@ public class CarReqUtils extends ReqBase {
         }
     }
 
+
+    /**
+     * @des 72、	设置灵敏度
+     * @param context
+     * @param callback
+     * @param handler
+     * @param modelBase
+     * @param input
+     * @param isNetWork 当需要获取网络数据是的时候发送true,当只需要获取缓存数据的时候放发送
+     * @return 如果是需要换成的， 返回ModelBaseCache对象，否则返回null；如果当前没缓存数据， 也返回null
+     */
+
+    public static ModelBaseCache vbsen(Context context, IApiCallback callback,
+                                              Handler handler, ModelBase modelBase, Object input, boolean isNetWork, String str) {
+        String requestStr = "";
+        String url = null;
+        try{
+            url = getFullUrl("vbsen.php?"+str);
+
+            return doExecute(context, callback, modelBase,
+                    url, requestStr, handler, input,isNetWork);
+
+        } catch (Exception e) {
+            Log.d(TAG, e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * @des   73、	设置SOS号码
+     * @param context
+     * @param callback
+     * @param handler
+     * @param modelBase
+     * @param input
+     * @param isNetWork 当需要获取网络数据是的时候发送true,当只需要获取缓存数据的时候放发送
+     * @return 如果是需要换成的， 返回ModelBaseCache对象，否则返回null；如果当前没缓存数据， 也返回null
+     */
+
+    public static ModelBaseCache sos(Context context, IApiCallback callback,
+                                       Handler handler, ModelBase modelBase, Object input, boolean isNetWork, String str) {
+        String requestStr = "";
+        String url = null;
+        try{
+            url = getFullUrl("sos.php?"+str);
+
+            return doExecute(context, callback, modelBase,
+                    url, requestStr, handler, input,isNetWork);
+
+        } catch (Exception e) {
+            Log.d(TAG, e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * @des   74、	设置取电
+     * @param context
+     * @param callback
+     * @param handler
+     * @param modelBase
+     * @param input
+     * @param isNetWork 当需要获取网络数据是的时候发送true,当只需要获取缓存数据的时候放发送
+     * @return 如果是需要换成的， 返回ModelBaseCache对象，否则返回null；如果当前没缓存数据， 也返回null
+     */
+
+    public static ModelBaseCache power(Context context, IApiCallback callback,
+                                     Handler handler, ModelBase modelBase, Object input, boolean isNetWork, String str) {
+        String requestStr = "";
+        String url = null;
+        try{
+            url = getFullUrl("power.php?"+str);
+
+            return doExecute(context, callback, modelBase,
+                    url, requestStr, handler, input,isNetWork);
+
+        } catch (Exception e) {
+            Log.d(TAG, e.getMessage());
+            return null;
+        }
+    }
+    /**
+     * @des   77、	电子围栏
+     * @param context
+     * @param callback
+     * @param handler
+     * @param modelBase
+     * @param input
+     * @param isNetWork 当需要获取网络数据是的时候发送true,当只需要获取缓存数据的时候放发送
+     * @return 如果是需要换成的， 返回ModelBaseCache对象，否则返回null；如果当前没缓存数据， 也返回null
+     */
+
+    public static ModelBaseCache circle(Context context, IApiCallback callback,
+                                       Handler handler, ModelBase modelBase, Object input, boolean isNetWork, String str) {
+        String requestStr = "";
+        String url = null;
+        try{
+            url = getFullUrl("circle.php?"+str);
+
+            return doExecute(context, callback, modelBase,
+                    url, requestStr, handler, input,isNetWork);
+
+        } catch (Exception e) {
+            Log.d(TAG, e.getMessage());
+            return null;
+        }
+    }
+
     private static String getFullUrl(String method) {
         return EAPIConsts.getUserUrl() + method;
     }

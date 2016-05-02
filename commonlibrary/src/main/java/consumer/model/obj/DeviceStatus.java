@@ -8,13 +8,14 @@ public class DeviceStatus  {
 
     private String guard;
     private String cut;
-    private String vbsen;
+    private String vbsen; //灵敏度
     private String sos1;
     private String sos2;
     private String sos3;
     private String type;
-    private String circle;
+    private String circle; //电子围栏
     private String hour;
+    private String mlieage; //保养里程
 
     public String getGuard() {
         return guard;
@@ -88,18 +89,27 @@ public class DeviceStatus  {
         this.hour = hour;
     }
 
+    public String getMlieage() {
+        return mlieage;
+    }
+
+    public void setMlieage(String mlieage) {
+        this.mlieage = mlieage;
+    }
+
     @Override
     public String toString() {
         return "DeviceStatus{" +
-                "guard='" + guard + '\'' +
+                "circle='" + circle + '\'' +
+                ", guard='" + guard + '\'' +
                 ", cut='" + cut + '\'' +
                 ", vbsen='" + vbsen + '\'' +
                 ", sos1='" + sos1 + '\'' +
                 ", sos2='" + sos2 + '\'' +
                 ", sos3='" + sos3 + '\'' +
                 ", type='" + type + '\'' +
-                ", circle='" + circle + '\'' +
                 ", hour='" + hour + '\'' +
+                ", mlieage='" + mlieage + '\'' +
                 '}';
     }
 }

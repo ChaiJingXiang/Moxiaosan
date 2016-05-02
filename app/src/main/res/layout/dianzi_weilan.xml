@@ -19,7 +19,7 @@
             />
         <EditText
             android:id="@+id/dianzi_weilan_edit"
-            android:layout_width="@dimen/value_80dp"
+            android:layout_width="@dimen/value_100dp"
             android:layout_height="wrap_content"
             android:numeric="integer"
             android:gravity="center"

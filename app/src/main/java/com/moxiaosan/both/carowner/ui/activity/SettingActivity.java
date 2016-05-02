@@ -226,6 +226,7 @@ public class SettingActivity extends BaseActivity implements IApiCallback, View.
                 final EditText etTime = (EditText) view.findViewById(R.id.shut_down_time_edit);
                 if (!TextUtils.isEmpty(status.getData().getHour())) {
                     etTime.setText(status.getData().getHour());
+                    etTime.setSelection(etTime.getText().length());
                 }
                 findViewById(R.id.device_setting_dialog_ensure).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -241,7 +242,8 @@ public class SettingActivity extends BaseActivity implements IApiCallback, View.
                 etOwnPhone = (EditText) view.findViewById(R.id.alarm_phone_car_owner_phone);
                 etfamilyPhoe = (EditText) view.findViewById(R.id.alarm_phone_family_phone);
                 etFriendsPhone = (EditText) view.findViewById(R.id.alarm_phone_car_friend_phone);
-                etOwnPhone.setText(status.getData().getSos1());
+                etOwnPhone.setText(AppData.getInstance().getUserEntity().getUsername());
+                etOwnPhone.setSelection(etOwnPhone.getText().length());
                 etfamilyPhoe.setText(status.getData().getSos2());
                 etFriendsPhone.setText(status.getData().getSos3());
                 findViewById(R.id.device_setting_dialog_ensure).setOnClickListener(new View.OnClickListener() {
@@ -258,6 +260,7 @@ public class SettingActivity extends BaseActivity implements IApiCallback, View.
                 view = LayoutInflater.from(SettingActivity.this).inflate(R.layout.dianzi_weilan, null);
                 final EditText etLong = (EditText) view.findViewById(R.id.dianzi_weilan_edit);
                 etLong.setText(status.getData().getCircle());
+                etLong.setSelection(etLong.getText().length());
                 findViewById(R.id.device_setting_dialog_ensure).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -270,6 +273,7 @@ public class SettingActivity extends BaseActivity implements IApiCallback, View.
                 view = LayoutInflater.from(SettingActivity.this).inflate(R.layout.take_care_mileage, null);
                 final EditText etMileage= (EditText) view.findViewById(R.id.take_care_mileage_edit);
                 etMileage.setText(status.getData().getMlieage());
+                etMileage.setSelection(etMileage.getText().length());
                 findViewById(R.id.device_setting_dialog_ensure).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

@@ -157,7 +157,7 @@
         <activity
             android:name=".carowner.ui.activity.SettingActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".carowner.ui.activity.AddressActivity"
             android:screenOrientation="portrait" />

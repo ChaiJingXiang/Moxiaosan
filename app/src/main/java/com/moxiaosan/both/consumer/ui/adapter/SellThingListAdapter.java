@@ -48,7 +48,7 @@ public class SellThingListAdapter extends BaseExpandableListAdapter {
             .showImageForEmptyUri(R.mipmap.sell_thing_list_default_pic)
             .bitmapConfig(Bitmap.Config.RGB_565)
             .cacheInMemory(true)
-//            .cacheOnDisk(true)
+            .cacheOnDisc(true)
             .considerExifParams(true)
             .build();
 
@@ -199,7 +199,6 @@ public class SellThingListAdapter extends BaseExpandableListAdapter {
                     imageLoader.displayImage(pics[0], groupViewHolder.imgPic1, options);
                 }
             }
-
 
             if (pics.length > 1) {
                 groupViewHolder.imgPic1.setVisibility(View.VISIBLE);

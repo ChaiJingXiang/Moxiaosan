@@ -103,7 +103,7 @@ public class LeftFragment extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(getActivity(), MyAppraiseActivity.class));
                 break;
             case R.id.left_frag_menu_layout2:
-                startActivity(new Intent(getActivity(), MyWalletActivity.class).putExtra("userType",AppData.getInstance().getUserEntity().getType()));
+                startActivity(new Intent(getActivity(), MyWalletActivity.class).putExtra("userType",AppData.getInstance().getUserEntity().getUserType()));
                 break;
             case R.id.left_frag_menu_layout3:
                 startActivity(new Intent(getActivity(), UseHelpActivity.class));

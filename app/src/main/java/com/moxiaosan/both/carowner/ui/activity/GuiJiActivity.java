@@ -264,6 +264,61 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
 
                         generateData();
 
+                        if(points.size()!=0){
+                            mBaiduMap.clear();
+
+                            points.clear();
+
+                            Log.i("info===---",points.size()+"");
+
+                        }
+
+                        for(int i=0;i<list.size();i++){
+                            points.add(new LatLng(list.get(i).getLat(),list.get(i).getLng()));
+
+                        }
+
+                        Log.i("info===---",points.size()+"");
+
+                        if(list.size()>30){
+                            ll1 =new LatLng(points.get(1).latitude,points.get(1).longitude);
+                            ll2 =new LatLng(points.get(list.size()/4).latitude,points.get(list.size()/4).longitude);
+                            ll3 =new LatLng(points.get(list.size()/3).latitude,points.get(list.size()/3).longitude);
+                            ll4 =new LatLng(points.get(list.size()/2).latitude,points.get(list.size()/2).longitude);
+                            ll5 =new LatLng(points.get(list.size()-1).latitude,points.get(list.size()-1).longitude);
+
+                        }else{
+
+                            ll1 =new LatLng(points.get(1).latitude,points.get(1).longitude);
+                            ll2 =new LatLng(points.get(1).latitude,points.get(1).longitude);
+                            ll3 =new LatLng(points.get(1).latitude,points.get(1).longitude);
+                            ll4 =new LatLng(points.get(1).latitude,points.get(1).longitude);
+                            ll5 =new LatLng(points.get(1).latitude,points.get(1).longitude);
+                        }
+
+                        OverlayOptions ooStart = new MarkerOptions().position(new LatLng(points.get(0).latitude,points.get(0).longitude)).icon(BitmapDescriptorFactory
+                                .fromResource(R.mipmap.ic_photograph_coordinate)).zIndex(4).draggable(false);
+
+                        if (mBaiduMap != null) {
+                            mBaiduMap.addOverlay(ooStart);
+                        }
+
+                        LatLng llA = new LatLng(points.get(points.size()-1).latitude,points.get(points.size()-1).longitude);
+
+                        OverlayOptions ooEnd = new MarkerOptions().position(llA).icon(BitmapDescriptorFactory
+                                .fromResource(R.mipmap.chufa_small)).zIndex(4).draggable(false);
+
+                        if (mBaiduMap != null) {
+                            mBaiduMap.addOverlay(ooEnd);
+                        }
+
+                        MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(llA, 14.0f);
+                        mBaiduMap.animateMapStatus(u);
+
+                        OverlayOptions ooPolyline = new PolylineOptions().width(10)
+                                .color(0xAAFF0000).points(points);
+                        mBaiduMap.addOverlay(ooPolyline);
+
                     }else{
 
                         points =new ArrayList<>();

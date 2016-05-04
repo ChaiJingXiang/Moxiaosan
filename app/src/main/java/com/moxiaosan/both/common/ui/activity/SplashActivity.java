@@ -31,9 +31,9 @@ public class SplashActivity extends BaseActivity implements IApiCallback{
         setContentView(view);
 
         if(AppData.getInstance().getUserEntity() != null){
-            if (!EHttpAgent.isAvailable(this)){
-                EUtil.showLongToast("请开启网络后重启进入！");
-            }
+//            if (!EHttpAgent.isAvailable(this)){
+//                EUtil.showLongToast("请开启网络后重启进入！");
+//            }
             CarReqUtils.checkdeviced(this,this,null,new BindDevice(),"checkdeviced",true, StringUrlUtils.geturl(new HashMapUtils().putValue("username",AppData.getInstance().getUserEntity().getUsername()).createMap()));
 
         }else {
@@ -101,7 +101,15 @@ public class SplashActivity extends BaseActivity implements IApiCallback{
 
                 }
 
+            }else{
+                startActivity(new Intent(SplashActivity.this, ConsumerMainActivity.class));
+                SplashActivity.this.finish();
+
             }
+        }else{
+            startActivity(new Intent(SplashActivity.this, ConsumerMainActivity.class));
+            SplashActivity.this.finish();
+
         }
     }
 }

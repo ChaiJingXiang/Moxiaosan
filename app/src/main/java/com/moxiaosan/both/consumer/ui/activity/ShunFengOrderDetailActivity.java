@@ -93,7 +93,7 @@ public class ShunFengOrderDetailActivity extends BaseActivity implements View.On
 
         int status=Integer.valueOf(respUserOrderInfo.getServicestatus());
         if (status>0){ //1
-            tvTime1.setText(respUserOrder.getPickuptime());
+            tvTime1.setText(respUserOrderInfo.getPickuptime());
             img1.setImageResource(R.mipmap.order_state_light);
             tvQuJian.setTextColor(getResources().getColor(R.color.main_color));
         }

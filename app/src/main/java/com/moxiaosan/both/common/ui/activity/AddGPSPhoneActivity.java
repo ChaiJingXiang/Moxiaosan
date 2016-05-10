@@ -11,16 +11,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.moxiaosan.both.R;
+import com.moxiaosan.both.carowner.ui.activity.GPSSafeCenterActivity;
+import com.moxiaosan.both.consumer.ui.activity.ConsumerMainActivity;
 import com.moxiaosan.both.zxing.MipcaActivityCapture;
 import com.utils.api.IApiCallback;
 import com.utils.common.AppData;
 import com.utils.common.EUtil;
+import com.utils.ui.base.ActivityHolder;
 import com.utils.ui.base.BaseActivity;
 
 import consumer.StringUrlUtils;
 import consumer.api.CarReqUtils;
 import consumer.model.AddEquipment;
 import consumer.model.PhoneCode;
+import consumer.model.obj.RespUserInfo;
 
 /**
  * Created by chris on 16/3/2.
@@ -103,8 +107,23 @@ public class AddGPSPhoneActivity extends BaseActivity implements IApiCallback{
                 AddEquipment equipment= (AddEquipment) output;
                 EUtil.showToast(equipment.getErr());
                 if (equipment.getRes() == 0){
+                    if(AppData.getInstance().getUserEntity().getUserType()==1){
+                        startActivity(new Intent(AddGPSPhoneActivity.this, GPSSafeCenterActivity.class));
+                        RespUserInfo userInfo = AppData.getInstance().getUserEntity();
+                        userInfo.setType(2);
+                        userInfo.setUserType(2);
+                        AppData.getInstance().saveUserEntity(userInfo);
+                        finish();
+                        ActivityHolder.getInstance().pop(new ConsumerMainActivity());
 
-                    finish();
+
+                        finish();
+
+                    }else{
+                        
+                        finish();
+                    }
+
                 }
             }
         }else{

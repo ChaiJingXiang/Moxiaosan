@@ -62,7 +62,7 @@ public class MqttService extends Service {
     // this is the log tag
     public static final String TAG = "MoXiaoSanMqttService";
     // the IP address, where your MQTT broker is running.
-    private static final String MQTT_HOST = "1219.235.15.66";
+    private static final String MQTT_HOST = "219.235.15.66";
     //    private static final String MQTT_HOST = "192.168.199.161";
     // the port at which the broker is running.
     private static int MQTT_BROKER_PORT_NUM = 1883;

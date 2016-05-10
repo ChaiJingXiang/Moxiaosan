@@ -135,7 +135,7 @@
                 android:id="@+id/allKimId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2000km"
+                android:text="0km"
                 android:textColor="@color/main_color"
                 android:textSize="@dimen/value_16sp"
                 />
@@ -161,7 +161,7 @@
                 android:id="@+id/maxSpeedId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="300km/h"
+                android:text="0km/h"
                 android:textColor="@color/main_color"
                 android:textSize="@dimen/value_16sp"
                 />
@@ -179,7 +179,7 @@
                 android:id="@+id/averageSpeedId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="200km/h"
+                android:text="0km/h"
                 android:textColor="@color/main_color"
                 android:textSize="@dimen/value_16sp"
                 />

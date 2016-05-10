@@ -396,9 +396,9 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
                     }
 
                 }else{
-//                    dismissLoadingDialog();
+                    dismissLoadingDialog();
                     EUtil.showToast(guiji.getErr());
-                    finish();
+//                    finish();
                 }
             }
         }else{

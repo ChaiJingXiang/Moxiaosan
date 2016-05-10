@@ -117,10 +117,8 @@ public class AddGPSPhoneActivity extends BaseActivity implements IApiCallback{
                         ActivityHolder.getInstance().pop(new ConsumerMainActivity());
 
 
-                        finish();
-
                     }else{
-                        
+
                         finish();
                     }
 

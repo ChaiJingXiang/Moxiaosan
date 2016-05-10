@@ -17,19 +17,23 @@ import com.moxiaosan.both.R;
 import com.moxiaosan.both.utils.AvatarUploader;
 import com.moxiaosan.both.utils.FileUploader;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.utils.api.IApiCallback;
 import com.utils.common.AppData;
 import com.utils.common.EUtil;
 import com.utils.ui.base.BaseActivity;
 
 import java.util.ArrayList;
 
+import consumer.StringUrlUtils;
+import consumer.api.CarReqUtils;
+import consumer.model.UpdateHead;
 import consumer.model.obj.RespUserInfo;
 import picture.PictureGalleryActivity;
 
 /**
  * Created by chris on 16/3/3.
  */
-public class CarPhotoActivity extends BaseActivity implements FileUploader.OnFileUploadListener {
+public class CarPhotoActivity extends BaseActivity implements FileUploader.OnFileUploadListener,IApiCallback {
 
     private ImageView imageView;
     private ArrayList<String> imageList;
@@ -55,6 +59,8 @@ public class CarPhotoActivity extends BaseActivity implements FileUploader.OnFil
         Intent intent = getIntent();
         carImg = intent.getStringExtra("carImg");
 
+        Log.i("info",carImg);
+
         imageView = (ImageView) findViewById(R.id.photoId);
 
         imgCar = (ImageView) findViewById(R.id.showCarPhotoId);
@@ -76,9 +82,7 @@ public class CarPhotoActivity extends BaseActivity implements FileUploader.OnFil
         // 文件上传对象
         mUploader = new AvatarUploader(this);
 
-        if (!TextUtils.isEmpty(AppData.getInstance().getUserEntity().getCarimg())) {
-            ImageLoader.getInstance().displayImage(AppData.getInstance().getUserEntity().getCarimg(), imgCar);
-        } else if (!TextUtils.isEmpty(carImg)) {
+        if (!TextUtils.isEmpty(carImg)) {
             ImageLoader.getInstance().displayImage(carImg, imgCar);
         } else {
             layoutShowCar.setVisibility(View.GONE);
@@ -120,11 +124,13 @@ public class CarPhotoActivity extends BaseActivity implements FileUploader.OnFil
             switch (msg.what) {
 
                 case UPLOAD_OK:
-                    dismissLoadingDialog();
-                    EUtil.showToast("上传成功");
-                    RespUserInfo userInfo = AppData.getInstance().getUserEntity();
-                    userInfo.setCarimg(mFileUrl);
-                    AppData.getInstance().saveUserEntity(userInfo);
+                    showLoadingDialog();
+                    CarReqUtils.modifCarPic(CarPhotoActivity.this,CarPhotoActivity.this,null,new UpdateHead(), "UpCarpic", true, StringUrlUtils.geturl(hashMapUtils.putValue("username",AppData.getInstance().getUserEntity().getUsername()).
+                            putValue("picurl",mFileUrl).createMap()));
+
+//                    RespUserInfo userInfo = AppData.getInstance().getUserEntity();
+//                    userInfo.setCarimg(mFileUrl);
+//                    AppData.getInstance().saveUserEntity(userInfo);
                     break;
                 case UPLOAD_FAIL:
                     EUtil.showToast("上传失败，稍后重试");
@@ -157,11 +163,27 @@ public class CarPhotoActivity extends BaseActivity implements FileUploader.OnFil
     public void onSuccess(String fileUrl) {
         mFileUrl = fileUrl;
         handler.sendEmptyMessage(UPLOAD_OK);
+
     }
 
     @Override
     public void onError(int code, String message) {
         handler.sendEmptyMessage(UPLOAD_FAIL);
 
+    }
+
+    @Override
+    public void onData(Object output, Object input) {
+
+        if(output !=null){
+            if (output instanceof UpdateHead) {
+                dismissLoadingDialog();
+                UpdateHead head = (UpdateHead) output;
+                EUtil.showToast(head.getErr());
+                if (head.getRes() == 0) {
+                    finish();
+                }
+            }
+        }
     }
 }

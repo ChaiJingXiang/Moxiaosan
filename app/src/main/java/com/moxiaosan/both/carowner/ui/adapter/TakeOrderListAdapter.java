@@ -100,7 +100,7 @@ public class TakeOrderListAdapter extends BaseAdapter {
             viewHolder.tvZhiDaJiedan.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "直达接单", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, "直达接单", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(context, ReceiveOrderActivity.class);
                     intent.putExtra("name","直达接单");
                     intent.putExtra("orderId",orderObj.getOrderid());
@@ -120,7 +120,7 @@ public class TakeOrderListAdapter extends BaseAdapter {
             viewHolder.tvQingQiuJieli.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "接力接单", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, "接力接单", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(context, SDRelayActivity.class);
                     intent.putExtra("type",1);
                     intent.putExtra("name", "接力速递");
@@ -145,7 +145,7 @@ public class TakeOrderListAdapter extends BaseAdapter {
             viewHolder.tvQingQiuJieli.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "接力接单", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, "接力接单", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(context, SDRelayActivity.class);
                     intent.putExtra("type", 1);
                     intent.putExtra("name", "接力速递");
@@ -160,7 +160,7 @@ public class TakeOrderListAdapter extends BaseAdapter {
             viewHolder.tvZhiDaJiedan.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "直达接单", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, "直达接单", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(context, ReceiveOrderActivity.class);
                     intent.putExtra("name","直达接单");
                     intent.putExtra("orderId",orderObj.getOrderid());

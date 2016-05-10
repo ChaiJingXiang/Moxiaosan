@@ -116,7 +116,7 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
         showLoadingDialog();
         CarReqUtils.travelingtrack(this, this, null,new RespGuiJI(),"travelingtrack",true,
                 StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).
-                        putValue("hour",12).createMap()));
+                        putValue("hour",1).createMap()));
 
         //时间spinner
         m = (String[])getResources().getStringArray(R.array.guiji_time);
@@ -128,7 +128,7 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
 
         //设置默认值
         spinner.setVisibility(View.VISIBLE);
-        spinner.setSelection(3,true);
+        spinner.setSelection(0,true);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -396,7 +396,7 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
                     }
 
                 }else{
-                    dismissLoadingDialog();
+//                    dismissLoadingDialog();
                     EUtil.showToast(guiji.getErr());
                     finish();
                 }

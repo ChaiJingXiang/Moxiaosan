@@ -245,7 +245,7 @@ public class SettingActivity extends BaseActivity implements IApiCallback, View.
                 etOwnPhone = (EditText) view.findViewById(R.id.alarm_phone_car_owner_phone);
                 etfamilyPhoe = (EditText) view.findViewById(R.id.alarm_phone_family_phone);
                 etFriendsPhone = (EditText) view.findViewById(R.id.alarm_phone_car_friend_phone);
-                etOwnPhone.setText(AppData.getInstance().getUserEntity().getUsername());
+                etOwnPhone.setText(status.getData().getSos1());
                 etOwnPhone.setSelection(etOwnPhone.getText().length());
                 etfamilyPhoe.setText(status.getData().getSos2());
                 etFriendsPhone.setText(status.getData().getSos3());

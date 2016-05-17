@@ -15,10 +15,10 @@
 
         <com.utils.image.RoundImageView
             android:id="@+id/person_info_user_photo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/value_35dp"
+            android:layout_height="@dimen/value_35dp"
             android:layout_centerVertical="true"
-            android:scaleType="centerCrop"
+            android:scaleType="fitXY"
             android:src="@mipmap/icon_default_head"
 
             />

@@ -33,7 +33,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="需要:"
+                    android:text="需:"
                     android:textColor="@color/main_color" />
 
                 <TextView
@@ -41,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/value_5dp"
-                    android:text="泥瓦工"
+                    android:text="泥"
                     android:textColor="@color/txt_333333" />
             </LinearLayout>
 
@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/value_10dp"
         android:paddingRight="@dimen/value_10dp"
-        android:text="描述描述描述描述描述描述描述描述描述"
+        android:text="描述"
         android:textColor="@color/txt_333333" />
 
     <LinearLayout
@@ -74,7 +74,7 @@
             android:id="@+id/find_labour_list_group_people_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="人数：2人"
+            android:text="人数：0人"
             android:textColor="@color/txt_333333" />
 
         <TextView
@@ -110,7 +110,7 @@
             android:layout_toRightOf="@+id/group_item_location_tag"
             android:layout_toLeftOf="@+id/find_labour_list_group_edit"
             android:layout_marginRight="@dimen/value_3dp"
-            android:text="地址：深圳市科技园"
+            android:text="地址：深圳市"
             android:textColor="@color/txt_666666" />
 
         <ImageView

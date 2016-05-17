@@ -34,7 +34,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="需要:"
+                    android:text="卖:"
                     android:textColor="@color/main_color" />
 
                 <TextView
@@ -42,7 +42,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/value_5dp"
-                    android:text="泥瓦工"
+                    android:text="泥"
                     android:textColor="@color/txt_333333" />
             </LinearLayout>
 
@@ -59,7 +59,7 @@
         android:id="@+id/sell_thing_list_group_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="描述描述描述描述描述描述描述描述描述"
+        android:text="描述"
         android:textColor="@color/txt_333333" />
 
     <LinearLayout

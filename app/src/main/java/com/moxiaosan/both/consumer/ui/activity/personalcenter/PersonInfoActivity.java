@@ -48,6 +48,8 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
     private final static int UPLOAD_OK = 1;
     private final static int UPLOAD_FAIL = 2;
 
+    private boolean isUploadingPic = false; //是否在上传图片  默认不在上传
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,8 +64,12 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
     @Override
     public void onResume() {
         super.onResume();
-        UserReqUtil.userinfo(this, iApiCallback, null, new Userinfo(), "LeftFragment", true, "username=" + AppData.getInstance().getUserEntity().getUsername());
-        showLoadingDialog();
+//        LLog.i("onResume");
+        if (!isUploadingPic) {
+            UserReqUtil.userinfo(this, iApiCallback, null, new Userinfo(), "LeftFragment", true, "username=" + AppData.getInstance().getUserEntity().getUsername());
+            showLoadingDialog();
+        }
+
     }
 
     IApiCallback iApiCallback = new IApiCallback() {
@@ -135,7 +141,7 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
 
             @Override
             public void onError(int code, String message) {
-
+                EUtil.showLongToast("上传失败，请重新尝试");
             }
         });
     }
@@ -148,12 +154,15 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
             switch (msg.what) {
 
                 case UPLOAD_OK:
-                    dismissLoadingDialog();
+                    if (isLoadingDialogShowing()){
+                        dismissLoadingDialog();
+                    }
                     EUtil.showToast("上传成功");
-                    UserReqUtil.updatehead(PersonInfoActivity.this,iApiCallback,null,new UpdateHead(),"PersonInfoActivity",true,
+                    isUploadingPic = false;  //不在上传
+                    UserReqUtil.updatehead(PersonInfoActivity.this, iApiCallback, null, new UpdateHead(), "PersonInfoActivity", true,
                             StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername())
                                     .putValue("headportrait", mFileUrl).createMap())
-                            );
+                    );
                     break;
 
                 case UPLOAD_FAIL:
@@ -232,6 +241,7 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
                 break;
             // 裁剪图片后结果
             case ImageUtils.CROP_IMAGE:
+//                LLog.i("onActivityResult");
                 if (ImageUtils.cropImageUri != null) {
                     // 可以直接显示图片,或者进行其他处理(如压缩等)
                     userPhoto.setImageURI(ImageUtils.cropImageUri);
@@ -240,6 +250,8 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
 
 //                    Log.i("info+++",mLocalFilePath);
                     mUploader.start(mLocalFilePath);
+                    isUploadingPic = true; //开始上传
+                    showLoadingDialog();
                 }
                 break;
             default:

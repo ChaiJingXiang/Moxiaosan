@@ -67,6 +67,8 @@ public class CarOwnerInfoActivity extends BaseActivity implements View.OnClickLi
     private RadioButton consumerButton, carButton;
     private String carImg;
 
+    private boolean isUploadingPic = false; //默认不在上传图片
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,10 +87,12 @@ public class CarOwnerInfoActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void onResume() {
         super.onResume();
+        if (!isUploadingPic) {
+            showLoadingDialog();
+            CarReqUtils.personalInfo(this, this, null, new Userinfo(), "PersonalInfo", true,
+                    StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).createMap()));
+        }
 
-        showLoadingDialog();
-        CarReqUtils.personalInfo(this, this, null, new Userinfo(), "PersonalInfo", true,
-                StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).createMap()));
 
     }
 
@@ -119,7 +123,7 @@ public class CarOwnerInfoActivity extends BaseActivity implements View.OnClickLi
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.radioConsumer) {
 
-                    ExitDialog dialog = new ExitDialog(CarOwnerInfoActivity.this,2);
+                    ExitDialog dialog = new ExitDialog(CarOwnerInfoActivity.this, 2);
                     dialog.setCanceledOnTouchOutside(false);
                     dialog.show();
 
@@ -166,12 +170,12 @@ public class CarOwnerInfoActivity extends BaseActivity implements View.OnClickLi
 
 
             case R.id.person_info_car_photo_layout:
-                startActivity(new Intent(CarOwnerInfoActivity.this, CarPhotoActivity.class).putExtra("carImg",carImg));
+                startActivity(new Intent(CarOwnerInfoActivity.this, CarPhotoActivity.class).putExtra("carImg", carImg));
                 break;
 
             case R.id.close:
 
-                ExitDialog dialog2 = new ExitDialog(CarOwnerInfoActivity.this,1);
+                ExitDialog dialog2 = new ExitDialog(CarOwnerInfoActivity.this, 1);
                 dialog2.setCanceledOnTouchOutside(false);
                 dialog2.show();
 
@@ -238,6 +242,8 @@ public class CarOwnerInfoActivity extends BaseActivity implements View.OnClickLi
 
 //                    Log.i("info+++",mLocalFilePath);
                     mUploader.start(mLocalFilePath);
+                    isUploadingPic = true;
+                    showLoadingDialog();
                 }
                 break;
             default:
@@ -260,8 +266,12 @@ public class CarOwnerInfoActivity extends BaseActivity implements View.OnClickLi
             switch (msg.what) {
 
                 case UPLOAD_OK:
-//                    dismissLoadingDialog();
-//        EUtil.showToast("上传成功");
+                    if (isLoadingDialogShowing()) {
+                        dismissLoadingDialog();
+                    }
+
+                    EUtil.showToast("上传成功");
+                    isUploadingPic = false;
                     UserReqUtil.updatehead(CarOwnerInfoActivity.this, CarOwnerInfoActivity.this, null, new UpdateHead(), "UpdateHead", true,
                             StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).
                                     putValue("headportrait", mFileUrl).createMap()));
@@ -352,7 +362,7 @@ public class CarOwnerInfoActivity extends BaseActivity implements View.OnClickLi
                         tvAddress.setText(userinfo.getData().getAddress());
                         tvCarType.setText(userinfo.getData().getCarbrand());
 
-                        carImg =userinfo.getData().getCarimg();
+                        carImg = userinfo.getData().getCarimg();
                     }
                 }
             }
@@ -368,9 +378,10 @@ public class CarOwnerInfoActivity extends BaseActivity implements View.OnClickLi
     class ExitDialog extends AlertDialog {
 
         int index;
-        public ExitDialog(Context context,int index) {
-            super(context,index);
-            this.index =index;
+
+        public ExitDialog(Context context, int index) {
+            super(context, index);
+            this.index = index;
         }
 
         @Override
@@ -378,12 +389,12 @@ public class CarOwnerInfoActivity extends BaseActivity implements View.OnClickLi
             super.onCreate(savedInstanceState);
             setContentView(R.layout.dialog_setting_exit);
 
-            TextView textView =(TextView)findViewById(R.id.tvDialogActivity);
-            if(index ==2){
+            TextView textView = (TextView) findViewById(R.id.tvDialogActivity);
+            if (index == 2) {
 
                 textView.setText("是否切换为用户身份");
 
-            }else{
+            } else {
 
                 textView.setText("您确定要退出吗");
 
@@ -396,12 +407,12 @@ public class CarOwnerInfoActivity extends BaseActivity implements View.OnClickLi
                 @Override
                 public void onClick(View v) {
                     dismiss();
-                    if(index==1){
+                    if (index == 1) {
                         ActivityHolder.getInstance().finishAllActivity();
                         RespUserInfo respUserInfo = null;
                         AppData.getInstance().saveUserEntity(respUserInfo);
 //                        System.exit(-1);
-                    }else{
+                    } else {
                         startActivity(new Intent(CarOwnerInfoActivity.this, ConsumerMainActivity.class));
                         RespUserInfo userInfo = AppData.getInstance().getUserEntity();
                         userInfo.setUserType(1);
@@ -417,7 +428,7 @@ public class CarOwnerInfoActivity extends BaseActivity implements View.OnClickLi
                 @Override
                 public void onClick(View v) {
                     dismiss();
-                    if(index ==2){
+                    if (index == 2) {
                         carButton.setChecked(true);
                     }
                 }

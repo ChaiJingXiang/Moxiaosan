@@ -57,9 +57,9 @@ public class HavePayedOrderFrament extends Fragment implements IXListViewRefresh
     @Override
     public void onResume() {
         super.onResume();
-        pageNow = 1;
-        ConsumerReqUtil.userorderlist(getActivity(), iApiCallback, null, new Userorderlist(), "onRefresh", true,
-                StringUrlUtils.geturl(new HashMapUtils().putValue("username", AppData.getInstance().getUserEntity().getUsername()).putValue("type", 2).putValue("pageNow", pageNow).createMap()));
+//        pageNow = 1;
+//        ConsumerReqUtil.userorderlist(getActivity(), iApiCallback, null, new Userorderlist(), "onRefresh", true,
+//                StringUrlUtils.geturl(new HashMapUtils().putValue("username", AppData.getInstance().getUserEntity().getUsername()).putValue("type", 2).putValue("pageNow", pageNow).createMap()));
     }
 
     @Override

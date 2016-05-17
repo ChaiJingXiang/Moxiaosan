@@ -102,7 +102,7 @@ public class BusinessInfoAdapter extends BaseExpandableListAdapter{
         GroupViewHolder groupViewHolder = null;
         if (convertView == null) {
             groupViewHolder = new GroupViewHolder();
-            convertView = inflater.inflate(R.layout.sell_thing_list_group_item, null);
+            convertView = inflater.inflate(R.layout.businessinfo_list_group_item, null);
             groupViewHolder.tvTitle = (TextView) convertView.findViewById(R.id.sell_thing_list_group_title);
             groupViewHolder.tvTime = (TextView) convertView.findViewById(R.id.sell_thing_list_group_time);
             groupViewHolder.tvContent = (TextView) convertView.findViewById(R.id.sell_thing_list_group_content);

@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import consumer.StringUrlUtils;
 import consumer.api.CarReqUtils;
 import consumer.model.UpdateHead;
-import consumer.model.obj.RespUserInfo;
 import picture.PictureGalleryActivity;
 
 /**
@@ -100,11 +99,12 @@ public class CarPhotoActivity extends BaseActivity implements FileUploader.OnFil
 
                 if (requestCode == 111) {
                     Bitmap bitmap = BitmapFactory.decodeFile(imageList.get(0));
-                    imageView.setImageBitmap(bitmap);
+                    imgCar.setImageBitmap(bitmap);
 
                     Log.i("info+++", imageList.get(0));
 
                     mUploader.start(imageList.get(0));
+                    showLoadingDialog();
                 }
             }
         }

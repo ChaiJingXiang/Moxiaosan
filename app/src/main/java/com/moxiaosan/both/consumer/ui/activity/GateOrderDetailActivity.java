@@ -15,6 +15,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.utils.api.IApiCallback;
 import com.utils.common.AppData;
 import com.utils.common.EUtil;
+import com.utils.log.LLog;
 import com.utils.ui.base.BaseActivity;
 
 import consumer.HashMapUtils;
@@ -118,7 +119,7 @@ public class GateOrderDetailActivity extends BaseActivity implements View.OnClic
         tvJieDanPhone.setText(respUserOrderInfo.getCom_tel());
 
         int status = Integer.valueOf(respUserOrderInfo.getServicestatus());
-        if (status > 0) { //1  2
+        if (status > 0) { //1
             tvTime1.setText(respUserOrderInfo.getPickuptime());
             img1.setImageResource(R.mipmap.order_state_light);
             tvQujian.setTextColor(getResources().getColor(R.color.main_color));
@@ -127,17 +128,20 @@ public class GateOrderDetailActivity extends BaseActivity implements View.OnClic
             img2.setImageResource(R.mipmap.order_state_light);
             tvFuWu.setTextColor(getResources().getColor(R.color.main_color));
         }
-        if (status > 2) { //3
+        if (status > 1) { //2
             imgLine2.setBackgroundColor(getResources().getColor(R.color.main_color));
             img3.setImageResource(R.mipmap.order_state_light);
             tvPaiSong.setTextColor(getResources().getColor(R.color.main_color));
         }
-        if (status > 3) {  //4
+        if (status > 2) {  //3
             tvTime4.setText(respUserOrderInfo.getDeliverytime());
             imgLine3.setBackgroundColor(getResources().getColor(R.color.main_color));
             img4.setImageResource(R.mipmap.order_state_light);
             tvQueRen.setTextColor(getResources().getColor(R.color.main_color));
+        }else {
+            LLog.i("===========");
         }
+
     }
 
     IApiCallback iApiCallback = new IApiCallback() {

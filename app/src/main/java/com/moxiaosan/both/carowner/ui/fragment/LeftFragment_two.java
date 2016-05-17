@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,20 +15,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-import com.moxiaosan.both.APP;
 import com.moxiaosan.both.R;
 import com.moxiaosan.both.carowner.ui.activity.BecomeCarOwnerActivity;
 import com.moxiaosan.both.carowner.ui.activity.BusinessMainActivity;
 import com.moxiaosan.both.carowner.ui.activity.CarOwnerInfoActivity;
 import com.moxiaosan.both.carowner.ui.activity.GPSSafeCenterActivity;
-import com.moxiaosan.both.common.ui.activity.AddGPSPhoneActivity;
+import com.moxiaosan.both.carowner.ui.activity.SettingActivity;
 import com.moxiaosan.both.common.ui.activity.AboutUsActivity;
+import com.moxiaosan.both.common.ui.activity.AddGPSPhoneActivity;
 import com.moxiaosan.both.common.ui.activity.MessagesActivity;
 import com.moxiaosan.both.common.ui.activity.MyWalletActivity;
 import com.moxiaosan.both.common.ui.activity.ShareActivity;
 import com.moxiaosan.both.common.ui.activity.UseHelpActivity;
-import com.moxiaosan.both.carowner.ui.activity.SettingActivity;
-import com.moxiaosan.both.consumer.ui.activity.ConsumerMainActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.utils.api.IApiCallback;
 import com.utils.common.AppData;
@@ -38,10 +35,8 @@ import com.utils.image.RoundImageView;
 import com.utils.ui.base.ActivityHolder;
 import com.utils.ui.base.BaseFragment_v4;
 
-import consumer.HashMapUtils;
 import consumer.StringUrlUtils;
 import consumer.api.CarReqUtils;
-import consumer.model.Mqtt;
 import consumer.model.Userinfo;
 
 /**
@@ -64,8 +59,8 @@ public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickLis
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        CarReqUtils.personalInfo(getActivity(),this,null,new Userinfo(),"PersonalInfo",true,
-                StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).createMap()));
+//        CarReqUtils.personalInfo(getActivity(),this,null,new Userinfo(),"PersonalInfo",true,
+//                StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).createMap()));
 
     }
 
@@ -88,10 +83,11 @@ public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickLis
     @Override
     public void onResume() {
         super.onResume();
-
-        if(!TextUtils.isEmpty(AppData.getInstance().getUserEntity().getHeadportrait())){
-            ImageLoader.getInstance().displayImage(AppData.getInstance().getUserEntity().getHeadportrait(),imgHead);
-        }
+        CarReqUtils.personalInfo(getActivity(),this,null,new Userinfo(),"PersonalInfo",true,
+                StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).createMap()));
+//        if(!TextUtils.isEmpty(AppData.getInstance().getUserEntity().getHeadportrait())){
+//            ImageLoader.getInstance().displayImage(AppData.getInstance().getUserEntity().getHeadportrait(),imgHead);
+//        }
 
     }
 

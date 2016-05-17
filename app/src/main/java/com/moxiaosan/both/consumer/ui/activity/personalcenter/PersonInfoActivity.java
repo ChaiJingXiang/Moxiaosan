@@ -141,7 +141,7 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
 
             @Override
             public void onError(int code, String message) {
-                EUtil.showLongToast("上传失败，请重新尝试");
+                EUtil.showLongToast("上传失败，稍后重试");
             }
         });
     }

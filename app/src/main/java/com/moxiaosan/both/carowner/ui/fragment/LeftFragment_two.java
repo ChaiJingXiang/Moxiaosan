@@ -141,6 +141,7 @@ public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickLis
                 }else{
 
                     startActivity(new Intent(getActivity(), BecomeCarOwnerActivity.class));
+
                 }
 
 

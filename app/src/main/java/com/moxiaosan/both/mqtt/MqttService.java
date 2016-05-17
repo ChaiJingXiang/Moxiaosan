@@ -1,5 +1,6 @@
 package com.moxiaosan.both.mqtt;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -52,6 +53,7 @@ import consumer.model.mqttobj.MQNotifyOwner;
 import consumer.model.mqttobj.MQOrdernotify;
 import consumer.model.mqttobj.MQPayment;
 import consumer.model.mqttobj.MQPickup;
+import consumer.model.mqttobj.MQRquestBecomeCarerStatus;
 import consumer.model.obj.RespUserInfo;
 import consumer.model.obj.RespUserOrder;
 
@@ -199,7 +201,7 @@ public class MqttService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null) {
             if (intent.getAction() != null) {
-                LLog.i("==onStartCommand()==Service started with intent=" + intent+"==intent.getAction()==="+intent.getAction());
+                LLog.i("==onStartCommand()==Service started with intent=" + intent + "==intent.getAction()===" + intent.getAction());
                 // Do an appropriate action based on the intent.
                 if (intent.getAction().equals(ACTION_KEEPALIVE) == true) {
                     keepAlive();
@@ -575,12 +577,25 @@ public class MqttService extends Service {
                 }
 
             } else if (topicName.equals("moxsan/setowner/" + AppData.getInstance().getUserEntity().getUsername())) {  //11
-                PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, BusinessMainActivity.class), 0);
-                showNotification("成为运营车主", pi);
+                MQRquestBecomeCarerStatus status = gson.fromJson(s, MQRquestBecomeCarerStatus.class);
+                if (status.getRes().equals("0")) {
+                    PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, BusinessMainActivity.class), 0);
+                    showNotification(status.getType(), pi);
 
-                RespUserInfo userInfo = AppData.getInstance().getUserEntity();
-                userInfo.setType(3);
-                AppData.getInstance().saveUserEntity(userInfo);
+                    RespUserInfo userInfo = AppData.getInstance().getUserEntity();
+                    userInfo.setType(3);
+                    AppData.getInstance().saveUserEntity(userInfo);
+
+                }else{
+                    PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, BusinessMainActivity.class), 0);
+                    showNotification(status.getType(), pi);
+
+                    SharedPreferences sp =getSharedPreferences("request", Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor editor =sp.edit();
+                    editor.putBoolean("carer",false);
+                    editor.commit();
+
+                }
 
             } else if (topicName.equals("moxsan/arm/" + AppData.getInstance().getUserEntity().getIMEI())) {  //12
                 PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, BusinessMainActivity.class), 0);

@@ -19,7 +19,9 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.moxiaosan.both.APP;
 import com.moxiaosan.both.R;
 import com.moxiaosan.both.carowner.ui.activity.BecomeCarOwnerActivity;
+import com.moxiaosan.both.carowner.ui.activity.BusinessMainActivity;
 import com.moxiaosan.both.carowner.ui.activity.CarOwnerInfoActivity;
+import com.moxiaosan.both.carowner.ui.activity.GPSSafeCenterActivity;
 import com.moxiaosan.both.common.ui.activity.AddGPSPhoneActivity;
 import com.moxiaosan.both.common.ui.activity.AboutUsActivity;
 import com.moxiaosan.both.common.ui.activity.MessagesActivity;
@@ -27,11 +29,13 @@ import com.moxiaosan.both.common.ui.activity.MyWalletActivity;
 import com.moxiaosan.both.common.ui.activity.ShareActivity;
 import com.moxiaosan.both.common.ui.activity.UseHelpActivity;
 import com.moxiaosan.both.carowner.ui.activity.SettingActivity;
+import com.moxiaosan.both.consumer.ui.activity.ConsumerMainActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.utils.api.IApiCallback;
 import com.utils.common.AppData;
 import com.utils.common.EUtil;
 import com.utils.image.RoundImageView;
+import com.utils.ui.base.ActivityHolder;
 import com.utils.ui.base.BaseFragment_v4;
 
 import consumer.HashMapUtils;
@@ -108,22 +112,26 @@ public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickLis
         switch (v.getId()){
             case R.id.left_frag_user_layout:
                 startActivity(new Intent(getActivity(), CarOwnerInfoActivity.class));
+                slidingMen.toggle();
                 break;
             case R.id.left_frag_menu_layout1:
                 startActivity(new Intent(getActivity(), MyWalletActivity.class));
+                slidingMen.toggle();
                 break;
             case R.id.left_frag_menu_layout2:
                 startActivity(new Intent(getActivity(), MessagesActivity.class));
+                slidingMen.toggle();
                 break;
             case R.id.left_frag_menu_layout3:
                 startActivity(new Intent(getActivity(), AddGPSPhoneActivity.class));
+                slidingMen.toggle();
                 break;
             case R.id.left_frag_menu_layout4:
                 SharedPreferences sp =getActivity().getSharedPreferences("request", Activity.MODE_PRIVATE);
 
                 boolean flag =sp.getBoolean("carer",false);
 
-                if(AppData.getInstance().getUserEntity().getType()==3){
+                if(AppData.getInstance().getUserEntity().getUserType()==3){
                     ExitDialog dialog =new ExitDialog(getActivity(),1);
                     dialog.setCanceledOnTouchOutside(false);
                     dialog.show();
@@ -139,16 +147,20 @@ public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickLis
                     startActivity(new Intent(getActivity(), BecomeCarOwnerActivity.class));
                 }
 
+
                 break;
             case R.id.left_frag_menu_layout5:
                 startActivity(new Intent(getActivity(), UseHelpActivity.class));
+                slidingMen.toggle();
                 break;
             case R.id.left_frag_menu_layout6:
                 startActivity(new Intent(getActivity(), AboutUsActivity.class));
+                slidingMen.toggle();
                 break;
             case R.id.left_frag_menu_layout7:
                 if(AppData.getInstance().getUserEntity().getBind()==1){
                     startActivity(new Intent(getActivity(), SettingActivity.class));
+                    slidingMen.toggle();
                 }else{
 
                     EUtil.showToast("未绑定设备,请先绑定设备");
@@ -214,8 +226,21 @@ public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickLis
             findViewById(R.id.setting_exit_ensure).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    dismiss();
-                    slidingMen.toggle();
+                    if(AppData.getInstance().getUserEntity().getUserType() ==3){
+                        if(AppData.getInstance().getUserEntity().getType()==3){
+                            dismiss();
+                            slidingMen.toggle();
+                        }else{
+                            dismiss();
+                            startActivity(new Intent(getActivity(), BusinessMainActivity.class));
+                            ActivityHolder.getInstance().pop(new GPSSafeCenterActivity());
+                        }
+
+                    }else{
+                        dismiss();
+                        slidingMen.toggle();
+                    }
+
                 }
             });
 

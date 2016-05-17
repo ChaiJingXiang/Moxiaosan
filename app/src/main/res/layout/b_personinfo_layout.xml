@@ -78,7 +78,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/value_10dp"
             android:layout_toLeftOf="@+id/person_info_nick_modify_right_img"
-            android:text="李美蓉"
+            android:text=""
             android:textColor="@color/txt_999999" />
     </RelativeLayout>
 
@@ -118,7 +118,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/value_10dp"
             android:layout_toLeftOf="@+id/person_info_phone_modify_right_img"
-            android:text="12345678980"
+            android:text=""
             android:textColor="@color/txt_999999" />
     </RelativeLayout>
 
@@ -197,7 +197,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/value_10dp"
             android:layout_toLeftOf="@+id/person_info_address_right_img"
-            android:text="12345678980"
+            android:text=""
             android:textColor="@color/txt_999999" />
     </RelativeLayout>
 
@@ -237,7 +237,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/value_10dp"
             android:layout_toLeftOf="@+id/person_info_car_type_right_img"
-            android:text="宝马"
+            android:text=""
             android:textColor="@color/txt_999999" />
     </RelativeLayout>
 

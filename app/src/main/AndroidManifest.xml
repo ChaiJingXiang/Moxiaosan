@@ -141,6 +141,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".carowner.ui.activity.GPSSafeCenterActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".common.ui.activity.AddGPSPhoneActivity"

@@ -289,35 +289,38 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
 
                         }else{
 
-                            ll1 =new LatLng(points.get(1).latitude,points.get(1).longitude);
-                            ll2 =new LatLng(points.get(1).latitude,points.get(1).longitude);
-                            ll3 =new LatLng(points.get(1).latitude,points.get(1).longitude);
-                            ll4 =new LatLng(points.get(1).latitude,points.get(1).longitude);
-                            ll5 =new LatLng(points.get(1).latitude,points.get(1).longitude);
+                            ll1 =new LatLng(points.get(0).latitude,points.get(0).longitude);
+                            ll2 =new LatLng(points.get(0).latitude,points.get(0).longitude);
+                            ll3 =new LatLng(points.get(0).latitude,points.get(0).longitude);
+                            ll4 =new LatLng(points.get(0).latitude,points.get(0).longitude);
+                            ll5 =new LatLng(points.get(0).latitude,points.get(0).longitude);
                         }
 
-                        OverlayOptions ooStart = new MarkerOptions().position(new LatLng(points.get(0).latitude,points.get(0).longitude)).icon(BitmapDescriptorFactory
-                                .fromResource(R.mipmap.ic_photograph_coordinate)).zIndex(4).draggable(false);
+                        if(points.size()>=2){
+                            OverlayOptions ooStart = new MarkerOptions().position(new LatLng(points.get(0).latitude,points.get(0).longitude)).icon(BitmapDescriptorFactory
+                                    .fromResource(R.mipmap.ic_photograph_coordinate)).zIndex(4).draggable(false);
 
-                        if (mBaiduMap != null) {
-                            mBaiduMap.addOverlay(ooStart);
+                            if (mBaiduMap != null) {
+                                mBaiduMap.addOverlay(ooStart);
+                            }
+
+                            LatLng llA = new LatLng(points.get(points.size()-1).latitude,points.get(points.size()-1).longitude);
+
+                            OverlayOptions ooEnd = new MarkerOptions().position(llA).icon(BitmapDescriptorFactory
+                                    .fromResource(R.mipmap.chufa_small)).zIndex(4).draggable(false);
+
+                            if (mBaiduMap != null) {
+                                mBaiduMap.addOverlay(ooEnd);
+                            }
+
+                            MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(llA, 14.0f);
+                            mBaiduMap.animateMapStatus(u);
+
+                            OverlayOptions ooPolyline = new PolylineOptions().width(10)
+                                    .color(0xAAFF0000).points(points);
+                            mBaiduMap.addOverlay(ooPolyline);
+
                         }
-
-                        LatLng llA = new LatLng(points.get(points.size()-1).latitude,points.get(points.size()-1).longitude);
-
-                        OverlayOptions ooEnd = new MarkerOptions().position(llA).icon(BitmapDescriptorFactory
-                                .fromResource(R.mipmap.chufa_small)).zIndex(4).draggable(false);
-
-                        if (mBaiduMap != null) {
-                            mBaiduMap.addOverlay(ooEnd);
-                        }
-
-                        MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(llA, 14.0f);
-                        mBaiduMap.animateMapStatus(u);
-
-                        OverlayOptions ooPolyline = new PolylineOptions().width(10)
-                                .color(0xAAFF0000).points(points);
-                        mBaiduMap.addOverlay(ooPolyline);
 
                     }else{
 
@@ -345,11 +348,11 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
 
                         }else{
 
-                            ll1 =new LatLng(points.get(1).latitude,points.get(1).longitude);
-                            ll2 =new LatLng(points.get(1).latitude,points.get(1).longitude);
-                            ll3 =new LatLng(points.get(1).latitude,points.get(1).longitude);
-                            ll4 =new LatLng(points.get(1).latitude,points.get(1).longitude);
-                            ll5 =new LatLng(points.get(1).latitude,points.get(1).longitude);
+                            ll1 =new LatLng(points.get(0).latitude,points.get(0).longitude);
+                            ll2 =new LatLng(points.get(0).latitude,points.get(0).longitude);
+                            ll3 =new LatLng(points.get(0).latitude,points.get(0).longitude);
+                            ll4 =new LatLng(points.get(0).latitude,points.get(0).longitude);
+                            ll5 =new LatLng(points.get(0).latitude,points.get(0).longitude);
                         }
 
 
@@ -360,33 +363,34 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
                         tvMAxSpeed.setText(guiji.getMaxspeed()+"km/h");
                         tvAverageSpeed.setText(guiji.getAveragespeed()+"km/h");
 
+                        if(points.size()>=2){
+                            OverlayOptions ooStart = new MarkerOptions().position(new LatLng(points.get(0).latitude,points.get(0).longitude)).icon(BitmapDescriptorFactory
+                                    .fromResource(R.mipmap.ic_photograph_coordinate)).zIndex(4).draggable(false);
 
-                        OverlayOptions ooStart = new MarkerOptions().position(new LatLng(points.get(0).latitude,points.get(0).longitude)).icon(BitmapDescriptorFactory
-                                .fromResource(R.mipmap.ic_photograph_coordinate)).zIndex(4).draggable(false);
+                            if (mBaiduMap != null) {
+                                mBaiduMap.addOverlay(ooStart);
+                            }
 
-                        if (mBaiduMap != null) {
-                            mBaiduMap.addOverlay(ooStart);
-                        }
+                            LatLng llA = new LatLng(points.get(points.size()-1).latitude,points.get(points.size()-1).longitude);
 
-                        LatLng llA = new LatLng(points.get(points.size()-1).latitude,points.get(points.size()-1).longitude);
+                            OverlayOptions ooEnd = new MarkerOptions().position(llA).icon(BitmapDescriptorFactory
+                                    .fromResource(R.mipmap.chufa_small)).zIndex(4).draggable(false);
 
-                        OverlayOptions ooEnd = new MarkerOptions().position(llA).icon(BitmapDescriptorFactory
-                                .fromResource(R.mipmap.chufa_small)).zIndex(4).draggable(false);
+                            if (mBaiduMap != null) {
+                                mBaiduMap.addOverlay(ooEnd);
+                            }
 
-                        if (mBaiduMap != null) {
-                            mBaiduMap.addOverlay(ooEnd);
-                        }
-
-                        MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(llA, 14.0f);
-                        mBaiduMap.animateMapStatus(u);
-                        //起点与终点
+                            MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(llA, 14.0f);
+                            mBaiduMap.animateMapStatus(u);
+                            //起点与终点
 //                    final PlanNode stNode = PlanNode.withCityNameAndPlaceName("深圳", "宝安中心");
 //                    final PlanNode enNode = PlanNode.withCityNameAndPlaceName("深圳", "高新园地铁站");
 //
 //                    mSearch.drivingSearch(new DrivingRoutePlanOption().from(stNode).to(enNode));
-                        OverlayOptions ooPolyline = new PolylineOptions().width(10)
-                                .color(0xAAFF0000).points(points);
-                        mBaiduMap.addOverlay(ooPolyline);
+                            OverlayOptions ooPolyline = new PolylineOptions().width(10)
+                                    .color(0xAAFF0000).points(points);
+                            mBaiduMap.addOverlay(ooPolyline);
+                        }
 
                         resetViewport();
 

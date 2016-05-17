@@ -74,7 +74,7 @@ public class OrderListAdapter extends BaseAdapter {
 
         final MyOrderObj orderObj =lists.get(position);
         viewHolder.tvName.setText(orderObj.getTitle());
-        viewHolder.tvName.setText(orderObj.getDatetime());
+        viewHolder.tvTime.setText(orderObj.getDatetime());
         viewHolder.tvDanhao.setText(orderObj.getOrderid());
         viewHolder.tvPrice.setText(orderObj.getCost());
         viewHolder.tvChufadi.setText(orderObj.getBeginningplace());

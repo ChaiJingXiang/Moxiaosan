@@ -274,7 +274,9 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
                         }
 
                         for(int i=0;i<list.size();i++){
-                            points.add(new LatLng(list.get(i).getLat(),list.get(i).getLng()));
+                            double [] db = BaiduLocation.wgs2bd(list.get(i).getLat(),list.get(i).getLng());
+                            points.add(new LatLng(db[0] , db[1]));
+//                            points.add(new LatLng(list.get(i).getLat(),list.get(i).getLng()));
 
                         }
 
@@ -333,9 +335,9 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
                         numberOfPoints =list.size();
 
                         for(int i=0;i<list.size();i++){
-//                            double [] db = BaiduLocation.wgs2bd(list.get(i).getLat(),list.get(i).getLng());
-//                            points.add(new LatLng(db[0] , db[1]));
-                            points.add(new LatLng(list.get(i).getLat(),list.get(i).getLng()));
+                            double [] db = BaiduLocation.wgs2bd(list.get(i).getLat(),list.get(i).getLng());
+                            points.add(new LatLng(db[0] , db[1]));
+//                            points.add(new LatLng(list.get(i).getLat(),list.get(i).getLng()));
 
                         }
 

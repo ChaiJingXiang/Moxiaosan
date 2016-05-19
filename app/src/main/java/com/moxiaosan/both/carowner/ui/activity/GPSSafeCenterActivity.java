@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
@@ -21,6 +22,7 @@ import com.moxiaosan.both.R;
 import com.moxiaosan.both.carowner.ui.fragment.LeftFragment_two;
 import com.moxiaosan.both.common.ui.activity.CityPositionActivity;
 import com.moxiaosan.both.consumer.ui.activity.ConsumerMainActivity;
+import com.moxiaosan.both.mqtt.MqttService;
 import com.utils.api.IApiCallback;
 import com.utils.common.AppData;
 import com.utils.common.EUtil;
@@ -64,9 +66,12 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
 
         setContentView(R.layout.b_gpssafecenter_layout);
 
+        initMqttServer();
+
         checkBox = (CheckBox) findViewById(R.id.checkBoxSafeId);
 
         showLoadingDialog();
+
 
         CarReqUtils.getguard(this,this,null,new RespGuard(),"getguard",true,
                 StringUrlUtils.geturl(hashMapUtils.putValue("username",AppData.getInstance().getUserEntity().getUsername()).createMap()));
@@ -101,6 +106,17 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
         CarReqUtils.checkdeviced(this,this,null,new BindDevice(),"checkdeviced",true,StringUrlUtils.geturl(new HashMapUtils().putValue("username",AppData.getInstance().getUserEntity().getUsername()).createMap()));
 
 
+    }
+
+    /**
+     * 启动 mqtt 服务
+     */
+    private void initMqttServer() {
+        String mDeviceID = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);  //设备ID保存
+        SharedPreferences.Editor editor = getSharedPreferences(MqttService.TAG, MODE_PRIVATE).edit();
+        editor.putString(MqttService.PREF_DEVICE_ID, mDeviceID);
+        editor.commit();
+        this.startService(new Intent(this, MqttService.class));
     }
 
     @Override

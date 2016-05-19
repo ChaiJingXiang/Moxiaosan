@@ -16,6 +16,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -27,6 +28,7 @@ import com.ibm.mqtt.MqttPersistenceException;
 import com.ibm.mqtt.MqttSimpleCallback;
 import com.moxiaosan.both.R;
 import com.moxiaosan.both.carowner.ui.activity.BusinessMainActivity;
+import com.moxiaosan.both.carowner.ui.activity.GPSSafeCenterActivity;
 import com.moxiaosan.both.carowner.ui.activity.HitchhikingActivity;
 import com.moxiaosan.both.carowner.ui.activity.ReceiveOrderActivity;
 import com.moxiaosan.both.common.ui.activity.MessagesActivity;
@@ -469,14 +471,17 @@ public class MqttService extends Service {
             topicList.add("moxsan/newsnotify/" + AppData.getInstance().getUserEntity().getUsername());//9、	收到消息（用户、车主端）
             topicList.add("moxsan/newordernotify/" + AppData.getInstance().getUserEntity().getUsername());//10、	新订单通知车主（车主端）
             topicList.add("moxsan/setowner/" + AppData.getInstance().getUserEntity().getUsername());//11、	成为运营车主（车主端）
-            topicList.add("moxsan/arm/" + AppData.getInstance().getUserEntity().getIMEI());//12、	设置防盗模式
-            topicList.add("moxsan/mmlieage/" + AppData.getInstance().getUserEntity().getIMEI()); //13、	设置保养里程
-            topicList.add("moxsan/sos/" + AppData.getInstance().getUserEntity().getIMEI());  //14、	设置报警电话
-            topicList.add("moxsan/cut/" + AppData.getInstance().getUserEntity().getIMEI());  //15、	丢失找回
-            topicList.add("moxsan/vbsen/" + AppData.getInstance().getUserEntity().getIMEI());  //16、	设置灵敏度
-            topicList.add("moxsan/circle/" + AppData.getInstance().getUserEntity().getIMEI());  //17、	电子围栏
-            topicList.add("moxsan/power/" + AppData.getInstance().getUserEntity().getIMEI());  //18、	取电
-            topicList.add("moxsan/factory/" + AppData.getInstance().getUserEntity().getIMEI());  //19、	回复出厂设置
+            if(!TextUtils.isEmpty(AppData.getInstance().getUserEntity().getIMEI())){
+                topicList.add("moxsan/arm/" + AppData.getInstance().getUserEntity().getIMEI());//12、	设置防盗模式
+                topicList.add("moxsan/mmlieage/" + AppData.getInstance().getUserEntity().getIMEI()); //13、	设置保养里程
+                topicList.add("moxsan/sos/" + AppData.getInstance().getUserEntity().getIMEI());  //14、	设置报警电话
+                topicList.add("moxsan/cut/" + AppData.getInstance().getUserEntity().getIMEI());  //15、	丢失找回
+                topicList.add("moxsan/vbsen/" + AppData.getInstance().getUserEntity().getIMEI());  //16、	设置灵敏度
+                topicList.add("moxsan/circle/" + AppData.getInstance().getUserEntity().getIMEI());  //17、	电子围栏
+                topicList.add("moxsan/power/" + AppData.getInstance().getUserEntity().getIMEI());  //18、	取电
+                topicList.add("moxsan/factory/" + AppData.getInstance().getUserEntity().getIMEI());  //19、	回复出厂设置
+            }
+
             String[] topics = topicList.toArray(new String[topicList.size()]);
             subscribeToTopic(topics);
 
@@ -587,7 +592,7 @@ public class MqttService extends Service {
                     AppData.getInstance().saveUserEntity(userInfo);
 
                 }else{
-                    PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, BusinessMainActivity.class), 0);
+                    PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, GPSSafeCenterActivity.class), 0);
                     showNotification(status.getType(), pi);
 
                     SharedPreferences sp =getSharedPreferences("request", Activity.MODE_PRIVATE);

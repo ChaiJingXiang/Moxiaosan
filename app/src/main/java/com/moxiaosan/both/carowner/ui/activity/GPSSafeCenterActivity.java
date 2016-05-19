@@ -21,11 +21,11 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.moxiaosan.both.R;
 import com.moxiaosan.both.carowner.ui.fragment.LeftFragment_two;
 import com.moxiaosan.both.common.ui.activity.CityPositionActivity;
-import com.moxiaosan.both.consumer.ui.activity.ConsumerMainActivity;
 import com.moxiaosan.both.mqtt.MqttService;
 import com.utils.api.IApiCallback;
 import com.utils.common.AppData;
 import com.utils.common.EUtil;
+import com.utils.log.LLog;
 import com.utils.ui.base.ActivityHolder;
 import com.utils.ui.base.BaseFragmentActivity;
 
@@ -40,12 +40,11 @@ import consumer.model.Mqtt;
 import consumer.model.RespAlarmnums;
 import consumer.model.RespCut;
 import consumer.model.RespGuard;
-import consumer.model.obj.RespUserInfo;
 
 /**
  * Created by chris on 16/3/1.
  */
-public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.OnClickListener,IApiCallback{
+public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.OnClickListener, IApiCallback {
 
     public final static int CITY_GET_CODE = 1;
     private SlidingMenu slidingMenu;
@@ -57,7 +56,7 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
     private ExitDialog dialog;
     private int type;
     private ImageView imgWarn;
-    private TextView tvMessage,tvNote;
+    private TextView tvMessage, tvNote;
     private TextView tvStutas;
 
     @Override
@@ -66,23 +65,22 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
 
         setContentView(R.layout.b_gpssafecenter_layout);
 
-        initMqttServer();
 
         checkBox = (CheckBox) findViewById(R.id.checkBoxSafeId);
 
         showLoadingDialog();
 
 
-        CarReqUtils.getguard(this,this,null,new RespGuard(),"getguard",true,
-                StringUrlUtils.geturl(hashMapUtils.putValue("username",AppData.getInstance().getUserEntity().getUsername()).createMap()));
+        CarReqUtils.getguard(this, this, null, new RespGuard(), "getguard", true,
+                StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).createMap()));
 
-        CarReqUtils.getcut(this,this,null,new RespCut(),"getcut",true,
-                StringUrlUtils.geturl(hashMapUtils.putValue("username",AppData.getInstance().getUserEntity().getUsername()).createMap()));
+        CarReqUtils.getcut(this, this, null, new RespCut(), "getcut", true,
+                StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).createMap()));
 
-        CarReqUtils.alarmnums(this,this,null,new RespAlarmnums(),"alarmnums",true,StringUrlUtils.geturl(new HashMapUtils().putValue("username",AppData.getInstance().getUserEntity().getUsername()).createMap()));
+        CarReqUtils.alarmnums(this, this, null, new RespAlarmnums(), "alarmnums", true, StringUrlUtils.geturl(new HashMapUtils().putValue("username", AppData.getInstance().getUserEntity().getUsername()).createMap()));
 
 
-        tvLocation =(TextView)findViewById(R.id.tvLocationId);
+        tvLocation = (TextView) findViewById(R.id.tvLocationId);
 
         findViewById(R.id.main_user_photo).setOnClickListener(this);
         findViewById(R.id.main_city_location).setOnClickListener(this);
@@ -92,18 +90,19 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
         findViewById(R.id.imgFindId).setOnClickListener(this);
         findViewById(R.id.warningId).setOnClickListener(this);
 
-        tvMessage =(TextView)findViewById(R.id.main_my_message_count);
-        tvNote =(TextView)findViewById(R.id.noteId);
-        tvStutas =(TextView)findViewById(R.id.open_close);
+        tvMessage = (TextView) findViewById(R.id.main_my_message_count);
+        tvNote = (TextView) findViewById(R.id.noteId);
+        tvStutas = (TextView) findViewById(R.id.open_close);
 
         showSlidingMenu();
+         initMqttServer();
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        CarReqUtils.checkdeviced(this,this,null,new BindDevice(),"checkdeviced",true,StringUrlUtils.geturl(new HashMapUtils().putValue("username",AppData.getInstance().getUserEntity().getUsername()).createMap()));
+        CarReqUtils.checkdeviced(this, this, null, new BindDevice(), "checkdeviced", true, StringUrlUtils.geturl(new HashMapUtils().putValue("username", AppData.getInstance().getUserEntity().getUsername()).createMap()));
 
 
     }
@@ -116,7 +115,7 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
         SharedPreferences.Editor editor = getSharedPreferences(MqttService.TAG, MODE_PRIVATE).edit();
         editor.putString(MqttService.PREF_DEVICE_ID, mDeviceID);
         editor.commit();
-        this.startService(new Intent(this, MqttService.class));
+        this.startService(new Intent(GPSSafeCenterActivity.this, MqttService.class));
     }
 
     @Override
@@ -152,20 +151,20 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
 
             case R.id.imgFindId:
 
-                if(AppData.getInstance().getUserEntity().getBind() ==1){
-                    if(type ==1){
+                if (AppData.getInstance().getUserEntity().getBind() == 1) {
+                    if (type == 1) {
 
-                        Toast.makeText(GPSSafeCenterActivity.this,"已经断电断油",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GPSSafeCenterActivity.this, "已经断电断油", Toast.LENGTH_SHORT).show();
                         Intent intent2 = new Intent(GPSSafeCenterActivity.this, FindLocationActivity.class);
                         startActivity(intent2);
-                    }else{
+                    } else {
 
-                        dialog = new ExitDialog(this,3);
+                        dialog = new ExitDialog(this, 3);
                         dialog.setCanceledOnTouchOutside(false);
                         dialog.show();
                     }
 
-                }else{
+                } else {
                     EUtil.showToast("未绑定设备,请先绑定设备");
                 }
 
@@ -229,16 +228,16 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
     }
 
     @Override
-public boolean onKeyDown(int keyCode, KeyEvent event) {
-    if (keyCode == KeyEvent.KEYCODE_BACK) {
-        if(AppData.getInstance().getUserEntity().getType()==2){
-            exitBy2Click();      //调用双击退出函数
-        }else{
-            finish();
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (AppData.getInstance().getUserEntity().getType() == 2) {
+                exitBy2Click();      //调用双击退出函数
+            } else {
+                finish();
+            }
         }
+        return false;
     }
-    return false;
-}
 
     /**
      * 双击退出函数
@@ -267,31 +266,31 @@ public boolean onKeyDown(int keyCode, KeyEvent event) {
 
     @Override
     public void onData(Object output, Object input) {
-        if(output!=null){
+        if (output != null) {
             dismissLoadingDialog();
-            if(output instanceof Mqtt){
-                Mqtt mqtt =(Mqtt)output;
-                if(input.equals("Close")){
-                    if(mqtt.getRes().equals("0")){
+            if (output instanceof Mqtt) {
+                Mqtt mqtt = (Mqtt) output;
+                if (input.equals("Close")) {
+                    if (mqtt.getRes().equals("0")) {
                         dialog.dismiss();
                         EUtil.showToast(mqtt.getErr());
                         tvStutas.setText("开启防盗模式");
-                    }else{
+                    } else {
                         EUtil.showToast(mqtt.getErr());
                     }
-                }else if(input.equals("open")){
+                } else if (input.equals("open")) {
 
-                    if(mqtt.getRes().equals("0")){
+                    if (mqtt.getRes().equals("0")) {
                         tvStutas.setText("关闭防盗模式");
 
                         EUtil.showToast(mqtt.getErr());
-                    }else{
+                    } else {
                         EUtil.showToast(mqtt.getErr());
                     }
 
-                }else if(input.equals("r_close")){
+                } else if (input.equals("r_close")) {
 
-                    if(mqtt.getRes().equals("0")){
+                    if (mqtt.getRes().equals("0")) {
 
                         dialog.dismiss();
                         Intent intent2 = new Intent(GPSSafeCenterActivity.this, FindLocationActivity.class);
@@ -303,71 +302,71 @@ public boolean onKeyDown(int keyCode, KeyEvent event) {
 
             }
 
-            if(output instanceof RespCut){
+            if (output instanceof RespCut) {
 
-                RespCut cut =(RespCut)output;
-                if(cut.getRes().equals("0")){
-                    if(cut.getData().getCut().equals("1")){
-                        type =1;
-                    }else{
-                        type =2;
+                RespCut cut = (RespCut) output;
+                if (cut.getRes().equals("0")) {
+                    if (cut.getData().getCut().equals("1")) {
+                        type = 1;
+                    } else {
+                        type = 2;
                     }
                 }
             }
 
-            if(output instanceof RespGuard){
-                RespGuard guard =(RespGuard)output;
-                if(guard.getRes().equals("0")){
+            if (output instanceof RespGuard) {
+                RespGuard guard = (RespGuard) output;
+                if (guard.getRes().equals("0")) {
 
-                   if(AppData.getInstance().getUserEntity().getBind()==1){
-                       if(guard.getData().getGuard().equals("1")){
-                           checkBox.setChecked(false);
-                           tvStutas.setText("关闭防盗模式");
+                    if (AppData.getInstance().getUserEntity().getBind() == 1) {
+                        if (guard.getData().getGuard().equals("1")) {
+                            checkBox.setChecked(false);
+                            tvStutas.setText("关闭防盗模式");
 
-                       }else{
+                        } else {
 
-                           checkBox.setChecked(true);
-                           tvStutas.setText("开启防盗模式");
+                            checkBox.setChecked(true);
+                            tvStutas.setText("开启防盗模式");
 
-                       }
+                        }
 
-                       checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                           @Override
-                           public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                               if (isChecked) {
-                                   dialog = new ExitDialog(GPSSafeCenterActivity.this,2);
-                                   dialog.setCanceledOnTouchOutside(false);
-                                   dialog.show();
-                               } else {
-                                   showLoadingDialog();
-                                   CarReqUtils.guard(GPSSafeCenterActivity.this,GPSSafeCenterActivity.this,null,new Mqtt(),"open",true,
-                                           StringUrlUtils.geturl(new HashMapUtils().putValue("username",AppData.getInstance().getUserEntity().getUsername()).
-                                                   putValue("type",1).createMap()));
+                                if (isChecked) {
+                                    dialog = new ExitDialog(GPSSafeCenterActivity.this, 2);
+                                    dialog.setCanceledOnTouchOutside(false);
+                                    dialog.show();
+                                } else {
+                                    showLoadingDialog();
+                                    CarReqUtils.guard(GPSSafeCenterActivity.this, GPSSafeCenterActivity.this, null, new Mqtt(), "open", true,
+                                            StringUrlUtils.geturl(new HashMapUtils().putValue("username", AppData.getInstance().getUserEntity().getUsername()).
+                                                    putValue("type", 1).createMap()));
 
 
-                               }
-                           }
-                       });
-                   }else{
-                       checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                           @Override
-                           public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                               checkBox.setChecked(true);
-                               EUtil.showToast("未绑定设备,请先绑定设备");
-                           }
-                       });
+                                }
+                            }
+                        });
+                    } else {
+                        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                checkBox.setChecked(true);
+                                EUtil.showToast("未绑定设备,请先绑定设备");
+                            }
+                        });
 
-                   }
+                    }
 
                 }
             }
 
-            if(output instanceof RespAlarmnums){
-                RespAlarmnums alarmnums =(RespAlarmnums)output;
+            if (output instanceof RespAlarmnums) {
+                RespAlarmnums alarmnums = (RespAlarmnums) output;
 
-                if(alarmnums.getRes().equals("0")){
-                    if(!alarmnums.getData().getNums().equals("0")){
+                if (alarmnums.getRes().equals("0")) {
+                    if (!alarmnums.getData().getNums().equals("0")) {
 
                         tvMessage.setVisibility(View.VISIBLE);
                         tvMessage.setText(alarmnums.getData().getNums());
@@ -383,9 +382,10 @@ public boolean onKeyDown(int keyCode, KeyEvent event) {
     class ExitDialog extends AlertDialog {
 
         int index;
-        public ExitDialog(Context context,int index) {
+
+        public ExitDialog(Context context, int index) {
             super(context);
-            this.index =index;
+            this.index = index;
         }
 
         @Override
@@ -393,13 +393,13 @@ public boolean onKeyDown(int keyCode, KeyEvent event) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.dialog_setting_exit);
 
-            TextView textView =(TextView)findViewById(R.id.tvDialogActivity);
+            TextView textView = (TextView) findViewById(R.id.tvDialogActivity);
 
-            if(index ==1){
+            if (index == 1) {
                 textView.setText("开启防盗模式，请确认！");
-            }else if(index==2){
+            } else if (index == 2) {
                 textView.setText("关闭防盗模式，请确认！");
-            }else{
+            } else {
                 textView.setText("本操作会执行远程切断供\n油供电操作，请确认！");
             }
 
@@ -413,16 +413,16 @@ public boolean onKeyDown(int keyCode, KeyEvent event) {
 
                     showLoadingDialog();
 //                    dismiss();
-                    if(index ==2){
+                    if (index == 2) {
 
-                        CarReqUtils.guard(GPSSafeCenterActivity.this,GPSSafeCenterActivity.this,null,new Mqtt(),"Close",true,
-                                StringUrlUtils.geturl(hashMapUtils.putValue("username",AppData.getInstance().getUserEntity().getUsername()).
-                                        putValue("type",2).createMap()));
+                        CarReqUtils.guard(GPSSafeCenterActivity.this, GPSSafeCenterActivity.this, null, new Mqtt(), "Close", true,
+                                StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).
+                                        putValue("type", 2).createMap()));
 
-                    }else if(index ==3){
-                        CarReqUtils.recoverlost(GPSSafeCenterActivity.this,GPSSafeCenterActivity.this,null,new Mqtt(),"r_close",true,
-                                StringUrlUtils.geturl(new HashMapUtils().putValue("username",AppData.getInstance().getUserEntity().getUsername()).
-                                        putValue("type","1").createMap()));
+                    } else if (index == 3) {
+                        CarReqUtils.recoverlost(GPSSafeCenterActivity.this, GPSSafeCenterActivity.this, null, new Mqtt(), "r_close", true,
+                                StringUrlUtils.geturl(new HashMapUtils().putValue("username", AppData.getInstance().getUserEntity().getUsername()).
+                                        putValue("type", "1").createMap()));
 
                     }
 
@@ -437,6 +437,16 @@ public boolean onKeyDown(int keyCode, KeyEvent event) {
 
                 }
             });
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //关闭 mqtt 服务
+        if (MqttService.wasStarted()){
+            LLog.i("===ConsumerMainActivity===onDestroy()==stopService()");
+            stopService(new Intent(this,MqttService.class));
         }
     }
 }

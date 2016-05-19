@@ -7,15 +7,15 @@ import com.utils.api.ModelBase;
  */
 public class AddEquipment extends ModelBase {
 
-    private int res;
+    private String res;
     private Object data;
     private String err;
 
-    public int getRes() {
+    public String getRes() {
         return res;
     }
 
-    public void setRes(int res) {
+    public void setRes(String res) {
         this.res = res;
     }
 

@@ -23,6 +23,7 @@ public class RespUserInfo implements Serializable {
     private String IMEI;
     private int userType;
     private int bind=3;
+    private String appstatus;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -140,23 +141,32 @@ public class RespUserInfo implements Serializable {
         this.bind = bind;
     }
 
+    public String getAppstatus() {
+        return appstatus;
+    }
+
+    public void setAppstatus(String appstatus) {
+        this.appstatus = appstatus;
+    }
+
     @Override
     public String toString() {
         return "RespUserInfo{" +
-                "username='" + username + '\'' +
+                "address='" + address + '\'' +
+                ", username='" + username + '\'' +
                 ", headportrait='" + headportrait + '\'' +
                 ", password='" + password + '\'' +
                 ", nickname='" + nickname + '\'' +
                 ", contact='" + contact + '\'' +
                 ", balance='" + balance + '\'' +
                 ", type=" + type +
-                ", address='" + address + '\'' +
                 ", carbrand='" + carbrand + '\'' +
                 ", carimg='" + carimg + '\'' +
                 ", mileage='" + mileage + '\'' +
                 ", IMEI='" + IMEI + '\'' +
                 ", userType=" + userType +
                 ", bind=" + bind +
+                ", appstatus='" + appstatus + '\'' +
                 '}';
     }
 }

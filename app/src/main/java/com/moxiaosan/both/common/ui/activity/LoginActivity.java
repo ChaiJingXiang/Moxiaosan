@@ -1,6 +1,8 @@
 package com.moxiaosan.both.common.ui.activity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
@@ -9,7 +11,6 @@ import android.widget.EditText;
 
 import com.moxiaosan.both.R;
 import com.moxiaosan.both.carowner.ui.activity.BusinessMainActivity;
-import com.moxiaosan.both.carowner.ui.activity.CarOwnerInfoActivity;
 import com.moxiaosan.both.carowner.ui.activity.GPSSafeCenterActivity;
 import com.moxiaosan.both.consumer.ui.activity.ConsumerMainActivity;
 import com.utils.api.IApiCallback;
@@ -24,10 +25,9 @@ import consumer.api.CarReqUtils;
 import consumer.api.UserReqUtil;
 import consumer.model.BindDevice;
 import consumer.model.Login;
-import consumer.model.Register;
 import consumer.model.obj.RespUserInfo;
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener,IApiCallback{
+public class LoginActivity extends BaseActivity implements View.OnClickListener, IApiCallback {
     private EditText etUsername, etPassword;
 
     @Override
@@ -64,7 +64,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     if (!TextUtils.isEmpty(etPassword.getText().toString().trim())) {
                         //网络接口
                         showLoadingDialog();
-                        UserReqUtil.reqNetData(this,this,null,new Login(),"Login",true,getUrl(Interface.LOGIN));
+                        UserReqUtil.reqNetData(this, this, null, new Login(), "Login", true, getUrl(Interface.LOGIN));
 
                     } else {
                         EUtil.showToast("密码不能为空");
@@ -85,19 +85,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void onData(Object output, Object input) {
 
-        if(output !=null){
+        if (output != null) {
             dismissLoadingDialog();
-            if (output instanceof Login){
+            if (output instanceof Login) {
                 dismissLoadingDialog();
-                Login login= (Login) output;
+                Login login = (Login) output;
                 EUtil.showToast(login.getErr());
-                if (login.getRes() == 0){
+                if (login.getRes() == 0) {
                     AppData.getInstance().saveUserEntity(login.getData());
-                    if(login.getData().getType()==1){
+                    if (login.getData().getType() == 1) {
                         startActivity(new Intent(LoginActivity.this, ConsumerMainActivity.class));
-                    }else if(login.getData().getType()==3){
+                    } else if (login.getData().getType() == 3) {
                         startActivity(new Intent(LoginActivity.this, BusinessMainActivity.class));
-                    }else{
+                    } else {
                         startActivity(new Intent(LoginActivity.this, GPSSafeCenterActivity.class));
                     }
 
@@ -105,24 +105,34 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     userInfo.setUserType(AppData.getInstance().getUserEntity().getType());
                     AppData.getInstance().saveUserEntity(userInfo);
 
-                    CarReqUtils.checkdeviced(this,this,null,new BindDevice(),"checkdeviced",true, StringUrlUtils.geturl(new HashMapUtils().putValue("username",AppData.getInstance().getUserEntity().getUsername()).createMap()));
 
-                }else {
+                    if (login.getData().getAppstatus().equals("0")) {
+                        SharedPreferences sp = getSharedPreferences("request", Activity.MODE_PRIVATE);
+
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putBoolean("carer", false);
+                        editor.commit();
+
+                    }
+
+                    CarReqUtils.checkdeviced(this, this, null, new BindDevice(), "checkdeviced", true, StringUrlUtils.geturl(new HashMapUtils().putValue("username", AppData.getInstance().getUserEntity().getUsername()).createMap()));
+
+                } else {
                     dismissLoadingDialog();
                     EUtil.showToast(login.getErr());
                 }
             }
 
-            if(output instanceof BindDevice){
-                BindDevice device =(BindDevice)output;
+            if (output instanceof BindDevice) {
+                BindDevice device = (BindDevice) output;
 
-                if(device.getRes().equals("0")){
+                if (device.getRes().equals("0")) {
 
                     RespUserInfo userInfo = AppData.getInstance().getUserEntity();
                     userInfo.setBind(1);
                     AppData.getInstance().saveUserEntity(userInfo);
 
-                }else{
+                } else {
 
                     RespUserInfo userInfo = AppData.getInstance().getUserEntity();
                     userInfo.setBind(2);
@@ -134,7 +144,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
             }
 
-        }else{
+        } else {
             dismissLoadingDialog();
             EUtil.showToast("用户名或密码错误");
             return;

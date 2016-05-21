@@ -1,8 +1,11 @@
 package com.moxiaosan.both.carowner.ui.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -47,6 +50,7 @@ import consumer.model.RespGuard;
 public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.OnClickListener, IApiCallback {
 
     public final static int CITY_GET_CODE = 1;
+    public final static String ALRM_NOTITY = "alrm_notify";
     private SlidingMenu slidingMenu;
     private FragmentManager fm;
     private LeftFragment_two lf;
@@ -59,12 +63,26 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
     private TextView tvMessage, tvNote;
     private TextView tvStutas;
 
+    private AlrmBroadReceiver alrmBroadReceiver;
+    private SharedPreferences sp = null;
+
+    private class AlrmBroadReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(ALRM_NOTITY)) {
+                tvMessage.setVisibility(View.VISIBLE);
+                tvMessage.setText(sp.getInt("alarmNum", 0)+"");
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.b_gpssafecenter_layout);
-
+        sp=getSharedPreferences("alarm", Activity.MODE_PRIVATE);
 
         checkBox = (CheckBox) findViewById(R.id.checkBoxSafeId);
 
@@ -89,21 +107,30 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
         findViewById(R.id.imgGUiJiId).setOnClickListener(this);
         findViewById(R.id.imgFindId).setOnClickListener(this);
         findViewById(R.id.warningId).setOnClickListener(this);
-
+        findViewById(R.id.warning_bottom_layout).setOnClickListener(this);
         tvMessage = (TextView) findViewById(R.id.main_my_message_count);
         tvNote = (TextView) findViewById(R.id.noteId);
         tvStutas = (TextView) findViewById(R.id.open_close);
 
         showSlidingMenu();
-         initMqttServer();
+        initMqttServer();
+
+        IntentFilter iFilter = new IntentFilter();
+        iFilter.addAction(ALRM_NOTITY);
+        alrmBroadReceiver = new AlrmBroadReceiver();
+        registerReceiver(alrmBroadReceiver, iFilter);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
         CarReqUtils.checkdeviced(this, this, null, new BindDevice(), "checkdeviced", true, StringUrlUtils.geturl(new HashMapUtils().putValue("username", AppData.getInstance().getUserEntity().getUsername()).createMap()));
 
+        if (sp.getInt("alarmNum", 0)>0){
+            tvMessage.setText(sp.getInt("alarmNum", 0)+"");
+        }else {
+            tvMessage.setVisibility(View.GONE);
+        }
 
     }
 
@@ -167,15 +194,15 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
                 } else {
                     EUtil.showToast("未绑定设备,请先绑定设备");
                 }
-
-
                 break;
 
             case R.id.warningId:
-
                 startActivity(new Intent(GPSSafeCenterActivity.this, WarningActivity.class));
                 break;
 
+            case R.id.warning_bottom_layout:
+                startActivity(new Intent(GPSSafeCenterActivity.this, WarningActivity.class));
+                break;
         }
     }
 
@@ -368,8 +395,6 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
                 if (alarmnums.getRes().equals("0")) {
                     if (!alarmnums.getData().getNums().equals("0")) {
 
-                        tvMessage.setVisibility(View.VISIBLE);
-                        tvMessage.setText(alarmnums.getData().getNums());
                         tvNote.setText(alarmnums.getData().getAlarminfo());
                     }
                 }
@@ -443,10 +468,12 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(alrmBroadReceiver);
+
         //关闭 mqtt 服务
-        if (MqttService.wasStarted()){
+        if (MqttService.wasStarted()) {
             LLog.i("===ConsumerMainActivity===onDestroy()==stopService()");
-            stopService(new Intent(this,MqttService.class));
+            stopService(new Intent(this, MqttService.class));
         }
     }
 }

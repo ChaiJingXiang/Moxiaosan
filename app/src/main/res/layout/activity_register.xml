@@ -160,6 +160,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:numeric="integer"
                     android:layout_marginLeft="@dimen/value_10dp"
                     android:layout_marginRight="@dimen/value_10dp"
                     android:layout_toLeftOf="@+id/register_get_code_txt"
@@ -169,12 +170,12 @@
 
                 <TextView
                     android:id="@+id/register_get_code_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/value_80dp"
+                    android:layout_height="@dimen/value_30dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/value_10dp"
-                    android:background="@mipmap/get_verify_code"
+                    android:background="@mipmap/register_register_back"
                     android:gravity="center"
                     android:padding="@dimen/value_5dp"
                     android:text="获取验证码"
@@ -208,6 +209,7 @@
                     android:layout_width="@dimen/value_200dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/value_10dp"
+                    android:numeric="integer"
                     android:background="@color/txt_white"
                     android:textSize="@dimen/value_14sp" />
 

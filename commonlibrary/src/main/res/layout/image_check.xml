@@ -33,6 +33,7 @@
         android:layout_alignParentRight="true"
         android:gravity="center"
         android:text="下载"
+        android:visibility="gone"
         android:textColor="@color/txt_white"
         android:textSize="@dimen/value_18sp"
         android:layout_marginRight="@dimen/value_15dp" />

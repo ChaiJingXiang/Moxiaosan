@@ -21,6 +21,7 @@ import consumer.model.obj.RespUserOrder;
 public class OrderCommentActivity extends BaseActivity {
     private RespUserOrder respUserOrder;
     private RatingBar ratingBarSpeed, ratingBarService;
+    private TextView tvSpeedTxt, tvServiceTxt;
     private EditText etContent;
     private TextView tvSure;
     private int speed, service;
@@ -35,7 +36,9 @@ public class OrderCommentActivity extends BaseActivity {
         showActionBar(true);
         setActionBarName("评价");
         ratingBarSpeed = (RatingBar) findViewById(R.id.order_comment_ratingbar_speed);
+        tvSpeedTxt= (TextView) findViewById(R.id.order_comment_speed_level_txt);
         ratingBarService = (RatingBar) findViewById(R.id.order_comment_ratingbar_service);
+        tvServiceTxt= (TextView) findViewById(R.id.order_comment_service_level_txt);
         etContent = (EditText) findViewById(R.id.order_comment_content);
         tvSure = (TextView) findViewById(R.id.order_comment_ensure);
         tvSure.setOnClickListener(new View.OnClickListener() {
@@ -52,14 +55,28 @@ public class OrderCommentActivity extends BaseActivity {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 speed = (int) rating;
-//                EUtil.showToast(speed+"");
+                switch (speed){
+                    case 1:  tvSpeedTxt.setText("非常慢");break;
+                    case 2:  tvSpeedTxt.setText("慢");break;
+                    case 3:  tvSpeedTxt.setText("一般");break;
+                    case 4:  tvSpeedTxt.setText("好");break;
+                    case 5:  tvSpeedTxt.setText("非常快");break;
+                    default: break;
+                }
             }
         });
         ratingBarService.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 service = (int) rating;
-//                EUtil.showToast(service+"");
+                switch (service){
+                    case 1:  tvServiceTxt.setText("非常差");break;
+                    case 2:  tvServiceTxt.setText("差");break;
+                    case 3:  tvServiceTxt.setText("一般");break;
+                    case 4:  tvServiceTxt.setText("好");break;
+                    case 5:  tvServiceTxt.setText("非常好");break;
+                    default: break;
+                }
             }
         });
     }

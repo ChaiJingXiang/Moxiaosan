@@ -31,6 +31,8 @@ import com.moxiaosan.both.carowner.ui.activity.BusinessMainActivity;
 import com.moxiaosan.both.carowner.ui.activity.GPSSafeCenterActivity;
 import com.moxiaosan.both.carowner.ui.activity.HitchhikingActivity;
 import com.moxiaosan.both.carowner.ui.activity.ReceiveOrderActivity;
+import com.moxiaosan.both.carowner.ui.activity.SettingActivity;
+import com.moxiaosan.both.carowner.ui.activity.WarningActivity;
 import com.moxiaosan.both.common.ui.activity.MessagesActivity;
 import com.moxiaosan.both.common.ui.activity.MyWalletActivity;
 import com.moxiaosan.both.consumer.ui.activity.GateOrderDetailActivity;
@@ -39,12 +41,14 @@ import com.moxiaosan.both.consumer.ui.activity.MyOrdersActivity;
 import com.moxiaosan.both.consumer.ui.activity.ShunFengCheActivity;
 import com.moxiaosan.both.consumer.ui.activity.ShunFengOrderDetailActivity;
 import com.utils.common.AppData;
+import com.utils.common.EUtil;
 import com.utils.log.LLog;
 import com.utils.ui.base.ActivityHolder;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import consumer.model.mqttobj.MQAlarm;
 import consumer.model.mqttobj.MQArrivaltime;
 import consumer.model.mqttobj.MQCancelOrder;
 import consumer.model.mqttobj.MQComment;
@@ -471,7 +475,7 @@ public class MqttService extends Service {
             topicList.add("moxsan/newsnotify/" + AppData.getInstance().getUserEntity().getUsername());//9、	收到消息（用户、车主端）
             topicList.add("moxsan/newordernotify/" + AppData.getInstance().getUserEntity().getUsername());//10、	新订单通知车主（车主端）
             topicList.add("moxsan/setowner/" + AppData.getInstance().getUserEntity().getUsername());//11、	成为运营车主（车主端）
-            if(!TextUtils.isEmpty(AppData.getInstance().getUserEntity().getIMEI())){
+            if (!TextUtils.isEmpty(AppData.getInstance().getUserEntity().getIMEI())) {
                 topicList.add("moxsan/arm/" + AppData.getInstance().getUserEntity().getIMEI());//12、	设置防盗模式
                 topicList.add("moxsan/mmlieage/" + AppData.getInstance().getUserEntity().getIMEI()); //13、	设置保养里程
                 topicList.add("moxsan/sos/" + AppData.getInstance().getUserEntity().getIMEI());  //14、	设置报警电话
@@ -480,6 +484,7 @@ public class MqttService extends Service {
                 topicList.add("moxsan/circle/" + AppData.getInstance().getUserEntity().getIMEI());  //17、	电子围栏
                 topicList.add("moxsan/power/" + AppData.getInstance().getUserEntity().getIMEI());  //18、	取电
                 topicList.add("moxsan/factory/" + AppData.getInstance().getUserEntity().getIMEI());  //19、	回复出厂设置
+                topicList.add("moxsan/alarm/" + AppData.getInstance().getUserEntity().getIMEI());  //20、	警情推送
             }
 
             String[] topics = topicList.toArray(new String[topicList.size()]);
@@ -591,49 +596,75 @@ public class MqttService extends Service {
                     userInfo.setType(3);
                     AppData.getInstance().saveUserEntity(userInfo);
 
-                }else{
+                } else {
                     PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, GPSSafeCenterActivity.class), 0);
                     showNotification(status.getType(), pi);
 
-                    SharedPreferences sp =getSharedPreferences("request", Activity.MODE_PRIVATE);
-                    SharedPreferences.Editor editor =sp.edit();
-                    editor.putBoolean("carer",false);
+                    SharedPreferences sp = getSharedPreferences("request", Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putBoolean("carer", false);
                     editor.commit();
 
                 }
 
             } else if (topicName.equals("moxsan/arm/" + AppData.getInstance().getUserEntity().getIMEI())) {  //12
-                PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, BusinessMainActivity.class), 0);
-                showNotification("设置防盗模式", pi);
+                PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, SettingActivity.class), 0);
+                showNotification("参数设置成功", pi);
+                EUtil.showToast("参数设置成功");
 
             } else if (topicName.equals("moxsan/mmlieage/" + AppData.getInstance().getUserEntity().getIMEI())) {  //13
-                PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, BusinessMainActivity.class), 0);
-                showNotification("设置保养里程", pi);
+                PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, SettingActivity.class), 0);
+                showNotification("参数设置成功", pi);
+                EUtil.showToast("参数设置成功");
 
             } else if (topicName.equals("moxsan/sos/" + AppData.getInstance().getUserEntity().getIMEI())) {  //14
-                PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, BusinessMainActivity.class), 0);
-                showNotification("设置报警电话", pi);
+                PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, SettingActivity.class), 0);
+                showNotification("参数设置成功", pi);
+                EUtil.showToast("参数设置成功");
 
             } else if (topicName.equals("moxsan/cut/" + AppData.getInstance().getUserEntity().getIMEI())) {  //15
-                PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, BusinessMainActivity.class), 0);
-                showNotification("丢失找回", pi);
+                PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, SettingActivity.class), 0);
+                showNotification("参数设置成功", pi);
+                EUtil.showToast("参数设置成功");
 
             } else if (topicName.equals("moxsan/vbsen/" + AppData.getInstance().getUserEntity().getIMEI())) {  //16
-                PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, BusinessMainActivity.class), 0);
-                showNotification("设置灵敏度", pi);
+                PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, SettingActivity.class), 0);
+                showNotification("参数设置成功", pi);
+                EUtil.showToast("参数设置成功");
 
             } else if (topicName.equals("moxsan/circle/" + AppData.getInstance().getUserEntity().getIMEI())) {  //17
-                PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, BusinessMainActivity.class), 0);
-                showNotification("电子围栏", pi);
+                PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, SettingActivity.class), 0);
+                showNotification("参数设置成功", pi);
+                EUtil.showToast("参数设置成功");
+
             } else if (topicName.equals("moxsan/power/" + AppData.getInstance().getUserEntity().getIMEI())) {  //18
-                PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, BusinessMainActivity.class), 0);
-                showNotification("取电", pi);
+                PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, SettingActivity.class), 0);
+                showNotification("参数设置成功", pi);
+                EUtil.showToast("参数设置成功");
+
             } else if (topicName.equals("moxsan/factory/" + AppData.getInstance().getUserEntity().getIMEI())) {  //19
-                PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, BusinessMainActivity.class), 0);
-                showNotification("恢复出厂设置", pi);
+                PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, SettingActivity.class), 0);
+                showNotification("参数设置成功", pi);
+                EUtil.showToast("参数设置成功");
+
+            } else if (topicName.equals("moxsan/alarm/" + AppData.getInstance().getUserEntity().getIMEI())) {  //20 警情推送
+                MQAlarm mqAlarm = gson.fromJson(s, MQAlarm.class);
+                PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, WarningActivity.class), 0);
+                showNotification("警情：" + mqAlarm.getRes(), pi);
+
+                SharedPreferences sp = getSharedPreferences("alarm", Activity.MODE_PRIVATE);
+                int num = sp.getInt("alarmNum", 0);
+                num += 1;
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putInt("alarmNum",num);
+                editor.commit();
+
+                if (ActivityHolder.getInstance().getTop() instanceof GPSSafeCenterActivity) {
+                    intent.setAction(GPSSafeCenterActivity.ALRM_NOTITY);
+                }
             }
 
-            sendBroadcast(intent);
+            sendBroadcast(intent);  //发送广播
         }
 
         // Disconnect

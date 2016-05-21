@@ -100,7 +100,7 @@ public class ImageCheckActivity extends BaseActivity implements View.OnClickList
         if (isLocal) {
             downLoad.setVisibility(View.GONE);
         } else {
-            downLoad.setVisibility(View.VISIBLE);
+            downLoad.setVisibility(View.GONE);
         }
     }
 

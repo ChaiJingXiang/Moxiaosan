@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -54,18 +54,17 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical"
         android:background="@mipmap/gpssafe_bg"
-        >
+        android:orientation="vertical">
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="@dimen/value_40dp"
-            android:layout_marginLeft="@dimen/value_40dp"
-            android:layout_marginTop="@dimen/value_60dp"
             android:layout_marginBottom="@dimen/value_60dp"
-            >
+            android:layout_marginLeft="@dimen/value_40dp"
+            android:layout_marginRight="@dimen/value_40dp"
+            android:layout_marginTop="@dimen/value_60dp">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -74,43 +73,40 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/logo_car"
                     android:layout_centerInParent="true"
-                    />
+                    android:src="@mipmap/logo_car" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_alignParentTop="true"
                     android:gravity="center"
-                    >
+                    android:orientation="vertical">
+
                     <CheckBox
                         android:id="@+id/checkBoxSafeId"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/check_lark_bg"
-                        android:checked="true"
                         android:button="@null"
-                        />
+                        android:checked="true" />
 
                     <TextView
                         android:id="@+id/open_close"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="关闭防盗模式"
-                        android:textSize="@dimen/value_16sp"
-                        android:textColor="@color/txt_white"/>
+                        android:textColor="@color/txt_white"
+                        android:textSize="@dimen/value_16sp" />
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_alignParentRight="true"
                     android:gravity="center"
-                    >
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/imgLocationId"
@@ -124,30 +120,30 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="当前位置"
-                        android:textSize="@dimen/value_16sp"
-                        android:textColor="@color/txt_white"/>
+                        android:textColor="@color/txt_white"
+                        android:textSize="@dimen/value_16sp" />
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:layout_alignParentBottom="true"
                     android:gravity="center"
-                    android:layout_alignParentBottom="true">
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/imgGUiJiId"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/trajectory"
-                        />
+                        android:src="@mipmap/trajectory" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="轨迹"
-                        android:textSize="@dimen/value_16sp"
-                        android:textColor="@color/txt_white"/>
+                        android:textColor="@color/txt_white"
+                        android:textSize="@dimen/value_16sp" />
 
                 </LinearLayout>
 
@@ -155,24 +151,23 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center"
                     android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true">
+                    android:layout_alignParentRight="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/imgFindId"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/retrieve"
-                        />
+                        android:src="@mipmap/retrieve" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="丢失找回"
-                        android:textSize="@dimen/value_16sp"
-                        android:textColor="@color/txt_white"/>
+                        android:textColor="@color/txt_white"
+                        android:textSize="@dimen/value_16sp" />
 
                 </LinearLayout>
 
@@ -184,62 +179,64 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@mipmap/line_x"
-            android:layout_marginRight="@dimen/value_80dp"
-            android:layout_marginLeft="@dimen/value_80dp"
-            android:layout_marginTop="@dimen/value_120dp"
             android:layout_marginBottom="@dimen/value_120dp"
-            >
-        </FrameLayout>
+            android:layout_marginLeft="@dimen/value_80dp"
+            android:layout_marginRight="@dimen/value_80dp"
+            android:layout_marginTop="@dimen/value_120dp"
+            android:background="@mipmap/line_x"></FrameLayout>
 
         <RelativeLayout
-            android:layout_width="@dimen/value_50dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/warning_bottom_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/value_50dp"
             android:layout_alignParentBottom="true">
 
+            <RelativeLayout
+                android:layout_width="@dimen/value_50dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/notice_index" />
+
+                <TextView
+                    android:id="@+id/main_my_message_count"
+                    android:layout_width="@dimen/value_15dp"
+                    android:layout_height="@dimen/value_15dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/value_5dp"
+                    android:background="@mipmap/main_bottom_red_tag"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="@color/txt_white"
+                    android:textSize="@dimen/value_12sp"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
             <ImageView
+                android:id="@+id/warningId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/notice_index"
-                />
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:src="@mipmap/right_direction" />
+
 
             <TextView
-                android:id="@+id/main_my_message_count"
-                android:layout_width="@dimen/value_15dp"
-                android:layout_height="@dimen/value_15dp"
-                android:layout_alignParentRight="true"
-                android:background="@mipmap/main_bottom_red_tag"
-                android:gravity="center"
-                android:text="1"
+                android:id="@+id/noteId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:padding="@dimen/value_10dp"
+                android:text=""
                 android:textColor="@color/txt_white"
-                android:textSize="@dimen/value_12sp"
-                android:layout_marginTop="@dimen/value_5dp"
-                android:visibility="gone"
-                />
+                android:textSize="@dimen/value_16sp" />
 
         </RelativeLayout>
-
-        <ImageView
-            android:id="@+id/warningId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/right_direction"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"/>
-
-
-        <TextView
-            android:id="@+id/noteId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textColor="@color/txt_white"
-            android:textSize="@dimen/value_16sp"
-            android:padding="@dimen/value_10dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            />
-
     </RelativeLayout>
 
 </LinearLayout>

@@ -53,6 +53,7 @@ public class SellThingActivity extends BaseActivity implements ExpandableListVie
     private TextView tvSend;
     private RespShop respShop;
     private String commentContent;
+    public static boolean isNeedRefresh = false; //控制是否刷新
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +68,22 @@ public class SellThingActivity extends BaseActivity implements ExpandableListVie
             }
         });
         initView();
+        requestData();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        if (isNeedRefresh) {
+            isNeedRefresh = false;
+            requestData();
+        }
+    }
+
+    /**
+     * 请求数据
+     */
+    private void requestData() {
         pageNum = 1;
         ConsumerReqUtil.shoplist(this, iApiCallback, null, new ShopList(), "onRefresh", true,
                 StringUrlUtils.geturl(hashMapUtils.putValue("pageNow", pageNum).createMap()));
@@ -198,7 +210,7 @@ public class SellThingActivity extends BaseActivity implements ExpandableListVie
                         RespShopComment respShopComment = new RespShopComment();
                         respShopComment.setCommentstext(commentContent);
                         respShopComment.setUsername(AppData.getInstance().getUserEntity().getUsername());
-                        respShops.get(i).getComments().add(0,respShopComment);
+                        respShops.get(i).getComments().add(0, respShopComment);
                         sellThingListAdapter.refreshData(respShops);
                         break;
                     }
@@ -224,7 +236,7 @@ public class SellThingActivity extends BaseActivity implements ExpandableListVie
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (commentLayout.isShown()){
+            if (commentLayout.isShown()) {
                 commentLayout.setVisibility(View.GONE);
                 hideSoftInput(etComment);
                 return true;

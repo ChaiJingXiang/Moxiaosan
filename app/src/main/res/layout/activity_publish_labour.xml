@@ -60,7 +60,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/value_10dp"
             android:background="@color/txt_white"
-            android:numeric="integer"
             android:hint="个"
             android:textSize="@dimen/value_14sp" />
     </LinearLayout>

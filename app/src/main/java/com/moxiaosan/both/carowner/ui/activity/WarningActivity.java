@@ -1,6 +1,8 @@
 package com.moxiaosan.both.carowner.ui.activity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,13 +18,10 @@ import com.utils.ui.base.BaseActivity;
 import java.util.Date;
 import java.util.List;
 
-import consumer.HashMapUtils;
 import consumer.StringUrlUtils;
 import consumer.api.CarReqUtils;
 import consumer.model.RespAlarmList;
-import consumer.model.RespOrderList;
 import consumer.model.obj.AlarmObj;
-import consumer.model.obj.OrderObj;
 import me.maxwin.view.IXListViewLoadMore;
 import me.maxwin.view.IXListViewRefreshListener;
 import me.maxwin.view.XListView;
@@ -30,12 +29,14 @@ import me.maxwin.view.XListView;
 /**
  * Created by chris on 16/4/21.
  */
-public class WarningActivity extends BaseActivity implements IApiCallback,AdapterView.OnItemClickListener,IXListViewRefreshListener,IXListViewLoadMore{
-    private  XListView listView;
+public class WarningActivity extends BaseActivity implements IApiCallback, AdapterView.OnItemClickListener, IXListViewRefreshListener, IXListViewLoadMore {
+    private XListView listView;
     private WarningListAdapter adapter;
     private List<AlarmObj> lists;
     private TextView tvNoData;
-    private int page =1;
+    private int page = 1;
+
+    private SharedPreferences sp = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +46,9 @@ public class WarningActivity extends BaseActivity implements IApiCallback,Adapte
         setActionBarName("警情列表");
 
         setContentView(R.layout.b_warning_layout);
-
-        listView =(XListView)findViewById(R.id.w_listViewId);
-        tvNoData =(TextView)findViewById(R.id.noData);
+        sp = getSharedPreferences("alarm", Activity.MODE_PRIVATE);
+        listView = (XListView) findViewById(R.id.w_listViewId);
+        tvNoData = (TextView) findViewById(R.id.noData);
 
         listView.setPullRefreshEnable(this);
         listView.setPullLoadEnable(this);
@@ -56,6 +57,9 @@ public class WarningActivity extends BaseActivity implements IApiCallback,Adapte
         showLoadingDialog();
         reqData(page, "onFirst");
 
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt("alarmNum", 0);
+        editor.commit();
     }
 
     @Override
@@ -66,53 +70,53 @@ public class WarningActivity extends BaseActivity implements IApiCallback,Adapte
     @Override
     public void onData(Object output, Object input) {
 
-        if(output !=null){
+        if (output != null) {
             dismissLoadingDialog();
-            if(output instanceof RespAlarmList){
-                RespAlarmList alarmList =(RespAlarmList)output;
-                if(alarmList.getRes().equals("0")){
+            if (output instanceof RespAlarmList) {
+                RespAlarmList alarmList = (RespAlarmList) output;
+                if (alarmList.getRes().equals("0")) {
 
-                    if(input.equals("onFirst")){
-                        lists =alarmList.getData();
+                    if (input.equals("onFirst")) {
+                        lists = alarmList.getData();
 
-                        if(lists.size()==0){
+                        if (lists.size() == 0) {
 
                             tvNoData.setVisibility(View.VISIBLE);
 
-                        }else{
+                        } else {
 
 
-                            adapter =new WarningListAdapter(this,lists);
+                            adapter = new WarningListAdapter(this, lists);
 
                             listView.setAdapter(adapter);
                         }
 
-                    }else if(input.equals("onRefresh")){
+                    } else if (input.equals("onRefresh")) {
                         listView.stopRefresh(new Date());
                         lists.clear();
-                        lists =alarmList.getData();
+                        lists = alarmList.getData();
 
-                        adapter =new WarningListAdapter(this,lists);
+                        adapter = new WarningListAdapter(this, lists);
 
                         listView.setAdapter(adapter);
-                    }else{
+                    } else {
 
                         listView.stopLoadMore();
-                        List<AlarmObj> newList =alarmList.getData();
+                        List<AlarmObj> newList = alarmList.getData();
                         lists.addAll(newList);
                         adapter.notifyDataSetChanged();
 
                     }
 
-                }else{
+                } else {
 
                     dismissLoadingDialog();
 
-                    if(input.equals("onFirst")){
+                    if (input.equals("onFirst")) {
 
                         tvNoData.setVisibility(View.VISIBLE);
 
-                    }else{
+                    } else {
 
                         listView.disablePullLoad();
                         EUtil.showToast("没有更多了哦~");
@@ -122,7 +126,7 @@ public class WarningActivity extends BaseActivity implements IApiCallback,Adapte
 
             }
 
-        }else{
+        } else {
             dismissLoadingDialog();
             EUtil.showToast("网络错误，请稍后重试");
         }
@@ -133,38 +137,38 @@ public class WarningActivity extends BaseActivity implements IApiCallback,Adapte
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        position =position-1;
+        position = position - 1;
 
-        Intent intent =new Intent(this,AlarmLocationActivity.class);
-        intent.putExtra("name",lists.get(position).getName());
-        intent.putExtra("speed",lists.get(position).getSpeed());
-        intent.putExtra("time",lists.get(position).getDatetime());
-        intent.putExtra("address",lists.get(position).getAddress());
-        intent.putExtra("lat",lists.get(position).getLat());
-        intent.putExtra("lng",lists.get(position).getLng());
+        Intent intent = new Intent(this, AlarmLocationActivity.class);
+        intent.putExtra("name", lists.get(position).getName());
+        intent.putExtra("speed", lists.get(position).getSpeed());
+        intent.putExtra("time", lists.get(position).getDatetime());
+        intent.putExtra("address", lists.get(position).getAddress());
+        intent.putExtra("lat", lists.get(position).getLat());
+        intent.putExtra("lng", lists.get(position).getLng());
         startActivity(intent);
 
     }
 
     @Override
     public void onLoadMore() {
-        page +=1;
-        reqData(page,"loadMore");
+        page += 1;
+        reqData(page, "loadMore");
     }
 
     @Override
     public void onRefresh() {
 
-        page =1;
+        page = 1;
         listView.setPullLoadEnable(this);
-        reqData(page,"onRefresh");
+        reqData(page, "onRefresh");
 
     }
 
 
-    private void reqData(int page,String input){
+    private void reqData(int page, String input) {
 
-        CarReqUtils.alarmlist(this,this,null,new RespAlarmList(),input,true, StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).putValue("pageNow",page).createMap()));
+        CarReqUtils.alarmlist(this, this, null, new RespAlarmList(), input, true, StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).putValue("pageNow", page).createMap()));
 
     }
 }

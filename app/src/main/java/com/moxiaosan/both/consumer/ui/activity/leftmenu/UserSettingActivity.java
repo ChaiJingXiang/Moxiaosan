@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.moxiaosan.both.R;
 import com.moxiaosan.both.carowner.ui.activity.BusinessMainActivity;
 import com.moxiaosan.both.carowner.ui.activity.GPSSafeCenterActivity;
+import com.moxiaosan.both.common.ui.activity.LoginActivity;
 import com.moxiaosan.both.consumer.ui.activity.ConsumerMainActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.utils.common.AppData;
@@ -129,6 +130,7 @@ public class UserSettingActivity extends BaseActivity implements View.OnClickLis
                         RespUserInfo respUserInfo=null;
                         AppData.getInstance().saveUserEntity(respUserInfo);
                         ActivityHolder.getInstance().finishAllActivity();
+                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
 //                        System.exit(-1);
                     }else{
 

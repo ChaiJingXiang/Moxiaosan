@@ -20,6 +20,7 @@ import com.utils.api.IApiCallback;
 import com.utils.common.AppData;
 import com.utils.common.EUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import consumer.api.ConsumerReqUtil;
@@ -27,6 +28,7 @@ import consumer.model.Dellabour;
 import consumer.model.Delshop;
 import consumer.model.obj.RespShop;
 import consumer.model.obj.RespShopComment;
+import picture.ImageCheckActivity;
 
 /**
  * Created by chris on 16/3/17.
@@ -123,6 +125,7 @@ public class BusinessInfoAdapter extends BaseExpandableListAdapter{
             groupViewHolder = (GroupViewHolder) convertView.getTag();
         }
         final RespShop respShop = lists.get(groupPosition);
+        final ArrayList<String> imgsURL = new ArrayList<String>();
         groupViewHolder.tvTitle.setText(respShop.getTitle());
         groupViewHolder.tvTime.setText(respShop.getFb_datetime());
         groupViewHolder.tvContent.setText(respShop.getDescribes());
@@ -170,15 +173,65 @@ public class BusinessInfoAdapter extends BaseExpandableListAdapter{
         } else {
             groupViewHolder.picsLayout.setVisibility(View.VISIBLE);
             String[] pics = respShop.getPictures().split(",");
-            if (pics.length == 1) {
-                ImageLoader.getInstance().displayImage(pics[0], groupViewHolder.imgPic1);
-            } else if (pics.length == 2) {
-                ImageLoader.getInstance().displayImage(pics[0], groupViewHolder.imgPic1);
-                ImageLoader.getInstance().displayImage(pics[1], groupViewHolder.imgPic2);
-            } else if (pics.length == 3) {
-                ImageLoader.getInstance().displayImage(pics[0], groupViewHolder.imgPic1);
-                ImageLoader.getInstance().displayImage(pics[1], groupViewHolder.imgPic2);
-                ImageLoader.getInstance().displayImage(pics[2], groupViewHolder.imgPic3);
+            ImageLoader imageLoader = ImageLoader.getInstance();
+
+            if (pics.length > 0) {
+                groupViewHolder.imgPic1.setVisibility(View.VISIBLE);
+                groupViewHolder.imgPic2.setVisibility(View.GONE);
+                groupViewHolder.imgPic3.setVisibility(View.GONE);
+
+                if (groupViewHolder.imgPic1.getTag() != null && groupViewHolder.imgPic1.getTag().equals(pics[0])) {
+                    groupViewHolder.imgPic1.setImageResource(0);
+                } else {
+                    groupViewHolder.imgPic1.setTag(pics[0]);
+                    imageLoader.displayImage(pics[0], groupViewHolder.imgPic1);
+                }
+                for (int i = 0; i < pics.length; i++) {
+                    imgsURL.add(pics[i]); //增加图片地址！！！！
+                }
+                groupViewHolder.imgPic1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ImageCheckActivity.invokeStartActivity(mContext, imgsURL, 0);
+                    }
+                });
+            }
+
+            if (pics.length > 1) {
+                groupViewHolder.imgPic1.setVisibility(View.VISIBLE);
+                groupViewHolder.imgPic2.setVisibility(View.VISIBLE);
+                groupViewHolder.imgPic3.setVisibility(View.GONE);
+
+                if (groupViewHolder.imgPic2.getTag() != null && groupViewHolder.imgPic2.getTag().equals(pics[1])) {
+                    groupViewHolder.imgPic2.setImageResource(0);
+                } else {
+                    groupViewHolder.imgPic2.setTag(pics[1]);
+                    imageLoader.displayImage(pics[1], groupViewHolder.imgPic2);
+                }
+                groupViewHolder.imgPic2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ImageCheckActivity.invokeStartActivity(mContext, imgsURL, 1);
+                    }
+                });
+            }
+            if (pics.length > 2) {
+                groupViewHolder.imgPic1.setVisibility(View.VISIBLE);
+                groupViewHolder.imgPic2.setVisibility(View.VISIBLE);
+                groupViewHolder.imgPic3.setVisibility(View.VISIBLE);
+
+                if (groupViewHolder.imgPic3.getTag() != null && groupViewHolder.imgPic3.getTag().equals(pics[2])) {
+                    groupViewHolder.imgPic3.setImageResource(0);
+                } else {
+                    groupViewHolder.imgPic3.setTag(pics[2]);
+                    imageLoader.displayImage(pics[2], groupViewHolder.imgPic3);
+                }
+                groupViewHolder.imgPic3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ImageCheckActivity.invokeStartActivity(mContext, imgsURL, 2);
+                    }
+                });
             }
         }
 

@@ -415,6 +415,7 @@ public class PublishThingActivity extends BaseActivity implements View.OnClickLi
                 Shopping shopping = (Shopping) output;
                 EUtil.showToast(shopping.getErr());
                 if ("0".equals(shopping.getRes())) {
+                    SellThingActivity.isNeedRefresh = true;
                     finish();
                 }
             }
@@ -422,6 +423,7 @@ public class PublishThingActivity extends BaseActivity implements View.OnClickLi
                 Modiyshop modiyshop = (Modiyshop) output;
                 EUtil.showToast(modiyshop.getErr());
                 if ("0".equals(modiyshop.getRes())) {
+                    SellThingActivity.isNeedRefresh = true;
                     finish();
                 }
             }

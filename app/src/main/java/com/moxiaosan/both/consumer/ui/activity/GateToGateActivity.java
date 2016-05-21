@@ -190,7 +190,7 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
                 if (!TextUtils.isEmpty(tvFromAddress.getText().toString())) {
                     if (!TextUtils.isEmpty(tvToAddress.getText().toString())) {
                         if (!TextUtils.isEmpty(etPeopleName.getText().toString())) {
-                            if (!TextUtils.isEmpty(etPhoneNum.getText().toString()) && etPhoneNum.getText().toString().trim().length() == 11) {
+                            if (!TextUtils.isEmpty(etPhoneNum.getText().toString())) {
                                 if (!TextUtils.isEmpty(etGoodsName.getText().toString())) {
                                     if (!TextUtils.isEmpty(etGoodsPrice.getText().toString())) {
                                         if (!TextUtils.isEmpty(etGoodsLong.getText().toString())) {
@@ -226,7 +226,7 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
                                     EUtil.showToast("货物名称不能为空");
                                 }
                             } else {
-                                EUtil.showToast("电话号码格式不正确");
+                                EUtil.showToast("电话号码不能为空");
                             }
                         } else {
                             EUtil.showToast("姓名不能为空");

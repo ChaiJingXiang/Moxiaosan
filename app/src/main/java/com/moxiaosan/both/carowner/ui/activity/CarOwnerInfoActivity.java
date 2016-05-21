@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.moxiaosan.both.R;
+import com.moxiaosan.both.common.ui.activity.LoginActivity;
 import com.moxiaosan.both.common.ui.activity.ModifyNickNameActivity;
 import com.moxiaosan.both.common.ui.activity.ModifyPasswordActivity;
 import com.moxiaosan.both.common.ui.activity.ModifyPhoneActivity;
@@ -408,9 +409,10 @@ public class CarOwnerInfoActivity extends BaseActivity implements View.OnClickLi
                 public void onClick(View v) {
                     dismiss();
                     if (index == 1) {
-                        ActivityHolder.getInstance().finishAllActivity();
                         RespUserInfo respUserInfo = null;
                         AppData.getInstance().saveUserEntity(respUserInfo);
+                        ActivityHolder.getInstance().finishAllActivity();
+                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
 //                        System.exit(-1);
                     } else {
                         startActivity(new Intent(CarOwnerInfoActivity.this, ConsumerMainActivity.class));

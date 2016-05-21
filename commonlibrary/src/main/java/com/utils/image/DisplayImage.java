@@ -72,52 +72,52 @@ public class DisplayImage {
 
     }
 
-    //显示动态默认图片
-    public static String displayDynamicImage(ImageView imageView, String uri, ThumbnailType type) {
-       int imageID = 0;
-        if (type == ThumbnailType.COLUMN1) {
-            imageID = R.mipmap.default_pic;
-        } else if (type == ThumbnailType.COLUMN2) {
-            imageID = R.mipmap.default_pic_two;
-        } else if (type == ThumbnailType.COLUMN3) {
-            imageID = R.mipmap.default_pic_three;
-        }
-
-        if (!uri.contains("!bac")) {
-            String uriPostfix = "";
-            if (type == ThumbnailType.COLUMN1) {
-                uriPostfix = URI_POSTFIX_BIG;
-            } else if (type == ThumbnailType.COLUMN2) {
-                uriPostfix = URI_POSTFIX_MID;
-            } else if (type == ThumbnailType.COLUMN3) {
-                uriPostfix = URI_POSTFIX_SMALL;
-            }
-            displayImage(imageView, uri + uriPostfix, getSampleDisplayImageOptions(imageID, imageID, imageID), null);
-            return  uri + uriPostfix;
-        }else{
-            displayImage(imageView, uri, getSampleDisplayImageOptions(imageID, imageID, imageID), null);
-            return  uri;
-        }
-
-
-    }
+//    //显示动态默认图片
+//    public static String displayDynamicImage(ImageView imageView, String uri, ThumbnailType type) {
+//       int imageID = 0;
+//        if (type == ThumbnailType.COLUMN1) {
+//            imageID = R.mipmap.default_pic;
+//        } else if (type == ThumbnailType.COLUMN2) {
+//            imageID = R.mipmap.default_pic_two;
+//        } else if (type == ThumbnailType.COLUMN3) {
+//            imageID = R.mipmap.default_pic_three;
+//        }
+//
+//        if (!uri.contains("!bac")) {
+//            String uriPostfix = "";
+//            if (type == ThumbnailType.COLUMN1) {
+//                uriPostfix = URI_POSTFIX_BIG;
+//            } else if (type == ThumbnailType.COLUMN2) {
+//                uriPostfix = URI_POSTFIX_MID;
+//            } else if (type == ThumbnailType.COLUMN3) {
+//                uriPostfix = URI_POSTFIX_SMALL;
+//            }
+//            displayImage(imageView, uri + uriPostfix, getSampleDisplayImageOptions(imageID, imageID, imageID), null);
+//            return  uri + uriPostfix;
+//        }else{
+//            displayImage(imageView, uri, getSampleDisplayImageOptions(imageID, imageID, imageID), null);
+//            return  uri;
+//        }
+//
+//
+//    }
 
     //显示默认头像
-    public static void displayHeadImage(ImageView imageView, String uri, ThumbnailType type) {
-        if (!uri.contains("!bac")) {
-            String uriPostfix = "";
-            if (type == ThumbnailType.COLUMN1) {
-                uriPostfix = URI_POSTFIX_BIG;
-            } else if (type == ThumbnailType.COLUMN2) {
-                uriPostfix = URI_POSTFIX_MID;
-            } else if (type == ThumbnailType.COLUMN3) {
-                uriPostfix = URI_POSTFIX_SMALL;
-            }
-            displayImage(imageView, uri + uriPostfix, getSampleDisplayImageOptions(R.mipmap.icon_default_head, R.mipmap.icon_default_head, R.mipmap.icon_default_head), null);
-        }else{
-            displayImage(imageView, uri, getSampleDisplayImageOptions(R.mipmap.icon_default_head, R.mipmap.icon_default_head, R.mipmap.icon_default_head), null);
-        }
-    }
+//    public static void displayHeadImage(ImageView imageView, String uri, ThumbnailType type) {
+//        if (!uri.contains("!bac")) {
+//            String uriPostfix = "";
+//            if (type == ThumbnailType.COLUMN1) {
+//                uriPostfix = URI_POSTFIX_BIG;
+//            } else if (type == ThumbnailType.COLUMN2) {
+//                uriPostfix = URI_POSTFIX_MID;
+//            } else if (type == ThumbnailType.COLUMN3) {
+//                uriPostfix = URI_POSTFIX_SMALL;
+//            }
+//            displayImage(imageView, uri + uriPostfix, getSampleDisplayImageOptions(R.mipmap.icon_default_head, R.mipmap.icon_default_head, R.mipmap.icon_default_head), null);
+//        }else{
+//            displayImage(imageView, uri, getSampleDisplayImageOptions(R.mipmap.icon_default_head, R.mipmap.icon_default_head, R.mipmap.icon_default_head), null);
+//        }
+//    }
 
     public static void displayImage(ImageView imageView, String uri, ThumbnailType type,int stubImageRes,int errorImageRes) {
         if (!uri.contains("!bac")) {

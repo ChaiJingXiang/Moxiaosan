@@ -1,5 +1,6 @@
 package com.moxiaosan.both.common.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,7 +11,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.moxiaosan.both.R;
-import com.moxiaosan.both.carowner.ui.activity.CarOwnerInfoActivity;
 import com.utils.api.IApiCallback;
 import com.utils.common.AppData;
 import com.utils.common.EUtil;
@@ -23,23 +23,24 @@ import consumer.model.PhoneCode;
 import consumer.model.UpdatePassword;
 import consumer.model.obj.RespUserInfo;
 
-public class ModifyPasswordActivity extends BaseActivity implements View.OnClickListener,IApiCallback{
-    private EditText etPhoneNum,etVerifyCode, etPassword, etRepassword;
-    private static int time =60;
+public class ModifyPasswordActivity extends BaseActivity implements View.OnClickListener, IApiCallback {
+    private EditText etPhoneNum, etVerifyCode, etPassword, etRepassword;
+    private static int time = 60;
     private static TextView tvCode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modify_password);
         showActionBar(true);
         setActionBarName("修改密码");
-        etPhoneNum =(EditText)findViewById(R.id.etPhoneNumId);
+        etPhoneNum = (EditText) findViewById(R.id.etPhoneNumId);
         etVerifyCode = (EditText) findViewById(R.id.modify_password_code_edit);
         etPassword = (EditText) findViewById(R.id.modify_password_password_edit);
         etRepassword = (EditText) findViewById(R.id.modify_password_repassword_edit);
         etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
         etRepassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-        tvCode =(TextView)findViewById(R.id.modify_password_get_code_txt);
+        tvCode = (TextView) findViewById(R.id.modify_password_get_code_txt);
         tvCode.setOnClickListener(this);
         findViewById(R.id.modify_password_ensure_txt).setOnClickListener(this);
 
@@ -56,11 +57,11 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.modify_password_get_code_txt:
-                if(etPhoneNum.getText().toString().trim().length() ==11){
+                if (etPhoneNum.getText().toString().trim().length() == 11) {
                     UserReqUtil.getPhoneCode(this, this, null, new PhoneCode(), "Code", true, StringUrlUtils.geturl(hashMapUtils.putValue("username", etPhoneNum.getText().toString())
                             .putValue("type", 2).createMap()));
 
-                }else{
+                } else {
                     EUtil.showToast("请输入正确格式的手机号");
                 }
                 break;
@@ -73,9 +74,9 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
                             } else {
                                 //网络接口
                                 showLoadingDialog();
-                                UserReqUtil.updatePassword(this,this,null,new UpdatePassword(),
-                                        "UpdatePassword",true,StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername())
-                                                .putValue("password",etPassword.getText().toString()).putValue("code",etVerifyCode.getText().toString()).createMap()));
+                                UserReqUtil.updatePassword(this, this, null, new UpdatePassword(),
+                                        "UpdatePassword", true, StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername())
+                                                .putValue("password", etPassword.getText().toString()).putValue("code", etVerifyCode.getText().toString()).createMap()));
 
 
                             }
@@ -94,7 +95,8 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
 
     //handler定时器postdelayed
     static Handler handler = new Handler();
-    static Runnable runnable = new Runnable() {
+    Runnable runnable = new Runnable() {
+        @SuppressLint("NewApi")
         @Override
         public void run() {
 
@@ -103,10 +105,12 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
                     handler.postDelayed(this, 1000);
                     tvCode.setText(Integer.toString(time--) + "s");
                     tvCode.setClickable(false);
+                    tvCode.setBackground(ModifyPasswordActivity.this.getResources().getDrawable(R.mipmap.get_verify_code));
                 } else {
                     tvCode.setEnabled(true);
                     tvCode.setClickable(true);
                     tvCode.setText("重新获取");
+                    tvCode.setBackground(ModifyPasswordActivity.this.getResources().getDrawable(R.mipmap.register_register_back));
                     handler.removeCallbacks(runnable);
                     time = 60;
                     return;
@@ -121,11 +125,11 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
     @Override
     public void onData(Object output, Object input) {
 
-        if(output!=null){
-            if (output instanceof PhoneCode){
-                PhoneCode code= (PhoneCode) output;
+        if (output != null) {
+            if (output instanceof PhoneCode) {
+                PhoneCode code = (PhoneCode) output;
                 EUtil.showToast(code.getErr());
-                if (code.getRes() == 0){
+                if (code.getRes() == 0) {
                     tvCode.setText("已发送");
 
                     tvCode.setEnabled(false);
@@ -136,19 +140,19 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
                 }
             }
 
-            if(output instanceof UpdatePassword){
+            if (output instanceof UpdatePassword) {
                 dismissLoadingDialog();
-                UpdatePassword password =(UpdatePassword)output;
+                UpdatePassword password = (UpdatePassword) output;
                 EUtil.showToast(password.getErr());
-                if(password.getRes()==0){
+                if (password.getRes() == 0) {
                     ActivityHolder.getInstance().finishAllActivity();
                     RespUserInfo respUserInfo = null;
                     AppData.getInstance().saveUserEntity(respUserInfo);
-                    startActivity(new Intent(this,LoginActivity.class));
+                    startActivity(new Intent(this, LoginActivity.class));
                 }
             }
 
-        }else{
+        } else {
             EUtil.showToast("网络错误，请稍后重试");
         }
 

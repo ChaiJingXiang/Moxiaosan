@@ -23,12 +23,14 @@ import com.utils.api.IApiCallback;
 import com.utils.common.AppData;
 import com.utils.common.EUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import consumer.api.ConsumerReqUtil;
 import consumer.model.Delshop;
 import consumer.model.obj.RespShop;
 import consumer.model.obj.RespShopComment;
+import picture.ImageCheckActivity;
 
 /**
  * Created by qiangfeng on 16/3/10.
@@ -137,6 +139,7 @@ public class SellThingListAdapter extends BaseExpandableListAdapter {
             groupViewHolder = (GroupViewHolder) convertView.getTag();
         }
         final RespShop respShop = respShopList.get(groupPosition);
+        final ArrayList<String> imgsURL = new ArrayList<String>();
         groupViewHolder.tvTitle.setText(respShop.getTitle());
         groupViewHolder.tvTime.setText(respShop.getFb_datetime());
         groupViewHolder.tvContent.setText(respShop.getDescribes());
@@ -184,7 +187,6 @@ public class SellThingListAdapter extends BaseExpandableListAdapter {
         } else {
             groupViewHolder.picsLayout.setVisibility(View.VISIBLE);
             String[] pics = respShop.getPictures().split(",");
-
             ImageLoader imageLoader = ImageLoader.getInstance();
 
             if (pics.length > 0) {
@@ -198,6 +200,15 @@ public class SellThingListAdapter extends BaseExpandableListAdapter {
                     groupViewHolder.imgPic1.setTag(pics[0]);
                     imageLoader.displayImage(pics[0], groupViewHolder.imgPic1, options);
                 }
+                for (int i = 0; i < pics.length; i++) {
+                    imgsURL.add(pics[i]); //增加图片地址！！！！
+                }
+                groupViewHolder.imgPic1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ImageCheckActivity.invokeStartActivity(mContext, imgsURL, 0);
+                    }
+                });
             }
 
             if (pics.length > 1) {
@@ -211,6 +222,12 @@ public class SellThingListAdapter extends BaseExpandableListAdapter {
                     groupViewHolder.imgPic2.setTag(pics[1]);
                     imageLoader.displayImage(pics[1], groupViewHolder.imgPic2, options);
                 }
+                groupViewHolder.imgPic2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ImageCheckActivity.invokeStartActivity(mContext, imgsURL, 1);
+                    }
+                });
             }
             if (pics.length > 2) {
                 groupViewHolder.imgPic1.setVisibility(View.VISIBLE);
@@ -223,6 +240,12 @@ public class SellThingListAdapter extends BaseExpandableListAdapter {
                     groupViewHolder.imgPic3.setTag(pics[2]);
                     imageLoader.displayImage(pics[2], groupViewHolder.imgPic3, options);
                 }
+                groupViewHolder.imgPic3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ImageCheckActivity.invokeStartActivity(mContext, imgsURL, 2);
+                    }
+                });
             }
         }
 
@@ -286,7 +309,7 @@ public class SellThingListAdapter extends BaseExpandableListAdapter {
                 } else {
                     childViewHolder.openCommentLayout.setVisibility(View.GONE);
                 }
-            }else {
+            } else {
                 childViewHolder.openCommentLayout.setVisibility(View.GONE);
             }
         }

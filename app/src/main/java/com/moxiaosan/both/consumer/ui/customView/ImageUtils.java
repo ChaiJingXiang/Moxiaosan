@@ -11,7 +11,8 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
+
+import com.utils.log.LLog;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -216,7 +217,7 @@ public class ImageUtils {
 			imageFilePath = context.getContentResolver().insert(
 					MediaStore.Images.Media.INTERNAL_CONTENT_URI, values);
 		}
-		Log.i("", "生成的照片输出路径：" + imageFilePath.toString());
+		LLog.i("生成的照片输出路径：" + imageFilePath.toString());
 		return imageFilePath;
 	}
 }

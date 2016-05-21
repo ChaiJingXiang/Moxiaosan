@@ -1,5 +1,6 @@
 package com.moxiaosan.both.common.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -208,7 +209,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     //handler定时器postdelayed
     static Handler handler = new Handler();
-    static Runnable runnable = new Runnable() {
+    Runnable runnable = new Runnable() {
+        @SuppressLint("NewApi")
         @Override
         public void run() {
 
@@ -217,10 +219,12 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     handler.postDelayed(this, 1000);
                     tvCode.setText(Integer.toString(time--) + "s");
                     tvCode.setClickable(false);
+                    tvCode.setBackground(RegisterActivity.this.getResources().getDrawable(R.mipmap.get_verify_code));
                 } else {
                     tvCode.setEnabled(true);
                     tvCode.setClickable(true);
                     tvCode.setText("重新获取");
+                    tvCode.setBackground(RegisterActivity.this.getResources().getDrawable(R.mipmap.register_register_back));
                     handler.removeCallbacks(runnable);
                     time = 60;
                     return;

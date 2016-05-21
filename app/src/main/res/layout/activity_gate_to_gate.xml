@@ -488,9 +488,13 @@
                         android:layout_alignParentRight="true"
                         android:background="@color/transparent"
                         android:gravity="right"
-                        android:hint="元"
                         android:numeric="decimal"
                         android:textSize="@dimen/value_14sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="元"
+                        android:textColor="@color/txt_999999" />
                 </LinearLayout>
 
             </LinearLayout>

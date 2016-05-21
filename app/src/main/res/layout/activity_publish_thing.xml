@@ -71,7 +71,6 @@
                     android:layout_marginLeft="@dimen/value_10dp"
                     android:background="@color/txt_white"
                     android:hint="元"
-                    android:numeric="integer"
                     android:textSize="@dimen/value_14sp" />
             </LinearLayout>
 
@@ -104,7 +103,6 @@
                     android:layout_marginLeft="@dimen/value_10dp"
                     android:background="@color/txt_white"
                     android:hint="个"
-                    android:numeric="integer"
                     android:textSize="@dimen/value_14sp" />
             </LinearLayout>
 
@@ -207,6 +205,7 @@
                     android:background="@mipmap/big_edit_back"
                     android:gravity="top"
                     android:hint="商品描述"
+                    android:visibility="visible"
                     android:padding="@dimen/value_10dp" />
 
                 <LinearLayout
@@ -227,6 +226,13 @@
                         android:padding="@dimen/value_10dp"
                         android:scrollbars="none"
                         android:stretchMode="columnWidth" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/txt_999999"
+                        android:textSize="@dimen/value_12sp"
+                        android:text="(最多可以增加3张图片)"
+                        />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

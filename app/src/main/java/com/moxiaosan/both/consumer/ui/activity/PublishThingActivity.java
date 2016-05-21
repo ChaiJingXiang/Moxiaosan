@@ -156,6 +156,16 @@ public class PublishThingActivity extends BaseActivity implements View.OnClickLi
                 return;
             }
             setSpinner(bdLocation);
+            String address = "";
+            if (!TextUtils.isEmpty(bdLocation.getAddress().street)) {
+                address = bdLocation.getAddress().street;
+                if (!TextUtils.isEmpty(bdLocation.getAddress().streetNumber)) {
+                    address = address + bdLocation.getAddress().streetNumber + "号";
+                }
+            } else {
+                EUtil.showToast("系统无法定位您的位置，请手动输入");
+            }
+            etAddress.setText(address);
             if (locClient != null) {
                 locClient.stop();
             }

@@ -22,8 +22,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:id="@+id/shun_feng_che_order_layout"
@@ -103,12 +102,12 @@
                 android:id="@+id/shun_feng_che_guess_free_txt_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:background="@mipmap/xiadan"
                 android:gravity="center"
-                >
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/shun_feng_che_order_txt1"
                     android:layout_width="wrap_content"
@@ -116,6 +115,7 @@
                     android:gravity="center"
                     android:text="预估"
                     android:textColor="@color/txt_white" />
+
                 <TextView
                     android:id="@+id/shun_feng_che_order_txt2"
                     android:layout_width="wrap_content"
@@ -133,8 +133,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:visibility="gone"
-        >
+        android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -184,9 +183,11 @@
                     android:layout_marginTop="@dimen/value_5dp"
                     android:scaleType="centerCrop"
                     android:src="@mipmap/divider_line_horizonal" />
+
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/shun_feng_che_reward_txt"
@@ -204,9 +205,14 @@
                         android:layout_toRightOf="@+id/shun_feng_che_reward_txt"
                         android:background="@color/transparent"
                         android:gravity="right"
-                        android:hint="元"
                         android:numeric="decimal"
                         android:textSize="@dimen/value_14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="元"
+                        android:textColor="@color/txt_999999" />
                 </LinearLayout>
 
             </LinearLayout>

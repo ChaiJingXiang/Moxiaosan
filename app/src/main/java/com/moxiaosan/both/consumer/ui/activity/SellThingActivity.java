@@ -59,7 +59,7 @@ public class SellThingActivity extends BaseActivity implements ExpandableListVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sell_thing);
         showActionBar(true);
-        setActionBarName("卖东西");
+        setActionBarName("买卖东西");
         getActionBarRightImage(R.mipmap.add_icon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

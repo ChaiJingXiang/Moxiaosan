@@ -74,6 +74,7 @@ public class NoPayOrderListAdapter extends BaseAdapter {
             viewHolder.tvDetail = (TextView) convertView.findViewById(R.id.no_pay_list_item_detail);
             viewHolder.tvEnsure = (TextView) convertView.findViewById(R.id.no_pay_listview_item_ensure);
             viewHolder.tvCancle = (TextView) convertView.findViewById(R.id.no_pay_listview_item_cancel);
+            viewHolder.tvTakeTimeTxt = (TextView) convertView.findViewById(R.id.no_pay_list_item_take_time_txt);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -86,6 +87,11 @@ public class NoPayOrderListAdapter extends BaseAdapter {
         viewHolder.tvStartPlace.setText(respUserOrder.getBeginningplace());
         viewHolder.tvEndPlace.setText(respUserOrder.getDestination());
         viewHolder.tvTakeTime.setText(respUserOrder.getPickuptime());
+        if (respUserOrder.getTitle().equals("门到门速递")) {
+            viewHolder.tvTakeTimeTxt.setText("取件时间：");
+        } else {
+            viewHolder.tvTakeTimeTxt.setText("接到乘客时间：");
+        }
         viewHolder.tvDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,7 +112,7 @@ public class NoPayOrderListAdapter extends BaseAdapter {
         viewHolder.tvEnsure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mContext.startActivity(new Intent(mContext, SelectPayMethodActivity.class).putExtra("respUserOrder",respUserOrder));
+                mContext.startActivity(new Intent(mContext, SelectPayMethodActivity.class).putExtra("respUserOrder", respUserOrder));
 
             }
         });
@@ -122,7 +128,7 @@ public class NoPayOrderListAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
-        private TextView tvTile, tvOrderNum, tvPrice, tvDownTime, tvStartPlace, tvEndPlace, tvTakeTime, tvDetail, tvEnsure, tvCancle;
+        private TextView tvTile, tvOrderNum, tvPrice, tvDownTime, tvStartPlace, tvEndPlace, tvTakeTime, tvTakeTimeTxt, tvDetail, tvEnsure, tvCancle;
     }
 
     IApiCallback iApiCallback = new IApiCallback() {

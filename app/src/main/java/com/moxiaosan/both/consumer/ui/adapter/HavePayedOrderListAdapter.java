@@ -63,6 +63,7 @@ public class HavePayedOrderListAdapter extends BaseAdapter {
             viewHolder.tvStartPlace = (TextView) convertView.findViewById(R.id.have_payed_listview_item_start_place);
             viewHolder.tvEndPlace = (TextView) convertView.findViewById(R.id.have_payed_listview_item_end_place);
             viewHolder.tvTakeTime = (TextView) convertView.findViewById(R.id.have_payed_listview_item_take_time);
+            viewHolder.tvTakeTimeTxt = (TextView) convertView.findViewById(R.id.have_payed_listview_item_take_time_txt);
             viewHolder.tvDetail = (TextView) convertView.findViewById(R.id.have_payed_listview_item_detail);
             viewHolder.tvComment = (TextView) convertView.findViewById(R.id.have_payed_listview_item_comment);
             convertView.setTag(viewHolder);
@@ -77,18 +78,23 @@ public class HavePayedOrderListAdapter extends BaseAdapter {
         viewHolder.tvStartPlace.setText(respUserOrder.getBeginningplace());
         viewHolder.tvEndPlace.setText(respUserOrder.getDestination());
         viewHolder.tvTakeTime.setText(respUserOrder.getPickuptime());
+        if (respUserOrder.getTitle().equals("门到门速递")) {
+            viewHolder.tvTakeTimeTxt.setText("取件时间：");
+        } else {
+            viewHolder.tvTakeTimeTxt.setText("接到乘客时间：");
+        }
         viewHolder.tvDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (respUserOrder.getTitle().equals("门到门速递")){
-                    Intent intent=new Intent(mContext, GateOrderDetailActivity.class);
-                    intent.putExtra("respUserOrder",respUserOrder);
+                if (respUserOrder.getTitle().equals("门到门速递")) {
+                    Intent intent = new Intent(mContext, GateOrderDetailActivity.class);
+                    intent.putExtra("respUserOrder", respUserOrder);
                     intent.putExtra("isPayed", true);
                     mContext.startActivity(intent);
-                }else {
-                    Intent intent=new Intent(mContext, ShunFengOrderDetailActivity.class);
-                    intent.putExtra("respUserOrder",respUserOrder);
-                    intent.putExtra("isPayed",true);
+                } else {
+                    Intent intent = new Intent(mContext, ShunFengOrderDetailActivity.class);
+                    intent.putExtra("respUserOrder", respUserOrder);
+                    intent.putExtra("isPayed", true);
                     mContext.startActivity(intent);
                 }
             }
@@ -96,12 +102,12 @@ public class HavePayedOrderListAdapter extends BaseAdapter {
         viewHolder.tvComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(mContext, OrderCommentActivity.class);
+                Intent intent = new Intent(mContext, OrderCommentActivity.class);
                 intent.putExtra("respUserOrder", respUserOrder);
-                if (respUserOrder.getTitle().equals("门到门速递")){
-                    intent.putExtra("type",1);
-                }else {
-                    intent.putExtra("type",2);
+                if (respUserOrder.getTitle().equals("门到门速递")) {
+                    intent.putExtra("type", 1);
+                } else {
+                    intent.putExtra("type", 2);
                 }
                 mContext.startActivity(intent);
             }
@@ -111,13 +117,13 @@ public class HavePayedOrderListAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
-        private TextView tvTile, tvOrderNum, tvPrice, tvDownTime, tvStartPlace, tvEndPlace, tvTakeTime, tvDetail, tvComment;
+        private TextView tvTile, tvOrderNum, tvPrice, tvDownTime, tvStartPlace, tvEndPlace, tvTakeTime, tvTakeTimeTxt, tvDetail, tvComment;
     }
 
-    IApiCallback iApiCallback=new IApiCallback() {
+    IApiCallback iApiCallback = new IApiCallback() {
         @Override
         public void onData(Object output, Object input) {
-            if (output == null){
+            if (output == null) {
                 return;
             }
 //            if (){

@@ -32,7 +32,6 @@ import consumer.StringUrlUtils;
 import consumer.api.CarReqUtils;
 import consumer.api.ConsumerReqUtil;
 import consumer.model.RespBusinissInfo;
-import consumer.model.ShopList;
 import consumer.model.Shopcomments;
 import consumer.model.UpdateNews;
 import consumer.model.obj.RespShop;
@@ -44,11 +43,11 @@ import me.maxwin.view.XExpandableListView;
 /**
  * Created by chris on 16/3/17.
  */
-public class BusinessInfoActivity extends BaseActivity implements ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener, IXListViewRefreshListener ,IXListViewLoadMore,IApiCallback,View.OnClickListener{
+public class BusinessInfoActivity extends BaseActivity implements ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener, IXListViewRefreshListener, IXListViewLoadMore, IApiCallback, View.OnClickListener {
 
     private XExpandableListView expandableListView;
     private BusinessInfoAdapter businessInfoAdapter;
-    private List<RespShop> businessList=new ArrayList<RespShop>();
+    private List<RespShop> businessList = new ArrayList<RespShop>();
     private LinearLayout noLayout;
     private int page = 1;
 
@@ -60,6 +59,8 @@ public class BusinessInfoActivity extends BaseActivity implements ExpandableList
     private RespShop businessInfo;
     private TextView tvMessage;
 
+    public static boolean isNeedFresh = false;  //在onResume()中是否需要刷新
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,14 +68,15 @@ public class BusinessInfoActivity extends BaseActivity implements ExpandableList
         setContentView(R.layout.b_businessinfo_layout);
         showActionBar(true);
         setActionBarName("商业白板");
-
+        showLoadingDialog();
+        reqData(page, "onFirst");
     }
 
-    private void initView(){
+    private void initView() {
 
-        tvMessage =(TextView)findViewById(R.id.messageCount);
+        tvMessage = (TextView) findViewById(R.id.messageCount);
 
-        noLayout= (LinearLayout) findViewById(R.id.sell_thing_no_layout);
+        noLayout = (LinearLayout) findViewById(R.id.sell_thing_no_layout);
 
         etComment = (EditText) findViewById(R.id.sell_thing_comment_edit);
         imgExpression = (ImageView) findViewById(R.id.sell_thing_expression);
@@ -83,8 +85,8 @@ public class BusinessInfoActivity extends BaseActivity implements ExpandableList
         tvSend.setOnClickListener(this);
         commentLayout = (RelativeLayout) findViewById(R.id.sell_thing_comment_layout);
 
-        expandableListView= (XExpandableListView) findViewById(R.id.business_thing_expandablelistview);
-        businessInfoAdapter=new BusinessInfoAdapter(this,businessList);
+        expandableListView = (XExpandableListView) findViewById(R.id.business_thing_expandablelistview);
+        businessInfoAdapter = new BusinessInfoAdapter(this, businessList);
         expandableListView.setAdapter(businessInfoAdapter);
         expandableListView.setOnGroupClickListener(this);
         expandableListView.setOnChildClickListener(this);
@@ -114,9 +116,11 @@ public class BusinessInfoActivity extends BaseActivity implements ExpandableList
     @Override
     public void onResume() {
         super.onResume();
-        showLoadingDialog();
-        reqData(page, "onFirst");
-
+        if (isNeedFresh) {
+            isNeedFresh = false;
+            showLoadingDialog();
+            reqData(page, "onFirst");
+        }
     }
 
     @Override
@@ -137,38 +141,38 @@ public class BusinessInfoActivity extends BaseActivity implements ExpandableList
 
     @Override
     public void onRefresh() {
-        page =1;
+        page = 1;
         expandableListView.setPullLoadEnable(this);
-        reqData(page,"onRefresh");
-
+        reqData(page, "onRefresh");
     }
 
     @Override
     public void onData(Object output, Object input) {
-        if(output!=null){
+        if (output != null) {
             dismissLoadingDialog();
-            if(output instanceof RespBusinissInfo){
-                RespBusinissInfo businissInfo =(RespBusinissInfo)output;
-                if (businissInfo.getRes().equals("0")){
+            if (output instanceof RespBusinissInfo) {
+                RespBusinissInfo businissInfo = (RespBusinissInfo) output;
+                if (businissInfo.getRes().equals("0")) {
                     dismissLoadingDialog();
-                    businessList =businissInfo.getData();
+                    businessList = businissInfo.getData();
 
-                    if(input.equals("onFirst")){
-                        if(businessList.size()==0){
-                            businessList =businissInfo.getData();
+                    if (input.equals("onFirst")) {
+                        if (businessList.size() == 0) {
+                            businessList = businissInfo.getData();
                             initView();
                             noLayout.setVisibility(View.VISIBLE);
-                        }else{
-                            businessList =businissInfo.getData();
+                        } else {
+                            businessList = businissInfo.getData();
                             initView();
+                            expandableListView.setPullLoadEnable(this);
                             noLayout.setVisibility(View.GONE);
                         }
 
-                        if(businissInfo.getNewsnum().equals("0")){
+                        if (businissInfo.getNewsnum().equals("0")) {
                             tvMessage.setVisibility(View.GONE);
-                        }else{
+                        } else {
                             tvMessage.setVisibility(View.VISIBLE);
-                            tvMessage.setText(businissInfo.getNewsnum()+"条新消息");
+                            tvMessage.setText(businissInfo.getNewsnum() + "条新消息");
                             tvMessage.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -181,16 +185,16 @@ public class BusinessInfoActivity extends BaseActivity implements ExpandableList
                             });
                         }
 
-                    }else if(input.equals("onRefresh")){
+                    } else if (input.equals("onRefresh")) {
                         expandableListView.stopRefresh(new Date());
-                        businessList=businissInfo.getData();
+                        businessList = businissInfo.getData();
                         businessInfoAdapter.refreshData(businessList);
 
 //                        businessInfoAdapter=new BusinessInfoAdapter(this,businessList);
 //                        expandableListView.setAdapter(businessInfoAdapter);
-                    }else{
+                    } else {
                         expandableListView.stopLoadMore();
-                        List<RespShop> newList =businissInfo.getData();
+                        List<RespShop> newList = businissInfo.getData();
                         businessList.addAll(newList);
                         businessInfoAdapter.refreshData(businessList);
                     }
@@ -200,7 +204,7 @@ public class BusinessInfoActivity extends BaseActivity implements ExpandableList
                         expandableListView.expandGroup(i);
                     }
 
-                }else{
+                } else {
                     dismissLoadingDialog();
                     expandableListView.disablePullLoad();
                     EUtil.showToast("没有更多了哦~");
@@ -216,14 +220,14 @@ public class BusinessInfoActivity extends BaseActivity implements ExpandableList
                         RespShopComment respShopComment = new RespShopComment();
                         respShopComment.setCommentstext(commentContent);
                         respShopComment.setUsername(AppData.getInstance().getUserEntity().getUsername());
-                        businessList.get(i).getComments().add(0,respShopComment);
+                        businessList.get(i).getComments().add(0, respShopComment);
                         businessInfoAdapter.refreshData(businessList);
                         break;
                     }
                 }
             }
 
-        }else{
+        } else {
             dismissLoadingDialog();
             EUtil.showToast("网络错误，请稍后重试");
         }
@@ -231,22 +235,20 @@ public class BusinessInfoActivity extends BaseActivity implements ExpandableList
 
     @Override
     public void onLoadMore() {
-
-        page +=1;
-        reqData(page,"loadMore");
-
+        page += 1;
+        reqData(page, "loadMore");
     }
 
-    private void reqData(int page,String input){
+    private void reqData(int page, String input) {
 
         CarReqUtils.businessList(this, this, null, new RespBusinissInfo(), input, true,
-                StringUrlUtils.geturl(hashMapUtils.putValue("pageNow", page).putValue("username",AppData.getInstance().getUserEntity().getUsername()).createMap()));
+                StringUrlUtils.geturl(hashMapUtils.putValue("pageNow", page).putValue("username", AppData.getInstance().getUserEntity().getUsername()).createMap()));
 
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.sell_thing_expression:
 
                 break;

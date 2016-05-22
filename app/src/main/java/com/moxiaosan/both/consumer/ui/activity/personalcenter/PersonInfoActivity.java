@@ -48,7 +48,7 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
     private final static int UPLOAD_OK = 1;
     private final static int UPLOAD_FAIL = 2;
 
-    private boolean isUploadingPic = false; //是否在上传图片  默认不在上传
+    public static boolean isUploadingPic = false; //是否在上传图片  默认不在上传
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +135,6 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onSuccess(String fileUrl) {
                 mFileUrl = fileUrl;
-//                Log.i("PersonInfoActivity","头像上传地址=="+mFileUrl);
                 handler.sendEmptyMessage(UPLOAD_OK);
             }
 
@@ -152,7 +151,6 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-
                 case UPLOAD_OK:
                     if (isLoadingDialogShowing()){
                         dismissLoadingDialog();
@@ -233,27 +231,31 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
             case ImageUtils.GET_IMAGE_FROM_PHONE:
                 if (data != null && data.getData() != null) {
                     // 可以直接显示图片,或者进行其他处理(如压缩或裁剪等)
-                    // iv.setImageURI(data.getData());
-
-                    // 对图片进行裁剪
-                    ImageUtils.cropImage(this, data.getData());
-                }
-                break;
-            // 裁剪图片后结果
-            case ImageUtils.CROP_IMAGE:
-//                LLog.i("onActivityResult");
-                if (ImageUtils.cropImageUri != null) {
-                    // 可以直接显示图片,或者进行其他处理(如压缩等)
-                    userPhoto.setImageURI(ImageUtils.cropImageUri);
-
-                    mLocalFilePath = getPath(ImageUtils.cropImageUri);
-
+                    userPhoto.setImageURI(data.getData());
+                    mLocalFilePath = getPath(data.getData());
 //                    Log.i("info+++",mLocalFilePath);
                     mUploader.start(mLocalFilePath);
                     isUploadingPic = true; //开始上传
                     showLoadingDialog();
+                    // 对图片进行裁剪
+//                    ImageUtils.cropImage(this, data.getData());
                 }
                 break;
+            // 裁剪图片后结果
+//            case ImageUtils.CROP_IMAGE:
+////                LLog.i("onActivityResult");
+//                if (ImageUtils.cropImageUri != null) {
+//                    // 可以直接显示图片,或者进行其他处理(如压缩等)
+//                    userPhoto.setImageURI(ImageUtils.cropImageUri);
+//
+//                    mLocalFilePath = getPath(ImageUtils.cropImageUri);
+//
+////                    Log.i("info+++",mLocalFilePath);
+//                    mUploader.start(mLocalFilePath);
+//                    isUploadingPic = true; //开始上传
+//                    showLoadingDialog();
+//                }
+//                break;
             default:
                 break;
         }

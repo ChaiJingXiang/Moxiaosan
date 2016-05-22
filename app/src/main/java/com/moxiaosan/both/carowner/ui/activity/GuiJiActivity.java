@@ -15,7 +15,6 @@ import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
@@ -57,7 +56,7 @@ import lecho.lib.hellocharts.view.LineChartView;
 /**
  * Created by chris on 16/3/18.
  */
-public class GuiJiActivity extends BaseActivity implements IApiCallback{
+public class GuiJiActivity extends BaseActivity implements IApiCallback {
 
     private CheckBox checkBox;
     private Spinner spinner;
@@ -73,10 +72,10 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
     private boolean hasAxesNames = true;
     private ValueShape shape = ValueShape.CIRCLE;
     private ProgressBar progressBar;
-    private boolean flag =true;
-    private List<LatLng> points =null;
-    private TextView tvAllKm,tvMAxSpeed,tvAverageSpeed;
-    private  List<GuiJiObj> list =new ArrayList<>();
+    private boolean flag = true;
+    private List<LatLng> points = null;
+    private TextView tvAllKm, tvMAxSpeed, tvAverageSpeed;
+    private List<GuiJiObj> list = new ArrayList<>();
 
     //该程序模拟填充长度为100的数组
     private int[] array = new int[101];
@@ -85,11 +84,11 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
     int status = 0;
 
     BitmapDescriptor bd = BitmapDescriptorFactory.fromResource(R.mipmap.icon_dingwei);
-    private LatLng ll1 =null;
-    private LatLng ll2 =null;
-    private LatLng ll3 =null;
-    private LatLng ll4 =null;
-    private LatLng ll5 =null;
+    private LatLng ll1 = null;
+    private LatLng ll2 = null;
+    private LatLng ll3 = null;
+    private LatLng ll4 = null;
+    private LatLng ll5 = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,45 +98,45 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
         showActionBar(true);
         setActionBarName("骑行轨迹");
 
-        checkBox =(CheckBox)findViewById(R.id.guiji_checkbox);
-        spinner =(Spinner)findViewById(R.id.spinnerId);
+        checkBox = (CheckBox) findViewById(R.id.guiji_checkbox);
+        spinner = (Spinner) findViewById(R.id.spinnerId);
 
-        progressBar =(ProgressBar)findViewById(R.id.progressBarId);
+        progressBar = (ProgressBar) findViewById(R.id.progressBarId);
 
         // 地图初始化
-        mMapView =(MapView)findViewById(R.id.mapViewId);
+        mMapView = (MapView) findViewById(R.id.mapViewId);
 
-        tvAllKm =(TextView)findViewById(R.id.allKimId);
-        tvMAxSpeed =(TextView)findViewById(R.id.maxSpeedId);
-        tvAverageSpeed =(TextView)findViewById(R.id.averageSpeedId);
+        tvAllKm = (TextView) findViewById(R.id.allKimId);
+        tvMAxSpeed = (TextView) findViewById(R.id.maxSpeedId);
+        tvAverageSpeed = (TextView) findViewById(R.id.averageSpeedId);
 
         initMapView();
 
         showLoadingDialog();
-        CarReqUtils.travelingtrack(this, this, null,new RespGuiJI(),"travelingtrack",true,
+        CarReqUtils.travelingtrack(this, this, null, new RespGuiJI(), "travelingtrack", true,
                 StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).
-                        putValue("hour",1).createMap()));
+                        putValue("hour", 1).createMap()));
 
         //时间spinner
-        m = (String[])getResources().getStringArray(R.array.guiji_time);
+        m = (String[]) getResources().getStringArray(R.array.guiji_time);
 
-        arrayAdapter = new SpinnerAdapter(this,m);
+        arrayAdapter = new SpinnerAdapter(this, m);
         //设置下拉列表的风格
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);
 
         //设置默认值
         spinner.setVisibility(View.VISIBLE);
-        spinner.setSelection(0,true);
+        spinner.setSelection(0, true);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 showLoadingDialog();
 
-                CarReqUtils.travelingtrack(GuiJiActivity.this, GuiJiActivity.this, null,new RespGuiJI(),"spinner",true,
+                CarReqUtils.travelingtrack(GuiJiActivity.this, GuiJiActivity.this, null, new RespGuiJI(), "spinner", true,
                         StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).
-                                putValue("hour",m[position]).createMap()));
+                                putValue("hour", m[position]).createMap()));
 
             }
 
@@ -158,25 +157,25 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                if(isChecked){
+                if (isChecked) {
 
-                    hasData =0;
-                    status =0;
-                    flag =true;
+                    hasData = 0;
+                    status = 0;
+                    flag = true;
 
-                    new Thread(){
+                    new Thread() {
                         @Override
                         public void run() {
                             super.run();
-                            while(flag){
+                            while (flag) {
 
-                                if(status<100){
+                                if (status < 100) {
                                     // 获取耗时操作的完成百分比
                                     status = doWork();
                                     // 发送消息到Handler
                                     handler.sendEmptyMessage(0);
 
-                                }else{
+                                } else {
                                     handler.sendEmptyMessage(1);
                                 }
 
@@ -185,7 +184,7 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
                         }
                     }.start();
 
-                }else{
+                } else {
 
                     handler.sendEmptyMessage(1);
                 }
@@ -194,32 +193,37 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
         });
     }
 
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
-            if(msg.what ==0){
-                progressBar.setProgress(status);
-                if(status>0 && status<=20){
-                    OverlayOptions oo = new MarkerOptions().position(ll1).icon(bd).zIndex(9).draggable(true);
-                    Marker markers = (Marker) (mBaiduMap.addOverlay(oo));
-                }else if(status>20 && status<=40){
-                    OverlayOptions oo = new MarkerOptions().position(ll2).icon(bd).zIndex(9).draggable(true);
-                    Marker markers = (Marker) (mBaiduMap.addOverlay(oo));
-                }else if(status>40 && status<=60){
-                    OverlayOptions oo = new MarkerOptions().position(ll3).icon(bd).zIndex(9).draggable(true);
-                    Marker markers = (Marker) (mBaiduMap.addOverlay(oo));
-                }else if(status>60 && status<=80){
-                    OverlayOptions oo = new MarkerOptions().position(ll4).icon(bd).zIndex(9).draggable(true);
-                    Marker markers = (Marker) (mBaiduMap.addOverlay(oo));
+            if (msg.what == 0) {
+                if(list.size()==0){
+                    return;
                 }else{
-                    OverlayOptions oo = new MarkerOptions().position(ll5).icon(bd).zIndex(9).draggable(true);
-                    Marker markers = (Marker) (mBaiduMap.addOverlay(oo));
+                    progressBar.setProgress(status);
+                    if (status > 0 && status <= 20) {
+                        OverlayOptions oo = new MarkerOptions().position(ll1).icon(bd).zIndex(9).draggable(true);
+                        Marker markers = (Marker) (mBaiduMap.addOverlay(oo));
+                    } else if (status > 20 && status <= 40) {
+                        OverlayOptions oo = new MarkerOptions().position(ll2).icon(bd).zIndex(9).draggable(true);
+                        Marker markers = (Marker) (mBaiduMap.addOverlay(oo));
+                    } else if (status > 40 && status <= 60) {
+                        OverlayOptions oo = new MarkerOptions().position(ll3).icon(bd).zIndex(9).draggable(true);
+                        Marker markers = (Marker) (mBaiduMap.addOverlay(oo));
+                    } else if (status > 60 && status <= 80) {
+                        OverlayOptions oo = new MarkerOptions().position(ll4).icon(bd).zIndex(9).draggable(true);
+                        Marker markers = (Marker) (mBaiduMap.addOverlay(oo));
+                    } else {
+                        OverlayOptions oo = new MarkerOptions().position(ll5).icon(bd).zIndex(9).draggable(true);
+                        Marker markers = (Marker) (mBaiduMap.addOverlay(oo));
+                    }
                 }
-            }else{
-                flag =false;
-                status =100;
+
+            } else {
+                flag = false;
+                status = 100;
                 progressBar.setProgress(status);
                 checkBox.setChecked(false);
             }
@@ -235,26 +239,26 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
     @Override
     public void onData(Object output, Object input) {
 
-        if(output !=null){
+        if (output != null) {
             dismissLoadingDialog();
-            if(output instanceof RespGuiJI){
-                RespGuiJI guiji =(RespGuiJI)output;
-                if(guiji.getRes().equals("0")){
+            if (output instanceof RespGuiJI) {
+                RespGuiJI guiji = (RespGuiJI) output;
+                if (guiji.getRes().equals("0")) {
 
-                    if(input.equals("spinner")){
+                    if (input.equals("spinner")) {
 
-                        if(list.size()!=0){
+                        if (list.size() != 0) {
                             list.clear();
                         }
 
-                        list =guiji.getData();
-                        numberOfPoints =list.size();
+                        list = guiji.getData();
+                        numberOfPoints = list.size();
 
-                        Log.i("info---==--",list.size()+"");
+                        Log.i("info---==--", list.size() + "");
 
-                        tvAllKm.setText(guiji.getJourney()+"km");
-                        tvMAxSpeed.setText(guiji.getMaxspeed()+"km/h");
-                        tvAverageSpeed.setText(guiji.getAveragespeed()+"km/h");
+                        tvAllKm.setText(guiji.getJourney() + "km");
+                        tvMAxSpeed.setText(guiji.getMaxspeed() + "km/h");
+                        tvAverageSpeed.setText(guiji.getAveragespeed() + "km/h");
 
                         reset();
 
@@ -264,49 +268,53 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
 
                         generateData();
 
-                        if(points.size()!=0){
+                        if (points.size() != 0) {
                             mBaiduMap.clear();
 
                             points.clear();
 
-                            Log.i("info===---",points.size()+"");
+                            Log.i("info===---", points.size() + "");
 
                         }
 
-                        for(int i=0;i<list.size();i++){
-                            double [] db = BaiduLocation.wgs2bd(list.get(i).getLat(),list.get(i).getLng());
-                            points.add(new LatLng(db[0] , db[1]));
+                        for (int i = 0; i < list.size(); i++) {
+                            double[] db = BaiduLocation.wgs2bd(list.get(i).getLat(), list.get(i).getLng());
+                            points.add(new LatLng(db[0], db[1]));
 //                            points.add(new LatLng(list.get(i).getLat(),list.get(i).getLng()));
 
                         }
 
-                        Log.i("info===---",points.size()+"");
+                        Log.i("info===---", points.size() + "");
 
-                        if(list.size()>30){
-                            ll1 =new LatLng(points.get(1).latitude,points.get(1).longitude);
-                            ll2 =new LatLng(points.get(list.size()/4).latitude,points.get(list.size()/4).longitude);
-                            ll3 =new LatLng(points.get(list.size()/3).latitude,points.get(list.size()/3).longitude);
-                            ll4 =new LatLng(points.get(list.size()/2).latitude,points.get(list.size()/2).longitude);
-                            ll5 =new LatLng(points.get(list.size()-1).latitude,points.get(list.size()-1).longitude);
+                        if (list.size() > 30) {
+                            ll1 = new LatLng(points.get(1).latitude, points.get(1).longitude);
+                            ll2 = new LatLng(points.get(list.size() / 4).latitude, points.get(list.size() / 4).longitude);
+                            ll3 = new LatLng(points.get(list.size() / 3).latitude, points.get(list.size() / 3).longitude);
+                            ll4 = new LatLng(points.get(list.size() / 2).latitude, points.get(list.size() / 2).longitude);
+                            ll5 = new LatLng(points.get(list.size() - 1).latitude, points.get(list.size() - 1).longitude);
+
+                        } else if(list.size()==0){
+
+                            return;
 
                         }else{
 
-                            ll1 =new LatLng(points.get(0).latitude,points.get(0).longitude);
-                            ll2 =new LatLng(points.get(0).latitude,points.get(0).longitude);
-                            ll3 =new LatLng(points.get(0).latitude,points.get(0).longitude);
-                            ll4 =new LatLng(points.get(0).latitude,points.get(0).longitude);
-                            ll5 =new LatLng(points.get(0).latitude,points.get(0).longitude);
+                            ll1 = new LatLng(points.get(0).latitude, points.get(0).longitude);
+                            ll2 = new LatLng(points.get(0).latitude, points.get(0).longitude);
+                            ll3 = new LatLng(points.get(0).latitude, points.get(0).longitude);
+                            ll4 = new LatLng(points.get(0).latitude, points.get(0).longitude);
+                            ll5 = new LatLng(points.get(0).latitude, points.get(0).longitude);
                         }
 
-                        if(points.size()>=2){
-                            OverlayOptions ooStart = new MarkerOptions().position(new LatLng(points.get(0).latitude,points.get(0).longitude)).icon(BitmapDescriptorFactory
+                        if (points.size() >= 2) {
+                            OverlayOptions ooStart = new MarkerOptions().position(new LatLng(points.get(0).latitude, points.get(0).longitude)).icon(BitmapDescriptorFactory
                                     .fromResource(R.mipmap.ic_photograph_coordinate)).zIndex(4).draggable(false);
 
                             if (mBaiduMap != null) {
                                 mBaiduMap.addOverlay(ooStart);
                             }
 
-                            LatLng llA = new LatLng(points.get(points.size()-1).latitude,points.get(points.size()-1).longitude);
+                            LatLng llA = new LatLng(points.get(points.size() - 1).latitude, points.get(points.size() - 1).longitude);
 
                             OverlayOptions ooEnd = new MarkerOptions().position(llA).icon(BitmapDescriptorFactory
                                     .fromResource(R.mipmap.chufa_small)).zIndex(4).draggable(false);
@@ -324,56 +332,55 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
 
                         }
 
-                    }else{
+                    } else {
 
-                        points =new ArrayList<>();
+                        points = new ArrayList<>();
 
-                        list =guiji.getData();
+                        list = guiji.getData();
 
-                        Log.i("info---==--",list.size()+"");
+                        Log.i("info---==--", list.size() + "");
 
-                        numberOfPoints =list.size();
+                        numberOfPoints = list.size();
 
-                        for(int i=0;i<list.size();i++){
-                            double [] db = BaiduLocation.wgs2bd(list.get(i).getLat(),list.get(i).getLng());
-                            points.add(new LatLng(db[0] , db[1]));
+                        for (int i = 0; i < list.size(); i++) {
+                            double[] db = BaiduLocation.wgs2bd(list.get(i).getLat(), list.get(i).getLng());
+                            points.add(new LatLng(db[0], db[1]));
 //                            points.add(new LatLng(list.get(i).getLat(),list.get(i).getLng()));
 
                         }
 
-                        if(list.size()>30){
-                            ll1 =new LatLng(points.get(1).latitude,points.get(1).longitude);
-                            ll2 =new LatLng(points.get(list.size()/4).latitude,points.get(list.size()/4).longitude);
-                            ll3 =new LatLng(points.get(list.size()/3).latitude,points.get(list.size()/3).longitude);
-                            ll4 =new LatLng(points.get(list.size()/2).latitude,points.get(list.size()/2).longitude);
-                            ll5 =new LatLng(points.get(list.size()-1).latitude,points.get(list.size()-1).longitude);
+                        if (list.size() > 30) {
+                            ll1 = new LatLng(points.get(1).latitude, points.get(1).longitude);
+                            ll2 = new LatLng(points.get(list.size() / 4).latitude, points.get(list.size() / 4).longitude);
+                            ll3 = new LatLng(points.get(list.size() / 3).latitude, points.get(list.size() / 3).longitude);
+                            ll4 = new LatLng(points.get(list.size() / 2).latitude, points.get(list.size() / 2).longitude);
+                            ll5 = new LatLng(points.get(list.size() - 1).latitude, points.get(list.size() - 1).longitude);
 
-                        }else{
+                        } else {
 
-                            ll1 =new LatLng(points.get(0).latitude,points.get(0).longitude);
-                            ll2 =new LatLng(points.get(0).latitude,points.get(0).longitude);
-                            ll3 =new LatLng(points.get(0).latitude,points.get(0).longitude);
-                            ll4 =new LatLng(points.get(0).latitude,points.get(0).longitude);
-                            ll5 =new LatLng(points.get(0).latitude,points.get(0).longitude);
+                            ll1 = new LatLng(points.get(0).latitude, points.get(0).longitude);
+                            ll2 = new LatLng(points.get(0).latitude, points.get(0).longitude);
+                            ll3 = new LatLng(points.get(0).latitude, points.get(0).longitude);
+                            ll4 = new LatLng(points.get(0).latitude, points.get(0).longitude);
+                            ll5 = new LatLng(points.get(0).latitude, points.get(0).longitude);
                         }
 
 
+                        Log.i("info-----", list.toString());
 
-                        Log.i("info-----",list.toString());
+                        tvAllKm.setText(guiji.getJourney() + "km");
+                        tvMAxSpeed.setText(guiji.getMaxspeed() + "km/h");
+                        tvAverageSpeed.setText(guiji.getAveragespeed() + "km/h");
 
-                        tvAllKm.setText(guiji.getJourney()+"km");
-                        tvMAxSpeed.setText(guiji.getMaxspeed()+"km/h");
-                        tvAverageSpeed.setText(guiji.getAveragespeed()+"km/h");
-
-                        if(points.size()>=2){
-                            OverlayOptions ooStart = new MarkerOptions().position(new LatLng(points.get(0).latitude,points.get(0).longitude)).icon(BitmapDescriptorFactory
+                        if (points.size() >= 2) {
+                            OverlayOptions ooStart = new MarkerOptions().position(new LatLng(points.get(0).latitude, points.get(0).longitude)).icon(BitmapDescriptorFactory
                                     .fromResource(R.mipmap.ic_photograph_coordinate)).zIndex(4).draggable(false);
 
                             if (mBaiduMap != null) {
                                 mBaiduMap.addOverlay(ooStart);
                             }
 
-                            LatLng llA = new LatLng(points.get(points.size()-1).latitude,points.get(points.size()-1).longitude);
+                            LatLng llA = new LatLng(points.get(points.size() - 1).latitude, points.get(points.size() - 1).longitude);
 
                             OverlayOptions ooEnd = new MarkerOptions().position(llA).icon(BitmapDescriptorFactory
                                     .fromResource(R.mipmap.chufa_small)).zIndex(4).draggable(false);
@@ -401,13 +408,13 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
                         generateData();
                     }
 
-                }else{
+                } else {
                     dismissLoadingDialog();
                     EUtil.showToast(guiji.getErr());
 //                    finish();
                 }
             }
-        }else{
+        } else {
             dismissLoadingDialog();
             EUtil.showToast("网络错误，请稍后重试");
             finish();
@@ -433,7 +440,7 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
         mMapView.removeViewAt(1); //隐藏百度logo
         mMapView.setLongClickable(true);
         mBaiduMap = mMapView.getMap();
-        MapStatusUpdate msu = MapStatusUpdateFactory.newLatLngZoom(new LatLng(22.553719,113.925328),17.0f);
+        MapStatusUpdate msu = MapStatusUpdateFactory.newLatLngZoom(new LatLng(22.553719, 113.925328), 17.0f);
         mBaiduMap.setMapStatus(msu);
         mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, null));
 
@@ -463,11 +470,11 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
 
 
     private void generateValues() {
-        speedArray =new float[numberOfPoints];
+        speedArray = new float[numberOfPoints];
 
-        for (int i = 0; i <numberOfPoints; i++) {
+        for (int i = 0; i < numberOfPoints; i++) {
 
-            speedArray[i] =Integer.parseInt(list.get(i).getSpeed());
+            speedArray[i] = Integer.parseInt(list.get(i).getSpeed());
 
         }
 
@@ -477,7 +484,7 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
 
         @Override
         public void onValueSelected(int lineIndex, int pointIndex, PointValue value) {
-            Toast.makeText(GuiJiActivity.this, "Selected: " + value, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(GuiJiActivity.this, "Selected: " + value, Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -492,7 +499,7 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
 
         List<PointValue> values = new ArrayList<PointValue>();
 
-        for(int i=0;i<list.size();i++){
+        for (int i = 0; i < list.size(); i++) {
             values.add(new PointValue(i, speedArray[i]));
         }
 //        values.add(new PointValue(0, 2));
@@ -544,7 +551,7 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
         v.bottom = 0;
         v.top = 160;
         v.left = 0;
-        v.right = numberOfPoints-1;
+        v.right = numberOfPoints - 1;
         chart.setMaximumViewport(v);
         chart.setCurrentViewport(v);
     }
@@ -558,18 +565,13 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback{
     }
 
 
-
     //模拟一个耗时的操作。
-    public int doWork()
-    {
+    public int doWork() {
         //为数组元素赋值
-        array[hasData+=10] = (int)(Math.random() * 100);
-        try
-        {
+        array[hasData += 10] = (int) (Math.random() * 100);
+        try {
             Thread.sleep(1000);
-        }
-        catch (InterruptedException e)
-        {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
         return hasData;

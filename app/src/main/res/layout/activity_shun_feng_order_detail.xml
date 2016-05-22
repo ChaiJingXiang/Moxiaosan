@@ -87,14 +87,15 @@
 
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/txt_white"
-        android:padding="@dimen/value_10dp"
         android:layout_marginTop="@dimen/value_10dp"
-        >
+        android:background="@color/txt_white"
+        android:orientation="vertical"
+        android:padding="@dimen/value_10dp">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -137,6 +138,7 @@
                 android:textColor="@color/txt_666666"
                 android:textSize="@dimen/value_14sp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -208,6 +210,7 @@
                 android:textColor="@color/txt_orange" />
         </RelativeLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -216,7 +219,12 @@
         android:orientation="vertical"
         android:padding="@dimen/value_10dp">
 
-        <ImageView
+        <!--<ImageView-->
+        <!--android:id="@+id/shun_feng_order_detail_map_img"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/value_100dp"-->
+        <!--android:scaleType="fitXY" />-->
+        <com.baidu.mapapi.map.MapView
             android:id="@+id/shun_feng_order_detail_map_img"
             android:layout_width="match_parent"
             android:layout_height="@dimen/value_100dp"
@@ -227,8 +235,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:gravity="center_vertical"
             android:layout_marginTop="@dimen/value_5dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <ImageView
@@ -240,8 +248,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="分享"
                 android:layout_marginLeft="@dimen/value_5dp"
+                android:text="分享"
                 android:textColor="@color/txt_666666"
                 android:textSize="@dimen/value_14sp" />
         </LinearLayout>

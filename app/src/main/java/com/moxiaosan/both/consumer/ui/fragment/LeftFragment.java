@@ -84,7 +84,7 @@ public class LeftFragment extends Fragment implements View.OnClickListener {
             }
             if (output instanceof Userinfo) {
                 Userinfo userinfo = (Userinfo) output;
-                if (!TextUtils.isEmpty(userinfo.getData().getHeadportrait())){
+                if (!TextUtils.isEmpty(userinfo.getData().getHeadportrait())) {
                     ImageLoader.getInstance().displayImage(userinfo.getData().getHeadportrait(), imgPhoto);
                 }
                 tvNickName.setText(userinfo.getData().getNickname());
@@ -103,7 +103,7 @@ public class LeftFragment extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(getActivity(), MyAppraiseActivity.class));
                 break;
             case R.id.left_frag_menu_layout2:
-                startActivity(new Intent(getActivity(), MyWalletActivity.class).putExtra("userType",AppData.getInstance().getUserEntity().getUserType()));
+                startActivity(new Intent(getActivity(), MyWalletActivity.class).putExtra("userType", AppData.getInstance().getUserEntity().getUserType()));
                 break;
             case R.id.left_frag_menu_layout3:
                 startActivity(new Intent(getActivity(), UseHelpActivity.class));
@@ -122,6 +122,10 @@ public class LeftFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.left_frag_menu_layout8:
                 Intent shareIntent = new Intent(getActivity(), ShareActivity.class);
+                shareIntent.putExtra("title", "推荐应用摩小三给你");
+                shareIntent.putExtra("content", "农村移动互联网众包服务第一平台，同城速递，农村顺风车，找劳力，卖农货，请用摩小三。详情访问:http://www.moxiaosan.com");
+                shareIntent.putExtra("imgPath", "app_log");
+                shareIntent.putExtra("targetUrl", "http://www.moxiaosan.com");
                 this.startActivity(shareIntent);
                 getActivity().overridePendingTransition(R.anim.share_pop_in, 0);
                 break;

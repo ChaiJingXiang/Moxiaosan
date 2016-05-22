@@ -26,6 +26,13 @@ public class RespUserOrderInfo implements Serializable {
     private String pickuptime;
     private String deliverytime;
 
+    private String b_lat;
+    private String b_lng;
+    private String d_lat;
+    private String d_lng;
+    private String car_lat;
+    private String car_lng;
+
     public String getDeliverytime() {
         return deliverytime;
     }
@@ -160,5 +167,53 @@ public class RespUserOrderInfo implements Serializable {
 
     public void setWidth(String width) {
         this.width = width;
+    }
+
+    public String getB_lat() {
+        return b_lat;
+    }
+
+    public void setB_lat(String b_lat) {
+        this.b_lat = b_lat;
+    }
+
+    public String getB_lng() {
+        return b_lng;
+    }
+
+    public void setB_lng(String b_lng) {
+        this.b_lng = b_lng;
+    }
+
+    public String getCar_lat() {
+        return car_lat;
+    }
+
+    public void setCar_lat(String car_lat) {
+        this.car_lat = car_lat;
+    }
+
+    public String getCar_lng() {
+        return car_lng;
+    }
+
+    public void setCar_lng(String car_lng) {
+        this.car_lng = car_lng;
+    }
+
+    public String getD_lat() {
+        return d_lat;
+    }
+
+    public void setD_lat(String d_lat) {
+        this.d_lat = d_lat;
+    }
+
+    public String getD_lng() {
+        return d_lng;
+    }
+
+    public void setD_lng(String d_lng) {
+        this.d_lng = d_lng;
     }
 }

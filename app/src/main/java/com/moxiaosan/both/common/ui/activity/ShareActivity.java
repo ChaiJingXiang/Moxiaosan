@@ -16,9 +16,12 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.bean.SocializeEntity;
 import com.umeng.socialize.bean.StatusCode;
 import com.umeng.socialize.controller.listener.SocializeListeners;
+import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.sso.UMSsoHandler;
 import com.utils.common.EUtil;
 import com.utils.share.ShareManager;
+
+import java.io.File;
 
 public class ShareActivity extends Activity implements View.OnClickListener {
     protected int activityCloseEnterAnimation;
@@ -43,8 +46,18 @@ public class ShareActivity extends Activity implements View.OnClickListener {
     }
 
     private void initView() {
+        String title = getIntent().getStringExtra("title");
+        String content = getIntent().getStringExtra("content");
+
+        UMImage localImage = null;
+        if (getIntent().getStringExtra("imgPath").equals("app_log")) {
+            localImage = new UMImage(this, R.mipmap.ic_launcher);
+        } else {
+            localImage = new UMImage(this, getIntent().getStringExtra("imgPath"));
+        }
+        String targetUrl = getIntent().getStringExtra("targetUrl");
         //设置分享内容
-        ShareManager.getInstance(ShareActivity.this).shareApp(R.mipmap.ic_launcher);
+        ShareManager.getInstance(ShareActivity.this).share(title, content, localImage, targetUrl);
 
         imgWX = (ImageView) findViewById(R.id.share_weixin_img);
         imgWX.setOnClickListener(this);
@@ -135,6 +148,10 @@ public class ShareActivity extends Activity implements View.OnClickListener {
             if (eCode == StatusCode.ST_CODE_SUCCESSED) {
                 showText = "分享成功";
                 EUtil.showToast(showText);
+                if (!getIntent().getStringExtra("imgPath").equals("app_log")){
+                    File file=new File(getIntent().getStringExtra("imgPath"));
+                    file.delete();
+                }
                 finish();
             } else if (eCode == StatusCode.ST_CODE_ERROR_CANCEL) {
 

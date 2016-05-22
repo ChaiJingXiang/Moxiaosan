@@ -28,7 +28,6 @@ dependencies {
     compile 'com.google.code.gson:gson:2.6.1'
     compile files('libs/pinyin4j-2.5.0.jar')
     compile files('libs/zxing.jar')
-    compile files('src/main/jniLibs/BaiduLBS_Android.jar')
     compile files('libs/SocialSDK_QQZone_1.jar')
     compile files('libs/SocialSDK_QQZone_2.jar')
     compile files('libs/SocialSDK_QQZone_3.jar')
@@ -39,4 +38,5 @@ dependencies {
     compile files('libs/alipaySdk-20160223.jar')
     compile files('libs/wmqtt.jar')
     compile files('libs/umeng-update-v2.7.0.jar')
+    compile files('src/main/jniLibs/BaiduLBS_Android.jar')
 }

@@ -439,7 +439,13 @@
             android:orientation="vertical"
             android:padding="@dimen/value_10dp">
 
-            <ImageView
+            <!--<ImageView-->
+                <!--android:id="@+id/gate_order_detail_map_img"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/value_100dp"-->
+                <!--android:scaleType="fitXY" />-->
+
+            <com.baidu.mapapi.map.MapView
                 android:id="@+id/gate_order_detail_map_img"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/value_100dp"

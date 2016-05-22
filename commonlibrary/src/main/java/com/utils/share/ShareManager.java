@@ -124,16 +124,16 @@ public class ShareManager {
     /**
      * 分享APP
      */
-    public void shareApp(int mipmapId) {
-        UMImage localImage = new UMImage(mActivity, mipmapId);
-        String content = "农村移动互联网众包服务第一平台，同城速递，农村顺风车，找劳力，卖农货，请用摩小三。详情访问:http://www.moxiaosan.com";
-        String title = "推荐应用摩小三给你";
-        String targetUrl = "http://www.moxiaosan.com";
-//        if (defaultConfig != null) {
-//            targetUrl = defaultConfig.getData().getRespAndroidDefaultConfig().getUserDownloadUrl();
-//        }
-        share(title, content, localImage, targetUrl);
-    }
+//    public void shareApp(int mipmapId) {
+//        UMImage localImage = new UMImage(mActivity, mipmapId);
+//        String content = "农村移动互联网众包服务第一平台，同城速递，农村顺风车，找劳力，卖农货，请用摩小三。详情访问:http://www.moxiaosan.com";
+//        String title = "推荐应用摩小三给你";
+//        String targetUrl = "http://www.moxiaosan.com";
+////        if (defaultConfig != null) {
+////            targetUrl = defaultConfig.getData().getRespAndroidDefaultConfig().getUserDownloadUrl();
+////        }
+//        share(title, content, localImage, targetUrl);
+//    }
 
 
 
@@ -148,7 +148,7 @@ public class ShareManager {
      * 分享
      * targetUrl此参数可以不使用  根据需求设置不同的url
      */
-    private void share(String title, String content, UMImage umImage, String targetUrl) {
+    public void share(String title, String content, UMImage umImage, String targetUrl) {
         if (!TextUtils.isEmpty(content)) {
             if (content.length() > 120) {
                 content = content.substring(0, 120);

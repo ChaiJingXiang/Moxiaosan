@@ -3,20 +3,47 @@ package com.moxiaosan.both.consumer.ui.activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MapStatusUpdate;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.MyLocationConfiguration;
+import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.route.BikingRouteResult;
+import com.baidu.mapapi.search.route.DrivingRoutePlanOption;
+import com.baidu.mapapi.search.route.DrivingRouteResult;
+import com.baidu.mapapi.search.route.OnGetRoutePlanResultListener;
+import com.baidu.mapapi.search.route.PlanNode;
+import com.baidu.mapapi.search.route.RoutePlanSearch;
+import com.baidu.mapapi.search.route.TransitRouteResult;
+import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.moxiaosan.both.R;
+import com.moxiaosan.both.carowner.ui.consumer.DrivingRouteOverlay;
 import com.moxiaosan.both.common.ui.activity.ShareActivity;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.utils.api.IApiCallback;
 import com.utils.common.AppData;
 import com.utils.common.EUtil;
 import com.utils.log.LLog;
 import com.utils.ui.base.BaseActivity;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import consumer.HashMapUtils;
 import consumer.StringUrlUtils;
@@ -38,7 +65,12 @@ public class GateOrderDetailActivity extends BaseActivity implements View.OnClic
     private ImageView imgLine1, imgLine2, imgLine3;
     private TextView tvQujian, tvFuWu, tvPaiSong, tvQueRen;
     private LinearLayout shareLayout;
-    private ImageView imgMap;
+//    private ImageView imgMap;
+
+    private MapView mMapView = null;
+    private BaiduMap mBaiduMap = null;
+    // 路线规划对象
+    private RoutePlanSearch mSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +81,7 @@ public class GateOrderDetailActivity extends BaseActivity implements View.OnClic
         isPayed = getIntent().getBooleanExtra("isPayed", false);
         setActionBarName("订单编号：" + respUserOrder.getOrderid());
         initView();
+        initMapView();
     }
 
     @Override
@@ -90,7 +123,7 @@ public class GateOrderDetailActivity extends BaseActivity implements View.OnClic
         tvPaiSong = (TextView) findViewById(R.id.gate_order_detail_paisong);
         tvQueRen = (TextView) findViewById(R.id.gate_order_detail_queren);
 
-        imgMap = (ImageView) findViewById(R.id.gate_order_detail_map_img);
+//        imgMap = (ImageView) findViewById(R.id.gate_order_detail_map_img);
         shareLayout = (LinearLayout) findViewById(R.id.gate_order_detail_share_layout);
         shareLayout.setOnClickListener(this);
 
@@ -104,8 +137,20 @@ public class GateOrderDetailActivity extends BaseActivity implements View.OnClic
         }
     }
 
+    private void initMapView() {
+        mMapView = (MapView) findViewById(R.id.gate_order_detail_map_img);
+        mMapView.showZoomControls(false);
+        mMapView.showScaleControl(false);
+        mMapView.removeViewAt(1); //隐藏百度logo
+        mMapView.setLongClickable(true);
+        mBaiduMap = mMapView.getMap();
+//        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(13.0f);
+//        mBaiduMap.setMapStatus(msu);
+        mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, null));
+    }
+
     private void setData(RespUserOrderInfo respUserOrderInfo) {
-        ImageLoader.getInstance().displayImage("https://www.baidu.com/img/bd_logo1.png", imgMap);
+//        ImageLoader.getInstance().displayImage("https://www.baidu.com/img/bd_logo1.png", imgMap);
         tvFromPlace.setText(respUserOrderInfo.getBeginningplace());
         tvToPlace.setText(respUserOrderInfo.getDestination());
         tvShoujianRen.setText(respUserOrderInfo.getAddressee());
@@ -142,6 +187,101 @@ public class GateOrderDetailActivity extends BaseActivity implements View.OnClic
             LLog.i("===========");
         }
 
+        //计算中间值
+        double mLat = (Double.valueOf(respUserOrderInfo.getD_lat()) + Double.valueOf(respUserOrderInfo.getB_lat())) / 2;
+        double mLng = (Double.valueOf(respUserOrderInfo.getD_lng()) + Double.valueOf(respUserOrderInfo.getB_lng())) / 2;
+        LatLng middleLatLng = new LatLng(mLat, mLng);
+
+        LatLng beginLatLng = new LatLng(Double.valueOf(respUserOrderInfo.getB_lat()), Double.valueOf(respUserOrderInfo.getB_lng()));
+
+        LatLng dLatLng = new LatLng(Double.valueOf(respUserOrderInfo.getD_lat()), Double.valueOf(respUserOrderInfo.getD_lng()));
+
+        if (!TextUtils.isEmpty(respUserOrderInfo.getCar_lat()) && !TextUtils.isEmpty(respUserOrderInfo.getCar_lng())) {
+            LatLng carLatLng = new LatLng(Double.valueOf(respUserOrderInfo.getCar_lat()), Double.valueOf(respUserOrderInfo.getCar_lng()));
+            OverlayOptions ooCar = new MarkerOptions().position(carLatLng).icon(BitmapDescriptorFactory.fromResource(R.mipmap.location_indicator)).zIndex(4).draggable(false);
+            mBaiduMap.addOverlay(ooCar);
+        }
+
+        MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(middleLatLng, 18.0f);
+        mBaiduMap.animateMapStatus(u);
+        routePlan(beginLatLng, dLatLng);
+
+    }
+
+    /**
+     * 发起路线规划
+     */
+    public void routePlan(LatLng bLatLng, LatLng dLatLng) {
+        mSearch = RoutePlanSearch.newInstance();
+        mSearch.setOnGetRoutePlanResultListener(listener);
+        // 起点与终点
+        PlanNode stNode = PlanNode.withLocation(bLatLng);
+        PlanNode enNode = PlanNode.withLocation(dLatLng);
+//        PlanNode stNode = PlanNode.withLocation(new LatLng(39.909843, 116.434452));
+//        PlanNode enNode = PlanNode.withLocation(new LatLng(39.915599, 116.402831));
+        // 驾车路线规划
+        mSearch.drivingSearch(new DrivingRoutePlanOption().from(stNode).to(enNode));
+    }
+
+    /**
+     * 路线规划结果监听
+     */
+    OnGetRoutePlanResultListener listener = new OnGetRoutePlanResultListener() {
+        public void onGetWalkingRouteResult(WalkingRouteResult result) {
+            // 获取步行线路规划结果
+        }
+
+        public void onGetTransitRouteResult(TransitRouteResult result) {
+            // 获取公交换乘路径规划结果
+        }
+
+        public void onGetDrivingRouteResult(DrivingRouteResult result) {
+            // 获取驾车线路规划结果
+            if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
+                EUtil.showToast("抱歉，未找到结果");
+            }
+            if (result.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
+                // 起终点或途经点地址有岐义，通过以下接口获取建议查询信息
+                return;
+            }
+            if (result.error == SearchResult.ERRORNO.NO_ERROR) {
+                DrivingRouteOverlay overlay = new MyDrivingRouteOverlay(mBaiduMap);
+                mBaiduMap.setOnMarkerClickListener(overlay);
+                overlay.setData(result.getRouteLines().get(0));
+                overlay.addToMap();
+                overlay.zoomToSpan();
+            }
+        }
+
+        @Override
+        public void onGetBikingRouteResult(BikingRouteResult bikingRouteResult) {
+            // 获取骑行路径规划结果
+        }
+
+    };
+
+    // 驾车路线 定制RouteOverly
+    private class MyDrivingRouteOverlay extends DrivingRouteOverlay {
+
+        public MyDrivingRouteOverlay(BaiduMap baiduMap) {
+            super(baiduMap);
+        }
+
+        @Override
+        public BitmapDescriptor getStartMarker() {
+//            if (useDefaultIcon) {
+//                return BitmapDescriptorFactory.fromResource(R.drawable.icon_st);
+//            }
+            return null;
+        }
+
+        @Override
+        public BitmapDescriptor getTerminalMarker() {
+//            if (useDefaultIcon) {
+//                return BitmapDescriptorFactory.fromResource(R.drawable.icon_en);
+//            }
+            return null;
+        }
     }
 
     IApiCallback iApiCallback = new IApiCallback() {
@@ -202,7 +342,36 @@ public class GateOrderDetailActivity extends BaseActivity implements View.OnClic
                 }
                 break;
             case R.id.gate_order_detail_share_layout:
+                //设置截屏监听
+                final File file = new File(Environment.getExternalStorageDirectory(),System.currentTimeMillis() + ".png");
+                mBaiduMap.snapshot(new BaiduMap.SnapshotReadyCallback() {
+                    @Override
+                    public void onSnapshotReady(Bitmap bitmap) {
+                        if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+                            EUtil.showLongToast("请插入SD卡");
+                            return;
+                        }
+                        FileOutputStream out;
+                        try {
+                            out = new FileOutputStream(file);
+                            if (bitmap.compress(Bitmap.CompressFormat.PNG, 70, out)) {
+                                out.flush();
+                                out.close();
+                            }
+                            LLog.i("屏幕截图成功，图片存在: " + file.toString());
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
                 Intent shareIntent = new Intent(GateOrderDetailActivity.this, ShareActivity.class);
+                shareIntent.putExtra("title","推荐应用摩小三给你");
+                shareIntent.putExtra("content","分享摩小三截图给你");
+                shareIntent.putExtra("imgPath",file.toString());
+                shareIntent.putExtra("targetUrl","http://www.moxiaosan.com");
                 this.startActivity(shareIntent);
                 overridePendingTransition(R.anim.share_pop_in, 0);
                 break;
@@ -243,5 +412,11 @@ public class GateOrderDetailActivity extends BaseActivity implements View.OnClic
                 }
             });
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mMapView.onDestroy();
     }
 }

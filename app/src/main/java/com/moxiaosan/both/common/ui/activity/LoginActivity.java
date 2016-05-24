@@ -106,7 +106,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     AppData.getInstance().saveUserEntity(userInfo);
 
 
-                    if (login.getData().getAppstatus().equals("0")) {
+                    if (login.getData().getAppstatus().equals("1") || login.getData().getAppstatus().equals("4")) {
                         SharedPreferences sp = getSharedPreferences("request", Activity.MODE_PRIVATE);
 
                         SharedPreferences.Editor editor = sp.edit();

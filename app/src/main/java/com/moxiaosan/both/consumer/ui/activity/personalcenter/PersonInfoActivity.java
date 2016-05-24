@@ -242,20 +242,20 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
                 }
                 break;
             // 裁剪图片后结果
-//            case ImageUtils.CROP_IMAGE:
-////                LLog.i("onActivityResult");
-//                if (ImageUtils.cropImageUri != null) {
-//                    // 可以直接显示图片,或者进行其他处理(如压缩等)
-//                    userPhoto.setImageURI(ImageUtils.cropImageUri);
-//
-//                    mLocalFilePath = getPath(ImageUtils.cropImageUri);
-//
-////                    Log.i("info+++",mLocalFilePath);
-//                    mUploader.start(mLocalFilePath);
-//                    isUploadingPic = true; //开始上传
-//                    showLoadingDialog();
-//                }
-//                break;
+            case ImageUtils.CROP_IMAGE:
+//                LLog.i("onActivityResult");
+                if (ImageUtils.cropImageUri != null) {
+                    // 可以直接显示图片,或者进行其他处理(如压缩等)
+                    userPhoto.setImageURI(ImageUtils.cropImageUri);
+
+                    mLocalFilePath = getPath(ImageUtils.cropImageUri);
+
+//                    Log.i("info+++",mLocalFilePath);
+                    mUploader.start(mLocalFilePath);
+                    isUploadingPic = true; //开始上传
+                    showLoadingDialog();
+                }
+                break;
             default:
                 break;
         }

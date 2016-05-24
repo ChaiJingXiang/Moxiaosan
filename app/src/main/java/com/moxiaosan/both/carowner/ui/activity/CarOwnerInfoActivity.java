@@ -238,19 +238,19 @@ public class CarOwnerInfoActivity extends BaseActivity implements View.OnClickLi
                 }
                 break;
             // 裁剪图片后结果
-//            case ImageUtils.CROP_IMAGE:
-//                if (ImageUtils.cropImageUri != null) {
-//                    // 可以直接显示图片,或者进行其他处理(如压缩等)
-//                    userPhoto.setImageURI(ImageUtils.cropImageUri);
-//
-//                    mLocalFilePath = getPath(ImageUtils.cropImageUri);
-//
-////                    Log.i("info+++",mLocalFilePath);
-//                    mUploader.start(mLocalFilePath);
-//                    isUploadingPic = true;
-//                    showLoadingDialog();
-//                }
-//                break;
+            case ImageUtils.CROP_IMAGE:
+                if (ImageUtils.cropImageUri != null) {
+                    // 可以直接显示图片,或者进行其他处理(如压缩等)
+                    userPhoto.setImageURI(ImageUtils.cropImageUri);
+
+                    mLocalFilePath = getPath(ImageUtils.cropImageUri);
+
+//                    Log.i("info+++",mLocalFilePath);
+                    mUploader.start(mLocalFilePath);
+                    isUploadingPic = true;
+                    showLoadingDialog();
+                }
+                break;
             default:
                 break;
         }

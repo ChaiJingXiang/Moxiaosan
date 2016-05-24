@@ -1,5 +1,14 @@
 package com.moxiaosan.both.utils;
 
+import android.graphics.BitmapFactory;
+import android.text.TextUtils;
+import android.util.Log;
+
+import com.utils.common.AppData;
+
+import org.apache.http.protocol.HTTP;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -11,21 +20,12 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.http.protocol.HTTP;
-import org.json.JSONObject;
-
-import android.graphics.BitmapFactory;
-import android.text.TextUtils;
-import android.util.Log;
-
-import com.utils.common.AppData;
-
 public class AvatarUploader {
 
     private final String TAG = getClass().getSimpleName();
 
     // 常量
-    private final String WEB_URL = "http://219.235.15.66:8005/upload"; // 服务器地址
+    private final String WEB_URL = "http://114.215.158.238:8005/upload"; // 服务器地址
     //private final String ERR_MSG_FILE_NOT_EXIST = "文件不存在";
     //private final String ERR_MSG_FILE_SIZE_EXCEED_LIMIT = "文件大小超过限制";
     private final int FILE_SIZE_LIMIT = 10 * 1024 * 1024; // 最大10M

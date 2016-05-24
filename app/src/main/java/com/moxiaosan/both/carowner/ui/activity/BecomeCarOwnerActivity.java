@@ -18,21 +18,16 @@ import android.widget.Toast;
 import com.moxiaosan.both.R;
 import com.moxiaosan.both.utils.AvatarUploader;
 import com.moxiaosan.both.utils.FileUploader;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.utils.api.IApiCallback;
 import com.utils.common.AppData;
 import com.utils.common.EUtil;
-import com.utils.image.BitmapUtils;
 import com.utils.ui.base.BaseActivity;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import consumer.StringUrlUtils;
 import consumer.api.CarReqUtils;
 import consumer.model.BecomeApply;
-import consumer.model.PhoneCode;
 import picture.PictureGalleryActivity;
 
 public class BecomeCarOwnerActivity extends BaseActivity implements View.OnClickListener,FileUploader.OnFileUploadListener,IApiCallback{
@@ -128,7 +123,8 @@ public class BecomeCarOwnerActivity extends BaseActivity implements View.OnClick
                                                 showLoadingDialog();
                                                 CarReqUtils.apply(this,this,null,new BecomeApply(),"Apply",true,
                                                         StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).
-                                                                putValue("surname",etName.getText().toString().toString()).
+                                                                putValue("surname",etName.getText().toString().trim()).
+                                                                putValue("cardnum",etCardNumber.getText().toString().trim()).
                                                                 putValue("platenum",etCarNumber.getText().toString().trim()).
                                                                 putValue("drivingnum",etDriverNumber.getText().toString().trim()).
                                                                 putValue("cartype",etCarType.getText().toString().trim()).

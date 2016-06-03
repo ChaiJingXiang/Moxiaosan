@@ -25,7 +25,7 @@ public class AvatarUploader {
     private final String TAG = getClass().getSimpleName();
 
     // 常量
-    private final String WEB_URL = "http://114.215.158.238:8005/upload"; // 服务器地址
+    private final String WEB_URL = "http://120.76.101.90:8005/upload"; // 服务器地址
     //private final String ERR_MSG_FILE_NOT_EXIST = "文件不存在";
     //private final String ERR_MSG_FILE_SIZE_EXCEED_LIMIT = "文件大小超过限制";
     private final int FILE_SIZE_LIMIT = 10 * 1024 * 1024; // 最大10M

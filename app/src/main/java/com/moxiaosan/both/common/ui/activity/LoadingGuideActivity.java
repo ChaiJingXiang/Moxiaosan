@@ -73,7 +73,7 @@ public class LoadingGuideActivity extends BaseActivity implements View.OnClickLi
     private void initViewPagers() {
         imageViewList = new ArrayList<ImageView>();
         int[] images = {R.mipmap.guide_one, R.mipmap.guide_two,
-                R.mipmap.guide_three, R.mipmap.guide_four};
+                R.mipmap.guide_three};
 
         ImageView imageView;
 

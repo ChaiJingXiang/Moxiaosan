@@ -15,6 +15,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"
+            android:paddingTop="@dimen/value_5dp"
+            android:paddingBottom="@dimen/value_5dp"
+            android:paddingRight="@dimen/value_20dp"
+            android:layout_centerVertical="true"
             android:src="@mipmap/main_user_photo" />
 
         <TextView

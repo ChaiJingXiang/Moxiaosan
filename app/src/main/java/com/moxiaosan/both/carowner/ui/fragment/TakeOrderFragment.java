@@ -1,6 +1,9 @@
 package com.moxiaosan.both.carowner.ui.fragment;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -31,12 +34,14 @@ import me.maxwin.view.XListView;
  * Created by chris on 16/2/29.
  */
 public class TakeOrderFragment extends BaseFragment_v4 implements IXListViewRefreshListener, IXListViewLoadMore, IApiCallback {
+    public final static String HAVE_NEW_ORDER = "have_new_order";
     private XListView listView;
     private TakeOrderListAdapter adapter;
     private int page = 1;
     protected HashMapUtils hashMapUtils = null;
     private List<OrderObj> lists;
 
+    private BusinessMainBroadReceiver businessMainBroadReceiver;
 
     @Nullable
     @Override
@@ -59,8 +64,22 @@ public class TakeOrderFragment extends BaseFragment_v4 implements IXListViewRefr
 
 
 //        reqData(page, "onFirst");
-
+        IntentFilter iFilter = new IntentFilter();
+        iFilter.addAction(HAVE_NEW_ORDER);  //有新订单
+        businessMainBroadReceiver = new BusinessMainBroadReceiver();
+        getActivity().registerReceiver(businessMainBroadReceiver, iFilter);
     }
+
+    public class BusinessMainBroadReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(HAVE_NEW_ORDER)) {
+                onRefresh();
+            }
+        }
+    }
+
 
     @Override
     public void onResume() {
@@ -139,5 +158,11 @@ public class TakeOrderFragment extends BaseFragment_v4 implements IXListViewRefr
             CarReqUtils.orderList(getActivity(), this, null, new RespOrderList(), input, true,
                     StringUrlUtils.geturl(hashMapUtils.putValue("pageNow", page).putValue("city", sp.getString("city", "")).createMap()));
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(businessMainBroadReceiver);
     }
 }

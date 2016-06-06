@@ -11,7 +11,8 @@ public class RespLabour implements Serializable {
     private static final long serialVersionUID = 1044969461332246173L;
     private String Id;
     private String title;
-    private String fb_datetime;
+    private String fb_datetime;  //项目发布时间
+    private String datetime; //项目服务时间
     private String technique;  //技能要求
     private String nums;
     private String salary;
@@ -98,5 +99,13 @@ public class RespLabour implements Serializable {
 
     public void setOpenComments(boolean openComments) {
         isOpenComments = openComments;
+    }
+
+    public String getDatetime() {
+        return datetime;
+    }
+
+    public void setDatetime(String datetime) {
+        this.datetime = datetime;
     }
 }

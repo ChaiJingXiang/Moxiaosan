@@ -145,26 +145,32 @@
                 android:text="查看详情"
                 android:textColor="@color/txt_orange" />
 
-            <TextView
-                android:id="@+id/no_pay_listview_item_cancel"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:background="@mipmap/order_txt_back"
-                android:gravity="center"
-                android:text="取消订单"
-                android:textColor="@color/txt_orange" />
+                android:gravity="right"
+                android:layout_alignParentRight="true">
+                <TextView
+                    android:id="@+id/no_pay_listview_item_ensure"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/value_10dp"
+                    android:background="@mipmap/order_txt_back"
+                    android:gravity="center"
+                    android:text="确认付款"
+                    android:textColor="@color/txt_orange" />
+                <TextView
+                    android:id="@+id/no_pay_listview_item_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/order_txt_back"
+                    android:gravity="center"
+                    android:text="取消订单"
+                    android:textColor="@color/txt_orange"
+                    android:visibility="visible" />
 
-            <TextView
-                android:id="@+id/no_pay_listview_item_ensure"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/value_10dp"
-                android:layout_toLeftOf="@+id/no_pay_listview_item_cancel"
-                android:background="@mipmap/order_txt_back"
-                android:gravity="center"
-                android:text="确认付款"
-                android:textColor="@color/txt_orange" />
+            </LinearLayout>
+
         </RelativeLayout>
     </LinearLayout>
 

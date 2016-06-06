@@ -138,6 +138,48 @@
                 android:textColor="@color/txt_666666"
                 android:textSize="@dimen/value_14sp" />
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/value_3dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="@dimen/value_80dp"
+                android:layout_height="wrap_content"
+                android:text="费用："
+                android:textColor="@color/txt_666666"
+                android:textSize="@dimen/value_14sp" />
+
+            <TextView
+                android:id="@+id/shun_feng_order_detail_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" "
+                android:textColor="@color/txt_orange"
+                android:textSize="@dimen/value_14sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/value_3dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="@dimen/value_80dp"
+                android:layout_height="wrap_content"
+                android:text="打赏金额："
+                android:textColor="@color/txt_666666"
+                android:textSize="@dimen/value_14sp" />
+
+            <TextView
+                android:id="@+id/shun_feng_order_detail_ward_moeny"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" "
+                android:textColor="@color/txt_orange"
+                android:textSize="@dimen/value_14sp" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -186,6 +228,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="right"
             android:layout_marginTop="@dimen/value_3dp">
 
             <TextView

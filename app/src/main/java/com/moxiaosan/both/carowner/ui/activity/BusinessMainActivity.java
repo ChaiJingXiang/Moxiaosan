@@ -50,8 +50,8 @@ import consumer.model.obj.RespUserInfo;
  */
 
 public class BusinessMainActivity extends BaseFragmentActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener,IApiCallback {
-
     public final static int CITY_GET_CODE = 1;
+
     private SlidingMenu slidingMenu;
     private FragmentManager fm;
     private LeftFragment_two lf;
@@ -192,11 +192,8 @@ public class BusinessMainActivity extends BaseFragmentActivity implements View.O
     @Override
     public void onResume() {
         super.onResume();
-
         CarReqUtils.Achivement(this, this, null, new Achievement(), "Achievement", true,
                 StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).createMap()));
-
-
     }
 
     @Override
@@ -220,7 +217,7 @@ public class BusinessMainActivity extends BaseFragmentActivity implements View.O
                 break;
 
             case R.id.safeCenterId:
-                startActivity(new Intent(BusinessMainActivity.this, GPSSafeCenterActivity.class));
+                startActivity(new Intent(BusinessMainActivity.this, GPSSafeCenterActivity.class).putExtra("isFromMain",true));
                 break;
 
         }

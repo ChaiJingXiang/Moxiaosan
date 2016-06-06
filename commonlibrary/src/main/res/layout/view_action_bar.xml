@@ -13,9 +13,9 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:paddingLeft="@dimen/value_10dp"
-        android:paddingRight="@dimen/value_10dp"
-        android:paddingTop="@dimen/value_5dp"
-        android:paddingBottom="@dimen/value_5dp"
+        android:paddingRight="@dimen/value_20dp"
+        android:paddingTop="@dimen/value_8dp"
+        android:paddingBottom="@dimen/value_8dp"
         android:background="#00000000"
         android:src="@drawable/title_back_no" />
 

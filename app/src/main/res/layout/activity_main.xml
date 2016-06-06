@@ -102,7 +102,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/value_10dp"
-                    android:text="门到门速递"
+                    android:text="@string/gate_to_gate"
                     android:textColor="@color/txt_white"
                     android:textSize="@dimen/value_16sp" />
             </LinearLayout>
@@ -126,7 +126,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/value_10dp"
-                    android:text="顺风车"
+                    android:text="@string/shun_feng_che"
                     android:textColor="@color/txt_white"
                     android:textSize="@dimen/value_16sp" />
             </LinearLayout>
@@ -158,7 +158,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/value_10dp"
-                    android:text="买卖东西"
+                    android:text="@string/sell_shop_thing"
                     android:textColor="@color/txt_white"
                     android:textSize="@dimen/value_16sp" />
             </LinearLayout>
@@ -182,7 +182,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/value_10dp"
-                    android:text="找劳力"
+                    android:text="@string/find_labour"
                     android:textColor="@color/txt_white"
                     android:textSize="@dimen/value_16sp" />
             </LinearLayout>

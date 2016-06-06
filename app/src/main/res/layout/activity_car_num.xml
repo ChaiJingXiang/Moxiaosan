@@ -19,12 +19,12 @@
             android:padding="@dimen/value_10dp">
 
             <EditText
-                android:id="@+id/modify_proviceId"
+                android:id="@+id/carNumId"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/value_30dp"
                 android:textColor="@color/txt_333333"
                 android:textSize="@dimen/value_14sp"
-                android:hint="输入详细地址"
+                android:hint="车牌号"
                 android:background="@color/txt_white" />
         </LinearLayout>
 
@@ -34,25 +34,6 @@
             android:layout_marginLeft="@dimen/value_10dp"
             android:scaleType="centerCrop"
             android:src="@mipmap/divider_line_horizonal" />
-
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@color/txt_white"-->
-            <!--android:gravity="center_vertical"-->
-            <!--android:orientation="horizontal"-->
-            <!--android:visibility="gone"-->
-            <!--android:padding="@dimen/value_10dp">-->
-
-            <!--<EditText-->
-                <!--android:id="@+id/modify_address"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="@dimen/value_30dp"-->
-                <!--android:textColor="@color/txt_333333"-->
-                <!--android:textSize="@dimen/value_14sp"-->
-                <!--android:hint="详细地址"-->
-                <!--android:background="@color/txt_white" />-->
-        <!--</LinearLayout>-->
 
     </LinearLayout>
 
@@ -64,7 +45,7 @@
         >
 
         <TextView
-            android:id="@+id/sureId"
+            android:id="@+id/car_Num_Sure_Id"
             android:layout_width="match_parent"
             android:layout_height="@dimen/value_40dp"
             android:text="确定"
@@ -75,6 +56,5 @@
             />
 
     </LinearLayout>
-
 
 </LinearLayout>

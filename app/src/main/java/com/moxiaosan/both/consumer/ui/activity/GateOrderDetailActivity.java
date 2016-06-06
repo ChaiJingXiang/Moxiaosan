@@ -59,7 +59,7 @@ public class GateOrderDetailActivity extends BaseActivity implements View.OnClic
     private TextView tvEnsure, tvCancle;
     private boolean isPayed = false;
 
-    private TextView tvFromPlace, tvToPlace, tvShoujianRen, tvShoujianPhone, tvGoodsName, tvGoodsValue, tvSize, tvWeight, tvPrice, tvJiedanren, tvJieDanPhone;
+    private TextView tvFromPlace, tvToPlace, tvShoujianRen, tvShoujianPhone, tvGoodsName, tvGoodsValue, tvSize, tvWeight, tvPrice, tvWardMoney, tvJiedanren, tvJieDanPhone;
     private TextView tvTime1, tvTime2, tvTime3, tvTime4;
     private ImageView img1, img2, img3, img4;
     private ImageView imgLine1, imgLine2, imgLine3;
@@ -101,6 +101,7 @@ public class GateOrderDetailActivity extends BaseActivity implements View.OnClic
         tvSize = (TextView) findViewById(R.id.gate_order_detail_goods_size);
         tvWeight = (TextView) findViewById(R.id.gate_order_detail_goods_weight);
         tvPrice = (TextView) findViewById(R.id.gate_order_detail_price);
+        tvWardMoney = (TextView) findViewById(R.id.gate_order_detail_ward_money);
         tvJiedanren = (TextView) findViewById(R.id.gate_order_detail_jiedan_name);
         tvJieDanPhone = (TextView) findViewById(R.id.gate_order_detail_jiedan_phone);
 
@@ -159,52 +160,62 @@ public class GateOrderDetailActivity extends BaseActivity implements View.OnClic
         tvGoodsValue.setText(respUserOrderInfo.getDeclared() + "元");
         tvSize.setText(respUserOrderInfo.getLength() + "cm*" + respUserOrderInfo.getWeight() + "cm*" + respUserOrderInfo.getHeight() + "cm");
         tvWeight.setText(respUserOrderInfo.getWeight() + "kg");
-        tvPrice.setText(respUserOrderInfo.getReward() + "元");
+        tvPrice.setText(respUserOrderInfo.getEstcost() + "元");
+        tvWardMoney.setText(respUserOrderInfo.getDashang() + "元");
         tvJiedanren.setText(respUserOrderInfo.getCommentsid());
         tvJieDanPhone.setText(respUserOrderInfo.getCom_tel());
 
-        int status = Integer.valueOf(respUserOrderInfo.getServicestatus());
-        if (status > 0) { //1
-            tvTime1.setText(respUserOrderInfo.getPickuptime());
-            img1.setImageResource(R.mipmap.order_state_light);
-            tvQujian.setTextColor(getResources().getColor(R.color.main_color));
+        if (!TextUtils.isEmpty(respUserOrderInfo.getServicestatus())) {
+            tvCancle.setVisibility(View.GONE);
+            int status = Integer.valueOf(respUserOrderInfo.getServicestatus());
+            if (status > 0) { //1
+                tvTime1.setText(respUserOrderInfo.getPickuptime());
+                img1.setImageResource(R.mipmap.order_state_light);
+                tvQujian.setTextColor(getResources().getColor(R.color.main_color));
 
-            imgLine1.setBackgroundColor(getResources().getColor(R.color.main_color));
-            img2.setImageResource(R.mipmap.order_state_light);
-            tvFuWu.setTextColor(getResources().getColor(R.color.main_color));
-        }
-        if (status > 1) { //2
-            imgLine2.setBackgroundColor(getResources().getColor(R.color.main_color));
-            img3.setImageResource(R.mipmap.order_state_light);
-            tvPaiSong.setTextColor(getResources().getColor(R.color.main_color));
-        }
-        if (status > 2) {  //3
-            tvTime4.setText(respUserOrderInfo.getDeliverytime());
-            imgLine3.setBackgroundColor(getResources().getColor(R.color.main_color));
-            img4.setImageResource(R.mipmap.order_state_light);
-            tvQueRen.setTextColor(getResources().getColor(R.color.main_color));
-        }else {
-            LLog.i("===========");
-        }
-
-        //计算中间值
-        double mLat = (Double.valueOf(respUserOrderInfo.getD_lat()) + Double.valueOf(respUserOrderInfo.getB_lat())) / 2;
-        double mLng = (Double.valueOf(respUserOrderInfo.getD_lng()) + Double.valueOf(respUserOrderInfo.getB_lng())) / 2;
-        LatLng middleLatLng = new LatLng(mLat, mLng);
-
-        LatLng beginLatLng = new LatLng(Double.valueOf(respUserOrderInfo.getB_lat()), Double.valueOf(respUserOrderInfo.getB_lng()));
-
-        LatLng dLatLng = new LatLng(Double.valueOf(respUserOrderInfo.getD_lat()), Double.valueOf(respUserOrderInfo.getD_lng()));
-
-        if (!TextUtils.isEmpty(respUserOrderInfo.getCar_lat()) && !TextUtils.isEmpty(respUserOrderInfo.getCar_lng())) {
-            LatLng carLatLng = new LatLng(Double.valueOf(respUserOrderInfo.getCar_lat()), Double.valueOf(respUserOrderInfo.getCar_lng()));
-            OverlayOptions ooCar = new MarkerOptions().position(carLatLng).icon(BitmapDescriptorFactory.fromResource(R.mipmap.location_indicator)).zIndex(4).draggable(false);
-            mBaiduMap.addOverlay(ooCar);
+                imgLine1.setBackgroundColor(getResources().getColor(R.color.main_color));
+                img2.setImageResource(R.mipmap.order_state_light);
+                tvFuWu.setTextColor(getResources().getColor(R.color.main_color));
+            }
+            if (status > 1) { //2
+                imgLine2.setBackgroundColor(getResources().getColor(R.color.main_color));
+                img3.setImageResource(R.mipmap.order_state_light);
+                tvPaiSong.setTextColor(getResources().getColor(R.color.main_color));
+            }
+            if (status > 2) {  //3
+                tvTime4.setText(respUserOrderInfo.getDeliverytime());
+                imgLine3.setBackgroundColor(getResources().getColor(R.color.main_color));
+                img4.setImageResource(R.mipmap.order_state_light);
+                tvQueRen.setTextColor(getResources().getColor(R.color.main_color));
+            } else {
+                LLog.i("===========");
+            }
         }
 
-        MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(middleLatLng, 18.0f);
-        mBaiduMap.animateMapStatus(u);
-        routePlan(beginLatLng, dLatLng);
+
+        if (!TextUtils.isEmpty(respUserOrderInfo.getD_lat()) && !TextUtils.isEmpty(respUserOrderInfo.getB_lat())
+                && !TextUtils.isEmpty(respUserOrderInfo.getD_lng()) && !TextUtils.isEmpty(respUserOrderInfo.getB_lng())) {
+            //计算中间值
+            double mLat = (Double.valueOf(respUserOrderInfo.getD_lat()) + Double.valueOf(respUserOrderInfo.getB_lat())) / 2;
+            double mLng = (Double.valueOf(respUserOrderInfo.getD_lng()) + Double.valueOf(respUserOrderInfo.getB_lng())) / 2;
+            LatLng middleLatLng = new LatLng(mLat, mLng);
+
+            LatLng beginLatLng = new LatLng(Double.valueOf(respUserOrderInfo.getB_lat()), Double.valueOf(respUserOrderInfo.getB_lng()));
+
+            LatLng dLatLng = new LatLng(Double.valueOf(respUserOrderInfo.getD_lat()), Double.valueOf(respUserOrderInfo.getD_lng()));
+
+            if (!TextUtils.isEmpty(respUserOrderInfo.getCar_lat()) && !TextUtils.isEmpty(respUserOrderInfo.getCar_lng())) {
+                LatLng carLatLng = new LatLng(Double.valueOf(respUserOrderInfo.getCar_lat()), Double.valueOf(respUserOrderInfo.getCar_lng()));
+                OverlayOptions ooCar = new MarkerOptions().position(carLatLng).icon(BitmapDescriptorFactory.fromResource(R.mipmap.location_indicator)).zIndex(4).draggable(false);
+                mBaiduMap.addOverlay(ooCar);
+            }
+
+            MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(middleLatLng, 18.0f);
+            mBaiduMap.animateMapStatus(u);
+            routePlan(beginLatLng, dLatLng);
+        } else {
+            EUtil.showToast("坐标参数有误");
+        }
 
     }
 
@@ -343,7 +354,7 @@ public class GateOrderDetailActivity extends BaseActivity implements View.OnClic
                 break;
             case R.id.gate_order_detail_share_layout:
                 //设置截屏监听
-                final File file = new File(Environment.getExternalStorageDirectory(),System.currentTimeMillis() + ".png");
+                final File file = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis() + ".png");
                 mBaiduMap.snapshot(new BaiduMap.SnapshotReadyCallback() {
                     @Override
                     public void onSnapshotReady(Bitmap bitmap) {
@@ -368,10 +379,10 @@ public class GateOrderDetailActivity extends BaseActivity implements View.OnClic
                 });
 
                 Intent shareIntent = new Intent(GateOrderDetailActivity.this, ShareActivity.class);
-                shareIntent.putExtra("title","推荐应用摩小三给你");
-                shareIntent.putExtra("content","分享摩小三截图给你");
-                shareIntent.putExtra("imgPath",file.toString());
-                shareIntent.putExtra("targetUrl","http://www.moxiaosan.com");
+                shareIntent.putExtra("title", "推荐应用摩小三给你");
+                shareIntent.putExtra("content", "分享摩小三截图给你");
+                shareIntent.putExtra("imgPath", file.toString());
+                shareIntent.putExtra("targetUrl", "http://www.moxiaosan.com");
                 this.startActivity(shareIntent);
                 overridePendingTransition(R.anim.share_pop_in, 0);
                 break;

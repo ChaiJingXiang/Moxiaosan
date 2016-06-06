@@ -89,7 +89,7 @@ public class PublishLabourActivity extends BaseActivity {
         title = getIntent().getStringExtra("title");
         respLabour = (RespLabour) getIntent().getSerializableExtra("respLabour");
         if (TextUtils.isEmpty(title)) {
-            setActionBarName("发布劳力");
+            setActionBarName(getString(R.string.publish_labour));
         } else {
             setActionBarName(title);
         }

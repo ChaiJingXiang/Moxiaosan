@@ -42,17 +42,18 @@ import consumer.model.Userinfo;
 /**
  * Created by chris on 16/2/29.
  */
-public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickListener,IApiCallback{
+public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickListener, IApiCallback {
     private RoundImageView imgHead;
-    private TextView tvNickName,phoneNumber;
+    private TextView tvNickName, phoneNumber, tvYunying;
     SlidingMenu slidingMen;
 
     public LeftFragment_two() {
 
     }
+
     @SuppressLint("ValidFragment")
     public LeftFragment_two(SlidingMenu slidingMenu) {
-            this.slidingMen=slidingMenu;
+        this.slidingMen = slidingMenu;
     }
 
     @Override
@@ -71,10 +72,10 @@ public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickLis
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view =inflater.inflate(R.layout.left_menu,null);
-        imgHead =(RoundImageView)view.findViewById(R.id.left_frag_user_photo);
-        tvNickName =(TextView)view.findViewById(R.id.left_frag_nickname);
-        phoneNumber =(TextView)view.findViewById(R.id.left_frag_phone_num);
+        View view = inflater.inflate(R.layout.left_menu, null);
+        imgHead = (RoundImageView) view.findViewById(R.id.left_frag_user_photo);
+        tvNickName = (TextView) view.findViewById(R.id.left_frag_nickname);
+        phoneNumber = (TextView) view.findViewById(R.id.left_frag_phone_num);
 
         initView(view);
         return view;
@@ -83,7 +84,7 @@ public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickLis
     @Override
     public void onResume() {
         super.onResume();
-        CarReqUtils.personalInfo(getActivity(),this,null,new Userinfo(),"PersonalInfo",true,
+        CarReqUtils.personalInfo(getActivity(), this, null, new Userinfo(), "PersonalInfo", true,
                 StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).createMap()));
 //        if(!TextUtils.isEmpty(AppData.getInstance().getUserEntity().getHeadportrait())){
 //            ImageLoader.getInstance().displayImage(AppData.getInstance().getUserEntity().getHeadportrait(),imgHead);
@@ -91,7 +92,7 @@ public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickLis
 
     }
 
-    private void initView(View view){
+    private void initView(View view) {
         view.findViewById(R.id.left_frag_user_layout).setOnClickListener(this);
         view.findViewById(R.id.left_frag_menu_layout1).setOnClickListener(this);
         view.findViewById(R.id.left_frag_menu_layout2).setOnClickListener(this);
@@ -101,11 +102,12 @@ public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickLis
         view.findViewById(R.id.left_frag_menu_layout6).setOnClickListener(this);
         view.findViewById(R.id.left_frag_menu_layout7).setOnClickListener(this);
         view.findViewById(R.id.left_frag_menu_layout8).setOnClickListener(this);
+        tvYunying= (TextView) view.findViewById(R.id.left_menu_changeto_yunying);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.left_frag_user_layout:
                 startActivity(new Intent(getActivity(), CarOwnerInfoActivity.class));
                 slidingMen.toggle();
@@ -123,22 +125,22 @@ public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickLis
                 slidingMen.toggle();
                 break;
             case R.id.left_frag_menu_layout4:
-                SharedPreferences sp =getActivity().getSharedPreferences("request", Activity.MODE_PRIVATE);
+                SharedPreferences sp = getActivity().getSharedPreferences("request", Activity.MODE_PRIVATE);
 
-                boolean flag =sp.getBoolean("carer",false);
+                boolean flag = sp.getBoolean("carer", false);
 
-                if(AppData.getInstance().getUserEntity().getUserType()==3){
-                    ExitDialog dialog =new ExitDialog(getActivity(),1);
+                if (AppData.getInstance().getUserEntity().getUserType() == 3) { //已经是运营车主
+                    ExitDialog dialog = new ExitDialog(getActivity(), 1);
                     dialog.setCanceledOnTouchOutside(false);
                     dialog.show();
 
-                }else if(flag && AppData.getInstance().getUserEntity().getType()==2){
+                } else if (flag && AppData.getInstance().getUserEntity().getType() == 2) {  //在审核中
 
-                    ExitDialog dialog =new ExitDialog(getActivity(),2);
+                    ExitDialog dialog = new ExitDialog(getActivity(), 2);
                     dialog.setCanceledOnTouchOutside(false);
                     dialog.show();
 
-                }else{
+                } else {
 
                     startActivity(new Intent(getActivity(), BecomeCarOwnerActivity.class));
 
@@ -155,10 +157,10 @@ public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickLis
                 slidingMen.toggle();
                 break;
             case R.id.left_frag_menu_layout7:
-                if(AppData.getInstance().getUserEntity().getBind()==1){
+                if (AppData.getInstance().getUserEntity().getBind() == 1) {
                     startActivity(new Intent(getActivity(), SettingActivity.class));
                     slidingMen.toggle();
-                }else{
+                } else {
 
                     EUtil.showToast("未绑定设备,请先绑定设备");
                 }
@@ -166,6 +168,10 @@ public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickLis
                 break;
             case R.id.left_frag_menu_layout8:
                 Intent shareIntent = new Intent(getActivity(), ShareActivity.class);
+                shareIntent.putExtra("title", "推荐应用摩小三给你");
+                shareIntent.putExtra("content", "农村移动互联网众包服务第一平台，同城速递，农村顺风车，找劳力，卖农货，请用摩小三。详情访问:http://www.moxiaosan.com");
+                shareIntent.putExtra("imgPath", "app_log");
+                shareIntent.putExtra("targetUrl", "http://www.moxiaosan.com");
                 this.startActivity(shareIntent);
                 getActivity().overridePendingTransition(R.anim.share_pop_in, 0);
                 break;
@@ -174,21 +180,21 @@ public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickLis
 
     @Override
     public void onData(Object output, Object input) {
-        if(output!=null){
-            if(output instanceof Userinfo){
-                Userinfo userinfo =(Userinfo)output;
+        if (output != null) {
+            if (output instanceof Userinfo) {
+                Userinfo userinfo = (Userinfo) output;
                 dismissLoadingDialog();
-                if(userinfo.getRes()==0){
+                if (userinfo.getRes() == 0) {
 //                    EUtil.showToast(userinfo.getErr());
-                    if(!TextUtils.isEmpty(userinfo.getData().getHeadportrait())){
-                        ImageLoader.getInstance().displayImage(userinfo.getData().getHeadportrait(),imgHead);
+                    if (!TextUtils.isEmpty(userinfo.getData().getHeadportrait())) {
+                        ImageLoader.getInstance().displayImage(userinfo.getData().getHeadportrait(), imgHead);
                     }
 
                     tvNickName.setText(userinfo.getData().getNickname());
                     phoneNumber.setText(userinfo.getData().getContact());
                 }
             }
-        }else{
+        } else {
             EUtil.showToast("网络错误，请稍后重试");
         }
     }
@@ -198,10 +204,10 @@ public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickLis
         int index;
 
 
-        public ExitDialog(Context context,int index) {
+        public ExitDialog(Context context, int index) {
             super(context);
 
-            this.index =index;
+            this.index = index;
         }
 
         @Override
@@ -209,11 +215,11 @@ public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickLis
             super.onCreate(savedInstanceState);
             setContentView(R.layout.dialog_setting_exit);
 
-            TextView textView =(TextView)findViewById(R.id.tvDialogActivity);
+            TextView textView = (TextView) findViewById(R.id.tvDialogActivity);
 
-            if(index ==2){
+            if (index == 2) {
                 textView.setText("你已提交申请，请等待审核");
-            }else{
+            } else {
                 textView.setText("你已经是运营车主，去接单");
             }
 
@@ -223,17 +229,17 @@ public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickLis
             findViewById(R.id.setting_exit_ensure).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(AppData.getInstance().getUserEntity().getUserType() ==3){
-                        if(AppData.getInstance().getUserEntity().getType()==3){
+                    if (AppData.getInstance().getUserEntity().getUserType() == 3) {
+                        if (AppData.getInstance().getUserEntity().getType() == 3) {
                             dismiss();
                             slidingMen.toggle();
-                        }else{
+                        } else {
                             dismiss();
                             startActivity(new Intent(getActivity(), BusinessMainActivity.class));
                             ActivityHolder.getInstance().pop(new GPSSafeCenterActivity());
                         }
 
-                    }else{
+                    } else {
                         dismiss();
                         slidingMen.toggle();
                     }

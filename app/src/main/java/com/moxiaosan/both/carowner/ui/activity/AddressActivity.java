@@ -2,10 +2,8 @@ package com.moxiaosan.both.carowner.ui.activity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.transition.TransitionManager;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.moxiaosan.both.R;
 import com.utils.api.IApiCallback;
@@ -34,14 +32,14 @@ public class AddressActivity extends BaseActivity implements IApiCallback{
         setActionBarName("填写地址");
 
         etProvice =(EditText)findViewById(R.id.modify_proviceId);
-        etAddress =(EditText)findViewById(R.id.modify_address);
+//        etAddress =(EditText)findViewById(R.id.modify_address);
 
         findViewById(R.id.sureId).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!TextUtils.isEmpty(etProvice.getText().toString().trim())){
 
-                    if(!TextUtils.isEmpty(etAddress.getText().toString().trim())){
+//                    if(!TextUtils.isEmpty(etAddress.getText().toString().trim())){
 
                         showLoadingDialog();
 
@@ -49,11 +47,11 @@ public class AddressActivity extends BaseActivity implements IApiCallback{
                                 StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).
                                         putValue("province",etProvice.getText().toString()).putValue("address",etAddress.getText().toString()).createMap()));
 
-                    }else{
-                        EUtil.showToast("地址不能为空");
-                    }
+//                    }else{
+//                        EUtil.showToast("地址不能为空");
+//                    }
                 }else{
-                    EUtil.showToast("省份不能为空");
+                    EUtil.showToast("不能为空");
                 }
 
             }

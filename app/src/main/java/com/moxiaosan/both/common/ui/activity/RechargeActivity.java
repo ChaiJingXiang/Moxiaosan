@@ -151,7 +151,7 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
             if (output == null) {
                 return;
             }
-            if (input == RECHARGE_WX) {//微信
+            if (Integer.parseInt(String.valueOf(input)) == RECHARGE_WX) {//微信
                 PaymxsWX paymxsWX = (PaymxsWX) output;
                 if (paymxsWX.getPrepayid() != null) {
                     PayReq req = new PayReq();
@@ -168,7 +168,7 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
                 } else {
                     EUtil.showToast("参数有误");
                 }
-            } else if (input == RECHARGE_ALIPAY) { //支付宝
+            } else if (Integer.parseInt(String.valueOf(input)) == RECHARGE_ALIPAY) { //支付宝
                 PaymxsAlipay paymxsAlipay = (PaymxsAlipay) output;
                 if (paymxsAlipay.getErr() == 0) {
                     alipay(paymxsAlipay.getQuery());

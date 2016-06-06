@@ -2,7 +2,6 @@ package com.moxiaosan.both.carowner.ui.activity;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,14 +14,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
-import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.geocode.GeoCodeResult;
@@ -138,7 +137,7 @@ public class NowLocationActivity extends BaseActivity implements IApiCallback {
     TimerTask task = new TimerTask(){
         public void run() {
 
-            Log.i("info==--===","wwwwwwww");
+//            Log.i("info==--===","wwwwwwww");
             handler.sendEmptyMessage(1);
 
         }
@@ -172,13 +171,27 @@ public class NowLocationActivity extends BaseActivity implements IApiCallback {
 
                     LatLng llA = new LatLng(db[0], db[1]);
 
-                    OverlayOptions ooA = new MarkerOptions().position(llA).icon(BitmapDescriptorFactory
-                            .fromResource(R.mipmap.location_indicator)).zIndex(4).draggable(false);
+//                    OverlayOptions ooA = new MarkerOptions().position(llA).icon(BitmapDescriptorFactory
+//                            .fromResource(R.mipmap.location_indicator)).zIndex(4).draggable(false);
+//                    if (mBaiduMap != null) {
+//                        mBaiduMap.addOverlay(ooA);
+//                    }
                     if (mBaiduMap != null) {
-
-                        mBaiduMap.addOverlay(ooA);
-
+                        // 构造定位数据
+                        MyLocationData locData = new MyLocationData.Builder().accuracy(40.0f)
+                                // 此处设置开发者获取到的方向信息，顺时针0-360
+                                .direction(Float.parseFloat(location.getData().getDirection()))//Float.parseFloat(location.getData().getDirection())
+                                .latitude(llA.latitude)
+                                .longitude(llA.longitude).build();
+                        // 设置定位数据
+                        mBaiduMap.setMyLocationData(locData);
+                        // 设置自定义图标
+                        BitmapDescriptor mCurrentMarker = BitmapDescriptorFactory.fromResource(R.mipmap.location_indicator);
+                        MyLocationConfiguration config = new MyLocationConfiguration(
+                                MyLocationConfiguration.LocationMode.NORMAL , true, mCurrentMarker);
+                        mBaiduMap.setMyLocationConfigeration(config);
                     }
+
 
                     geoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(llA));
 
@@ -241,8 +254,9 @@ public class NowLocationActivity extends BaseActivity implements IApiCallback {
         mMapView.removeViewAt(1); //隐藏百度logo
         mMapView.setLongClickable(true);
         mBaiduMap = mMapView.getMap();
+        mBaiduMap.setMyLocationEnabled(true);
 
-        mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, null));
+//        mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, null));
     }
 
     @Override

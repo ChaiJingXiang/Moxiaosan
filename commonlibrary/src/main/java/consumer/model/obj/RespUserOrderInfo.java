@@ -32,6 +32,8 @@ public class RespUserOrderInfo implements Serializable {
     private String d_lng;
     private String car_lat;
     private String car_lng;
+    private String dashang; //打赏费用
+    private String estcost; //预估费用
 
     public String getDeliverytime() {
         return deliverytime;
@@ -215,5 +217,21 @@ public class RespUserOrderInfo implements Serializable {
 
     public void setD_lng(String d_lng) {
         this.d_lng = d_lng;
+    }
+
+    public String getDashang() {
+        return dashang;
+    }
+
+    public void setDashang(String dashang) {
+        this.dashang = dashang;
+    }
+
+    public String getEstcost() {
+        return estcost;
+    }
+
+    public void setEstcost(String estcost) {
+        this.estcost = estcost;
     }
 }

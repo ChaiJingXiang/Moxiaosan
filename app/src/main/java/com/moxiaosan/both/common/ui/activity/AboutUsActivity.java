@@ -1,5 +1,7 @@
 package com.moxiaosan.both.common.ui.activity;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -56,11 +58,31 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
                 openLocalBrowser("http://www.moxiaosan.com");
                 break;
             case R.id.about_us_weixin:
-                openLocalBrowser("http://www.moxiaosan.com");
+                ErWeiCodeDialog erWeiCodeDialog = new ErWeiCodeDialog(AboutUsActivity.this);
+                erWeiCodeDialog.show();
                 break;
             case R.id.about_us_weibo:
-                openLocalBrowser("http://www.moxiaosan.com");
+                openLocalBrowser("http://m.weibo.cn/u/5838682399");
                 break;
+        }
+    }
+
+    class ErWeiCodeDialog extends AlertDialog {
+
+        public ErWeiCodeDialog(Context context) {
+            super(context);
+        }
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.dialog_erweicode);
+            findViewById(R.id.erweicode_ensure).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismiss();
+                }
+            });
         }
     }
 }

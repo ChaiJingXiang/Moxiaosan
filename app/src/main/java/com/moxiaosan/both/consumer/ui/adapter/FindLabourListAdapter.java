@@ -100,6 +100,7 @@ public class FindLabourListAdapter extends BaseExpandableListAdapter {
             convertView = inflater.inflate(R.layout.find_labour_list_group_item, null);
             groupViewHolder.tvTitle = (TextView) convertView.findViewById(R.id.find_labour_list_group_title);
             groupViewHolder.tvTime = (TextView) convertView.findViewById(R.id.find_labour_list_group_time);
+            groupViewHolder.tvPublishTime= (TextView) convertView.findViewById(R.id.find_labour_list_group_publish_time);
             groupViewHolder.tvContent = (TextView) convertView.findViewById(R.id.find_labour_list_group_content);
             groupViewHolder.tvPeopleNum = (TextView) convertView.findViewById(R.id.find_labour_list_group_people_num);
             groupViewHolder.tvSalary = (TextView) convertView.findViewById(R.id.find_labour_list_group_salary);
@@ -108,13 +109,15 @@ public class FindLabourListAdapter extends BaseExpandableListAdapter {
             groupViewHolder.imgEdit = (ImageView) convertView.findViewById(R.id.find_labour_list_group_edit);
             groupViewHolder.imgTalk = (ImageView) convertView.findViewById(R.id.find_labour_list_group_talk);
             groupViewHolder.groupDividerLayout = (LinearLayout) convertView.findViewById(R.id.find_labour_list_group_item_divider);
+
             convertView.setTag(groupViewHolder);
         } else {
             groupViewHolder = (GroupViewHolder) convertView.getTag();
         }
         final RespLabour respLabour = respLabourList.get(groupPosition);
         groupViewHolder.tvTitle.setText(respLabour.getTitle());
-        groupViewHolder.tvTime.setText(respLabour.getFb_datetime());
+        groupViewHolder.tvTime.setText(respLabour.getDatetime());
+        groupViewHolder.tvPublishTime.setText(respLabour.getFb_datetime());
         groupViewHolder.tvContent.setText(respLabour.getTechnique());
         groupViewHolder.tvPeopleNum.setText("人数：" + respLabour.getNums() + "人");
         groupViewHolder.tvSalary.setText("薪资：" + respLabour.getSalary());
@@ -228,13 +231,13 @@ public class FindLabourListAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    class GroupViewHolder {
-        private TextView tvTitle, tvTime, tvContent, tvPeopleNum, tvSalary, tvAddress;
+    static class GroupViewHolder {
+        private TextView tvTitle, tvTime, tvPublishTime, tvContent, tvPeopleNum, tvSalary, tvAddress;
         private ImageView imgDelete, imgEdit, imgTalk;
         private LinearLayout groupDividerLayout;
     }
 
-    class ChildViewHolder {
+    static class ChildViewHolder {
         private LinearLayout dividerLayout, openCommentLayout;
         private TextView tvName, tvComment, tvOpenOrClose;
         private ImageView imgOpenOrClose;

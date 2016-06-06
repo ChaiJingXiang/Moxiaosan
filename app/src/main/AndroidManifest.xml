@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.moxiaosan.both" >
+    package="com.moxiaosan.both">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -33,15 +33,14 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppThemeL" >
-        <activity android:name=".common.ui.activity.LoadingGuideActivity" >
+        android:theme="@style/AppThemeL">
+        <activity android:name=".common.ui.activity.LoadingGuideActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".common.ui.activity.SplashActivity"
             android:screenOrientation="portrait" />
@@ -122,9 +121,6 @@
         <activity
             android:name=".consumer.ui.activity.PublishThingActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".consumer.ui.activity.ToAppraiseActivity"
-            android:screenOrientation="portrait" />
         //商户端
         <activity
             android:name=".carowner.ui.activity.BusinessMainActivity"
@@ -186,29 +182,21 @@
         <activity
             android:name=".carowner.ui.activity.WarningActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".carowner.ui.activity.AlarmLocationActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".carowner.ui.activity.FindLocationActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".common.ui.activity.WeChatMoneyActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".common.ui.activity.CardMoneyActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".common.ui.activity.WithdrawHistoryActivity"
             android:screenOrientation="portrait" />
-
-
-
         //扫描二维码
         <activity
             android:name=".zxing.MipcaActivityCapture"
@@ -235,13 +223,11 @@
 
         <service
             android:name="com.umeng.update.net.DownloadingService"
-            android:process=":DownloadingService" >
-        </service>
+            android:process=":DownloadingService" />
 
         <activity
             android:name="com.umeng.update.UpdateDialogActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <!-- ###################注册SDK使用的Activity###################### -->
         <!-- 分享编辑页 -->
@@ -257,7 +243,7 @@
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
-            android:noHistory="true" >
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -284,42 +270,36 @@
             android:theme="@style/Theme.ShareActivity" />
         <activity
             android:name=".common.ui.activity.SelectFromAddressActivity"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".common.ui.activity.SelectToAddessActivity"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name="picture.ImageCheckActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".consumer.ui.activity.GateOrderDetailActivity"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".consumer.ui.activity.ShunFengOrderDetailActivity"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".consumer.ui.activity.OrderCommentActivity"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".common.ui.activity.WebViewActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity android:name=".common.ui.activity.RechargeActivity" >
-        </activity>
-        <activity android:name=".consumer.ui.activity.SelectPayMethodActivity" >
-        </activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".common.ui.activity.RechargeActivity" />
+        <activity android:name=".consumer.ui.activity.SelectPayMethodActivity" />
 
         <service
             android:name=".mqtt.MqttService"
             android:enabled="true"
-            android:exported="true" >
-        </service>
+            android:exported="true" />
+
+        <activity android:name=".common.ui.activity.QuestionsActivity" />
+        <activity android:name=".carowner.ui.activity.CarNumActivity"></activity>
     </application>
 
 </manifest>

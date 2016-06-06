@@ -143,6 +143,7 @@
                 android:src="@mipmap/left_frag_layout5_icon" />
 
             <TextView
+                android:id="@+id/left_menu_changeto_yunying"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/value_10dp"

@@ -45,12 +45,46 @@
                     android:textColor="@color/txt_333333" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/find_labour_list_group_time"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="2016-5-25 16：00"
-                android:textColor="@color/txt_666666" />
+                android:layout_marginTop="@dimen/value_3dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="服务时间："
+                    android:textColor="@color/txt_666666" />
+
+                <TextView
+                    android:id="@+id/find_labour_list_group_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/value_5dp"
+                    android:text="00:00"
+                    android:textColor="@color/txt_666666" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/value_3dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="发布时间："
+                    android:textColor="@color/txt_666666" />
+
+                <TextView
+                    android:id="@+id/find_labour_list_group_publish_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/value_5dp"
+                    android:text="00:00"
+                    android:textColor="@color/txt_666666" />
+            </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
 
@@ -89,8 +123,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/value_10dp"
         android:layout_marginBottom="@dimen/value_5dp"
+        android:paddingLeft="@dimen/value_10dp"
         android:paddingRight="@dimen/value_10dp">
 
         <ImageView
@@ -105,11 +139,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:singleLine="true"
             android:layout_marginLeft="@dimen/value_5dp"
-            android:layout_toRightOf="@+id/group_item_location_tag"
-            android:layout_toLeftOf="@+id/find_labour_list_group_edit"
             android:layout_marginRight="@dimen/value_3dp"
+            android:layout_toLeftOf="@+id/find_labour_list_group_edit"
+            android:layout_toRightOf="@+id/group_item_location_tag"
+            android:singleLine="true"
             android:text="地址：深圳市"
             android:textColor="@color/txt_666666" />
 

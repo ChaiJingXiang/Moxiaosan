@@ -60,6 +60,7 @@ public class ShunFengOrderDetailActivity extends BaseActivity implements View.On
     private boolean isPayed = false;
 
     private TextView tvTime1, tvTime2, tvQuJian, tvQueRen;
+    private TextView tvPrice, tvWard;
     private ImageView img1, img2, imgLine1;
     private TextView tvFromPlace, tvToPlace, tvJiedanRen, tvJieDanPhone;
     //    private ImageView imgMap;
@@ -104,6 +105,8 @@ public class ShunFengOrderDetailActivity extends BaseActivity implements View.On
         tvToPlace = (TextView) findViewById(R.id.shun_feng_order_detail_to_place);
         tvJiedanRen = (TextView) findViewById(R.id.shun_feng_order_detail_jiedan_name);
         tvJieDanPhone = (TextView) findViewById(R.id.shun_feng_order_detail_jiedan_phone);
+        tvPrice = (TextView) findViewById(R.id.shun_feng_order_detail_price);
+        tvWard = (TextView) findViewById(R.id.shun_feng_order_detail_ward_moeny);
 
 //        imgMap = (ImageView) findViewById(R.id.shun_feng_order_detail_map_img);
         layoutShare = (LinearLayout) findViewById(R.id.shun_feng_order_detail_share_layout);
@@ -138,38 +141,48 @@ public class ShunFengOrderDetailActivity extends BaseActivity implements View.On
         tvToPlace.setText(respUserOrderInfo.getDestination());
         tvJiedanRen.setText(respUserOrderInfo.getCommentsid());
         tvJieDanPhone.setText(respUserOrderInfo.getCom_tel());
-
-        int status = Integer.valueOf(respUserOrderInfo.getServicestatus());
-        if (status > 0) { //1
-            tvTime1.setText(respUserOrderInfo.getPickuptime());
-            img1.setImageResource(R.mipmap.order_state_light);
-            tvQuJian.setTextColor(getResources().getColor(R.color.main_color));
-        }
-        if (status > 1) {  //2
-            tvTime2.setText(respUserOrderInfo.getDeliverytime());
-            imgLine1.setBackgroundColor(getResources().getColor(R.color.main_color));
-            img2.setImageResource(R.mipmap.order_state_light);
-            tvQueRen.setTextColor(getResources().getColor(R.color.main_color));
-        }
-
-        //计算中间值
-        double mLat = (Double.valueOf(respUserOrderInfo.getD_lat()) + Double.valueOf(respUserOrderInfo.getB_lat())) / 2;
-        double mLng = (Double.valueOf(respUserOrderInfo.getD_lng()) + Double.valueOf(respUserOrderInfo.getB_lng())) / 2;
-        LatLng middleLatLng = new LatLng(mLat, mLng);
-
-        LatLng beginLatLng = new LatLng(Double.valueOf(respUserOrderInfo.getB_lat()), Double.valueOf(respUserOrderInfo.getB_lng()));
-
-        LatLng dLatLng = new LatLng(Double.valueOf(respUserOrderInfo.getD_lat()), Double.valueOf(respUserOrderInfo.getD_lng()));
-
-        if (!TextUtils.isEmpty(respUserOrderInfo.getCar_lat()) && !TextUtils.isEmpty(respUserOrderInfo.getCar_lng())) {
-            LatLng carLatLng = new LatLng(Double.valueOf(respUserOrderInfo.getCar_lat()), Double.valueOf(respUserOrderInfo.getCar_lng()));
-            OverlayOptions ooCar = new MarkerOptions().position(carLatLng).icon(BitmapDescriptorFactory.fromResource(R.mipmap.location_indicator)).zIndex(4).draggable(false);
-            mBaiduMap.addOverlay(ooCar);
+        tvPrice.setText(respUserOrderInfo.getEstcost());
+        tvWard.setText(respUserOrderInfo.getDashang());
+        if (!TextUtils.isEmpty(respUserOrderInfo.getServicestatus())) {
+            tvCancle.setVisibility(View.GONE);
+            int status = Integer.valueOf(respUserOrderInfo.getServicestatus());
+            if (status > 0) { //1
+                tvTime1.setText(respUserOrderInfo.getPickuptime());
+                img1.setImageResource(R.mipmap.order_state_light);
+                tvQuJian.setTextColor(getResources().getColor(R.color.main_color));
+            }
+            if (status > 1) {  //2
+                tvTime2.setText(respUserOrderInfo.getDeliverytime());
+                imgLine1.setBackgroundColor(getResources().getColor(R.color.main_color));
+                img2.setImageResource(R.mipmap.order_state_light);
+                tvQueRen.setTextColor(getResources().getColor(R.color.main_color));
+            }
         }
 
-        MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(middleLatLng, 18.0f);
-        mBaiduMap.animateMapStatus(u);
-        routePlan(beginLatLng, dLatLng);
+        if (!TextUtils.isEmpty(respUserOrderInfo.getD_lat()) && !TextUtils.isEmpty(respUserOrderInfo.getB_lat())
+                && !TextUtils.isEmpty(respUserOrderInfo.getD_lng()) && !TextUtils.isEmpty(respUserOrderInfo.getB_lng())) {
+            //计算中间值
+            double mLat = (Double.valueOf(respUserOrderInfo.getD_lat()) + Double.valueOf(respUserOrderInfo.getB_lat())) / 2;
+            double mLng = (Double.valueOf(respUserOrderInfo.getD_lng()) + Double.valueOf(respUserOrderInfo.getB_lng())) / 2;
+            LatLng middleLatLng = new LatLng(mLat, mLng);
+
+            LatLng beginLatLng = new LatLng(Double.valueOf(respUserOrderInfo.getB_lat()), Double.valueOf(respUserOrderInfo.getB_lng()));
+
+            LatLng dLatLng = new LatLng(Double.valueOf(respUserOrderInfo.getD_lat()), Double.valueOf(respUserOrderInfo.getD_lng()));
+
+            if (!TextUtils.isEmpty(respUserOrderInfo.getCar_lat()) && !TextUtils.isEmpty(respUserOrderInfo.getCar_lng())) {
+                LatLng carLatLng = new LatLng(Double.valueOf(respUserOrderInfo.getCar_lat()), Double.valueOf(respUserOrderInfo.getCar_lng()));
+                OverlayOptions ooCar = new MarkerOptions().position(carLatLng).icon(BitmapDescriptorFactory.fromResource(R.mipmap.location_indicator)).zIndex(4).draggable(false);
+                mBaiduMap.addOverlay(ooCar);
+            }
+
+            MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(middleLatLng, 18.0f);
+            mBaiduMap.animateMapStatus(u);
+            routePlan(beginLatLng, dLatLng);
+        } else {
+            EUtil.showToast("坐标参数有误");
+        }
+
     }
 
     /**
@@ -184,7 +197,7 @@ public class ShunFengOrderDetailActivity extends BaseActivity implements View.On
 //        PlanNode stNode = PlanNode.withLocation(new LatLng(39.909843, 116.434452));
 //        PlanNode enNode = PlanNode.withLocation(new LatLng(39.915599, 116.402831));
         // 驾车路线规划
-         mSearch.drivingSearch(new DrivingRoutePlanOption().from(stNode).to(enNode));
+        mSearch.drivingSearch(new DrivingRoutePlanOption().from(stNode).to(enNode));
     }
 
     /**
@@ -274,7 +287,7 @@ public class ShunFengOrderDetailActivity extends BaseActivity implements View.On
 
             case R.id.shun_feng_order_detail_share_layout:
                 //设置截屏监听
-                final File file = new File(Environment.getExternalStorageDirectory(),System.currentTimeMillis() + ".png");
+                final File file = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis() + ".png");
                 mBaiduMap.snapshot(new BaiduMap.SnapshotReadyCallback() {
                     @Override
                     public void onSnapshotReady(Bitmap bitmap) {
@@ -299,10 +312,10 @@ public class ShunFengOrderDetailActivity extends BaseActivity implements View.On
                 });
 
                 Intent shareIntent = new Intent(ShunFengOrderDetailActivity.this, ShareActivity.class);
-                shareIntent.putExtra("title","推荐应用摩小三给你");
-                shareIntent.putExtra("content","分享摩小三截图给你");
-                shareIntent.putExtra("imgPath",file.toString());
-                shareIntent.putExtra("targetUrl","http://www.moxiaosan.com");
+                shareIntent.putExtra("title", "推荐应用摩小三给你");
+                shareIntent.putExtra("content", "分享摩小三截图给你");
+                shareIntent.putExtra("imgPath", file.toString());
+                shareIntent.putExtra("targetUrl", "http://www.moxiaosan.com");
                 this.startActivity(shareIntent);
                 overridePendingTransition(R.anim.share_pop_in, 0);
                 break;

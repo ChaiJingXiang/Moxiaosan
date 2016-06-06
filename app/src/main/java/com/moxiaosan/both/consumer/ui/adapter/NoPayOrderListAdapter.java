@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,15 +88,15 @@ public class NoPayOrderListAdapter extends BaseAdapter {
         viewHolder.tvStartPlace.setText(respUserOrder.getBeginningplace());
         viewHolder.tvEndPlace.setText(respUserOrder.getDestination());
         viewHolder.tvTakeTime.setText(respUserOrder.getPickuptime());
-        if (respUserOrder.getTitle().equals("门到门速递")) {
+        if (!respUserOrder.getTitle().equals(mContext.getString(R.string.shun_feng_che))) { //速递
             viewHolder.tvTakeTimeTxt.setText("取件时间：");
         } else {
-            viewHolder.tvTakeTimeTxt.setText("接到乘客时间：");
+            viewHolder.tvTakeTimeTxt.setText("接到乘客时间："); //顺风车
         }
         viewHolder.tvDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (respUserOrder.getTitle().equals("门到门速递")) {
+                if (!respUserOrder.getTitle().equals(mContext.getString(R.string.shun_feng_che))) {
                     Intent intent = new Intent(mContext, GateOrderDetailActivity.class);
                     intent.putExtra("respUserOrder", respUserOrder);
                     intent.putExtra("isPayed", false);
@@ -116,13 +117,18 @@ public class NoPayOrderListAdapter extends BaseAdapter {
 
             }
         });
-        viewHolder.tvCancle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CancelOrderDialog cancelOrderDialog = new CancelOrderDialog(mContext, respUserOrder.getOrderid());
-                cancelOrderDialog.show();
-            }
-        });
+        if (!TextUtils.isEmpty(respUserOrder.getServicestatus())){
+            viewHolder.tvCancle.setVisibility(View.GONE);
+        }else {
+            viewHolder.tvCancle.setVisibility(View.VISIBLE);
+            viewHolder.tvCancle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CancelOrderDialog cancelOrderDialog = new CancelOrderDialog(mContext, respUserOrder.getOrderid());
+                    cancelOrderDialog.show();
+                }
+            });
+        }
 
         return convertView;
     }

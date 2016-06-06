@@ -34,7 +34,7 @@ public class FileUploader{
 	private final String TAG = getClass().getSimpleName();
 	
 	// 常量
-	private final String WEB_URL ="http://120.76.101.90:8004/upload"; // 服务器地址
+	private final String WEB_URL ="http://114.215.158.238:8004/upload"; // 服务器地址 120.76.101.90 114.215.158.238
 	
 	// 上传状态
 	public static class Status {

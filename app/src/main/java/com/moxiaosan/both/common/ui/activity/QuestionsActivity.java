@@ -1,18 +1,18 @@
-package com.moxiaosan.both.consumer.ui.activity;
+package com.moxiaosan.both.common.ui.activity;
 
 import android.os.Bundle;
 
 import com.moxiaosan.both.R;
 import com.utils.ui.base.BaseActivity;
 
-public class ToAppraiseActivity extends BaseActivity {
+public class QuestionsActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_to_appraise);
+        setContentView(R.layout.activity_questions);
         showActionBar(true);
-        setActionBarName("评价");
+        setActionBarName("常见问题");
     }
 
     @Override

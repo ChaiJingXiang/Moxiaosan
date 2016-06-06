@@ -78,7 +78,7 @@ public class HavePayedOrderListAdapter extends BaseAdapter {
         viewHolder.tvStartPlace.setText(respUserOrder.getBeginningplace());
         viewHolder.tvEndPlace.setText(respUserOrder.getDestination());
         viewHolder.tvTakeTime.setText(respUserOrder.getPickuptime());
-        if (respUserOrder.getTitle().equals("门到门速递")) {
+        if (!respUserOrder.getTitle().equals(mContext.getString(R.string.shun_feng_che))) {  //速递
             viewHolder.tvTakeTimeTxt.setText("取件时间：");
         } else {
             viewHolder.tvTakeTimeTxt.setText("接到乘客时间：");
@@ -86,7 +86,7 @@ public class HavePayedOrderListAdapter extends BaseAdapter {
         viewHolder.tvDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (respUserOrder.getTitle().equals("门到门速递")) {
+                if (!respUserOrder.getTitle().equals(mContext.getString(R.string.shun_feng_che))) { //速递
                     Intent intent = new Intent(mContext, GateOrderDetailActivity.class);
                     intent.putExtra("respUserOrder", respUserOrder);
                     intent.putExtra("isPayed", true);
@@ -104,7 +104,7 @@ public class HavePayedOrderListAdapter extends BaseAdapter {
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, OrderCommentActivity.class);
                 intent.putExtra("respUserOrder", respUserOrder);
-                if (respUserOrder.getTitle().equals("门到门速递")) {
+                if (!respUserOrder.getTitle().equals(mContext.getString(R.string.shun_feng_che))) {  //速递
                     intent.putExtra("type", 1);
                 } else {
                     intent.putExtra("type", 2);

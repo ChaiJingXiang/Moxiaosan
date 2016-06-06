@@ -7,4 +7,11 @@
     <string name="title_activity_my_wallet">MyWalletActivity</string>
     <string name="title_activity_user_help">UserHelpActivity</string>
 
+    <string name="gate_to_gate">乡乡速递</string>
+    <string name="shun_feng_che">顺风车</string>
+    <string name="sell_shop_thing">买卖东西</string>
+    <string name="find_labour">找劳力</string>
+
+    <string name="publish_labour">发布劳力</string>
+    <string name="publish_thing">发布商品</string>
 </resources>

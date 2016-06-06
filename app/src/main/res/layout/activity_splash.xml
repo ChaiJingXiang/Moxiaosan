@@ -6,5 +6,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:src="@mipmap/splash_normal"/>
+        android:src="@mipmap/guide_one"/>
 </RelativeLayout>

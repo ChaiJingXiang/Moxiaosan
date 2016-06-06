@@ -107,7 +107,7 @@ public class PublishThingActivity extends BaseActivity implements View.OnClickLi
         title = getIntent().getStringExtra("title");
         respShop = (RespShop) getIntent().getSerializableExtra("respShop");
         if (TextUtils.isEmpty(title)) {
-            setActionBarName("发布商品");
+            setActionBarName(getString(R.string.publish_thing));
         } else {
             setActionBarName(title);
         }
@@ -434,7 +434,7 @@ public class PublishThingActivity extends BaseActivity implements View.OnClickLi
     private void publishThing(String piclist) {
         ConsumerReqUtil.shopping(this, iApiCallback, null, new Shopping(), "PublishThingActivity", true,
                 StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).putValue("title", etName.getText().toString())
-                        .putValue("describe", etDescribe.getText().toString()).putValue("nums", etNum.getText().toString()).putValue("price", etPrice.getText().toString())
+                        .putValue("describe", etDescribe.getText().toString()).putValue("nums", etNum.getText().toString()).putValue("price", etPrice.getText().toString()+"元")
                         .putValue("address", provinceSpinner.getSelectedItem().toString() + citySpinner.getSelectedItem().toString() + countySpinner.getSelectedItem().toString()
                                 + etAddress.getText().toString()).putValue("pictures", piclist).createMap()));
         showLoadingDialog();
@@ -451,7 +451,7 @@ public class PublishThingActivity extends BaseActivity implements View.OnClickLi
                                 if (respShop != null) {  //修改
                                     ConsumerReqUtil.modiyshop(this, iApiCallback, null, new Shopping(), "PublishThingActivity", true,
                                             StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).putValue("title", etName.getText().toString())
-                                                    .putValue("describe", etDescribe.getText().toString()).putValue("nums", etNum.getText().toString()).putValue("price", etPrice.getText().toString())
+                                                    .putValue("describe", etDescribe.getText().toString()).putValue("nums", etNum.getText().toString()).putValue("price", etPrice.getText().toString()+"元")
                                                     .putValue("address", provinceSpinner.getSelectedItem().toString() + citySpinner.getSelectedItem().toString() + countySpinner.getSelectedItem().toString()
                                                             + etAddress.getText().toString()).putValue("pictures", respShop.getPictures()).putValue("shopid", respShop.getId()).createMap())
                                     );

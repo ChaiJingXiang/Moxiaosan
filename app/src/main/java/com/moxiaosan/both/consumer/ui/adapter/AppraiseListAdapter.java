@@ -68,7 +68,7 @@ public class AppraiseListAdapter extends BaseAdapter {
         RespMycomment respMycomment = respMycommentList.get(position);
         viewHolder.tvName.setText(respMycomment.getSurname());
         if (respMycomment.getType().equals("1")) {
-            viewHolder.tvType.setText("门到门速递");
+            viewHolder.tvType.setText(mContext.getString(R.string.gate_to_gate));
         } else if (respMycomment.getType().equals("2")) {
             viewHolder.tvType.setText("出行");
         }

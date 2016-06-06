@@ -55,9 +55,11 @@ public class ShunFengCheActivity extends BaseActivity implements View.OnClickLis
     public final static int SHUN_FENG_CHE_FROM_ADDRESS = 9999;
     public final static int SHUN_FENG_CHE_TO_ADDRESS = 8888;
 
+
     public final static String NOTIFY_CAROWER_NUM = "notify_carower_num";
     public final static String ARRIVAL_TIME = "arrival_time";
     public final static String ORDER_NOTIFY = "order_notify";
+    public final static String NO_ORDERED = "no_ordered";
 
     private MapView mMapView = null;
     private BaiduMap mBaiduMap = null;
@@ -69,6 +71,7 @@ public class ShunFengCheActivity extends BaseActivity implements View.OnClickLis
 
     private EditText etReward;
     private TextView tvFromAddress, tvToAddress;
+    private EditText etFromAddressDetail, etToAddressDetail;//详细信息
     private MyPoiInfo fromPoiInfo;  //出发地
     private MyPoiInfo toPoiInfo;  //到达地
     private String fromCity;  //  出发城市
@@ -104,7 +107,7 @@ public class ShunFengCheActivity extends BaseActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shun_feng_che);
         showActionBar(true);
-        setActionBarName("顺风车");
+        setActionBarName(getString(R.string.shun_feng_che));
         initView();
         initMapView();
         // 注册 SDK 广播监听者
@@ -114,10 +117,11 @@ public class ShunFengCheActivity extends BaseActivity implements View.OnClickLis
         baiduReceiver = new BaiduSDKReceiver();
         registerReceiver(baiduReceiver, iFilter);
 
-        IntentFilter iFilter2 = new IntentFilter();
+        IntentFilter iFilter2 = new IntentFilter();  //mqtt接受的广播
         iFilter2.addAction(NOTIFY_CAROWER_NUM);
         iFilter2.addAction(ARRIVAL_TIME);
         iFilter2.addAction(ORDER_NOTIFY);
+        iFilter2.addAction(NO_ORDERED);
         shunFengBroadReceiver = new ShunFengBroadReceiver();
         registerReceiver(shunFengBroadReceiver, iFilter2);
 
@@ -130,8 +134,10 @@ public class ShunFengCheActivity extends BaseActivity implements View.OnClickLis
     private void initView() {
         findViewById(R.id.shun_feng_che_guess_free_txt_layout).setOnClickListener(this);
         tvFromAddress = (TextView) findViewById(R.id.shun_feng_che_from_location);
+        etFromAddressDetail = (EditText) findViewById(R.id.shun_feng_che_from_location_detail);//详细信息
         tvFromAddress.setOnClickListener(this);
         tvToAddress = (TextView) findViewById(R.id.shun_feng_che_to_location);
+        etToAddressDetail = (EditText) findViewById(R.id.shun_feng_che_to_location_detail);//详细信息
         tvToAddress.setOnClickListener(this);
         etReward = (EditText) findViewById(R.id.shun_feng_che_reward);
         tvMoney = (TextView) findViewById(R.id.shun_feng_che_guess_free_money);
@@ -152,8 +158,8 @@ public class ShunFengCheActivity extends BaseActivity implements View.OnClickLis
         tvEnsureCancel = (TextView) findViewById(R.id.shun_feng_che_cancle_order_put);
         tvEnsureCancel.setOnClickListener(this);
         tvPhone = (TextView) findViewById(R.id.shun_feng_che_ensure_order_phone_num);
-        tvEnsureCarNum= (TextView) findViewById(R.id.shun_feng_che_ensure_order_car_num);
-        tvEnsureName= (TextView) findViewById(R.id.shun_feng_che_ensure_order_car_name);
+        tvEnsureCarNum = (TextView) findViewById(R.id.shun_feng_che_ensure_order_car_num);
+        tvEnsureName = (TextView) findViewById(R.id.shun_feng_che_ensure_order_car_name);
     }
 
     @Override
@@ -184,16 +190,17 @@ public class ShunFengCheActivity extends BaseActivity implements View.OnClickLis
                 startActivityForResult(intent2, SHUN_FENG_CHE_TO_ADDRESS);
                 break;
             case R.id.shun_feng_che_guess_free_ensure:
-                if (!TextUtils.isEmpty(etReward.getText().toString())) {
-                    ConsumerReqUtil.hitchhiking(this, iApiCallback, null, new Hitchhiking(), "ShunFengCheActivity", true,
-                            StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).putValue("b_x", fromPoiInfo.getLongitude()).putValue("b_y", fromPoiInfo.getLatitude())
-                                    .putValue("beginningplace", tvFromAddress.getText().toString()).putValue("destination", tvToAddress.getText().toString()).putValue("reward", etReward.getText().toString())
-                                    .putValue("d_x", toPoiInfo.getLongitude()).putValue("d_y", toPoiInfo.getLatitude()).putValue("origin_region", fromCity).putValue("destination_region", toPoiInfo.getCity())
-                                    .putValue("estcost", ranging.getData().getCost()).putValue("reward", etReward.getText().toString()).createMap()));
-                    showLoadingDialog();
-                } else {
-                    EUtil.showToast("打赏金额不能为空");
-                }
+//                if (!TextUtils.isEmpty(etReward.getText().toString())) {
+                ConsumerReqUtil.hitchhiking(this, iApiCallback, null, new Hitchhiking(), "ShunFengCheActivity", true,
+                        StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).putValue("b_x", fromPoiInfo.getLongitude()).putValue("b_y", fromPoiInfo.getLatitude())
+                                .putValue("beginningplace", tvFromAddress.getText().toString()).putValue("begin_specific", etFromAddressDetail.getText().toString())
+                                .putValue("destination", tvToAddress.getText().toString()).putValue("dest_specific", etToAddressDetail.getText().toString()).putValue("reward", etReward.getText().toString())
+                                .putValue("d_x", toPoiInfo.getLongitude()).putValue("d_y", toPoiInfo.getLatitude()).putValue("origin_region", fromCity).putValue("destination_region", toPoiInfo.getCity())
+                                .putValue("estcost", ranging.getData().getCost()).putValue("reward", etReward.getText().toString()).createMap()));
+                showLoadingDialog();
+//                } else {
+//                    EUtil.showToast("打赏金额不能为空");
+//                }
                 break;
             case R.id.shun_feng_che_guess_free_cancel:
                 fLayoutMain.setVisibility(View.VISIBLE);
@@ -204,7 +211,7 @@ public class ShunFengCheActivity extends BaseActivity implements View.OnClickLis
                 startActivity(consultPhoneIntent);
                 break;
             case R.id.shun_feng_che_cancle_order_put:
-                CancelOrderDialog cancelOrderDialog = new CancelOrderDialog(ShunFengCheActivity.this, orderId);
+                CancelOrderDialog cancelOrderDialog = new CancelOrderDialog(ShunFengCheActivity.this, orderId, 2);
                 cancelOrderDialog.show();
                 break;
         }
@@ -290,16 +297,19 @@ public class ShunFengCheActivity extends BaseActivity implements View.OnClickLis
                 MQNotifyOwner notifyOwner = (MQNotifyOwner) intent.getSerializableExtra("mqNotifyOwner");
                 tvLeaveTime.setText("已通知" + notifyOwner.getData() + "位车主");
             } else if (intent.getAction().equals(ARRIVAL_TIME)) {
-                MQArrivaltime mqArrivaltime= (MQArrivaltime) intent.getSerializableExtra("mqArrivaltime");
+                MQArrivaltime mqArrivaltime = (MQArrivaltime) intent.getSerializableExtra("mqArrivaltime");
                 tvLeaveTime.setText("预计" + mqArrivaltime.getData() + "分钟到达");
 
             } else if (intent.getAction().equals(ORDER_NOTIFY)) {
-                MQOrdernotify mqOrdernotify= (MQOrdernotify) intent.getSerializableExtra("mqOrdernotify");
+                MQOrdernotify mqOrdernotify = (MQOrdernotify) intent.getSerializableExtra("mqOrdernotify");
                 fLayoutEnsureOrder.setVisibility(View.VISIBLE);
                 tvEnsureCarNum.setText(mqOrdernotify.getPlatenum());
                 tvEnsureName.setText(mqOrdernotify.getSurname());
                 tvPhone.setText(mqOrdernotify.getContact());
-                orderId=mqOrdernotify.getOrderid();
+                orderId = mqOrdernotify.getOrderid();
+            } else if (intent.getAction().equals(NO_ORDERED)) {
+                CancelOrderDialog againDialog = new CancelOrderDialog(ShunFengCheActivity.this, orderId, 1);
+                againDialog.show();
             }
         }
     }
@@ -367,7 +377,7 @@ public class ShunFengCheActivity extends BaseActivity implements View.OnClickLis
         @Override
         public void onReceiveLocation(BDLocation location) {
             if (!ShunFengCheActivity.this.isFinishing()) {  //当前Activity没有被销毁
-                if (isLoadingDialogShowing()){
+                if (isLoadingDialogShowing()) {
                     dismissLoadingDialog();
                 }
                 if (location == null) {
@@ -378,10 +388,10 @@ public class ShunFengCheActivity extends BaseActivity implements View.OnClickLis
                 }
                 String address = location.getAddress().city + location.getAddress().district + location.getAddress().street;
                 if (!TextUtils.isEmpty(location.getAddress().streetNumber)) {
-                    address=address+location.getAddress().streetNumber+"号";
+                    address = address + location.getAddress().streetNumber + "号";
                 }
-                if (!TextUtils.isEmpty(location.getSemaAptag())){
-                    address=address+"("+location.getSemaAptag()+")";
+                if (!TextUtils.isEmpty(location.getSemaAptag())) {
+                    address = address + "(" + location.getSemaAptag() + ")";
                 }
                 fromPoiInfo.setAddress(address);
                 fromPoiInfo.setLatitude(location.getLatitude());
@@ -454,10 +464,12 @@ public class ShunFengCheActivity extends BaseActivity implements View.OnClickLis
     class CancelOrderDialog extends AlertDialog {
 
         String orderId;
+        int index;
 
-        public CancelOrderDialog(Context context, String id) {
+        public CancelOrderDialog(Context context, String id, int indexId) {
             super(context);
             this.orderId = id;
+            this.index = indexId;
         }
 
         @Override
@@ -465,28 +477,46 @@ public class ShunFengCheActivity extends BaseActivity implements View.OnClickLis
             super.onCreate(savedInstanceState);
             setContentView(R.layout.dialog_setting_exit);
             TextView tv = (TextView) findViewById(R.id.tvDialogActivity);
-            tv.setText("确认取消该订单");
-            findViewById(R.id.setting_exit_ensure).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dismiss();
-                    fLayoutMain.setVisibility(View.VISIBLE);
-                    fLayoutEnsureOrder.setVisibility(View.GONE);
-                    layoutLeaveTime.setVisibility(View.GONE);
-                    //网络
-                    ConsumerReqUtil.cancelexpress(ShunFengCheActivity.this, iApiCallback, null, new Cancelexpress(), orderId, true,
-                            StringUrlUtils.geturl(new HashMapUtils().putValue("username", AppData.getInstance().getUserEntity().getUsername()).putValue("expid", orderId).createMap())
-                    );
+            if (index == 1) {
+                tv.setText("暂无车主接单，是否重新发送该订单");
+                findViewById(R.id.setting_exit_ensure).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        EUtil.showToast("重新发送该订单");
+                    }
+                });
+                findViewById(R.id.setting_exit_cancel).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        EUtil.showToast("取消该订单");
+                        dismiss();
+                    }
+                });
+            } else {
+                tv.setText("确认取消该订单");
+                findViewById(R.id.setting_exit_ensure).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismiss();
+                        fLayoutMain.setVisibility(View.VISIBLE);
+                        fLayoutEnsureOrder.setVisibility(View.GONE);
+                        layoutLeaveTime.setVisibility(View.GONE);
+                        //网络
+                        ConsumerReqUtil.cancelexpress(ShunFengCheActivity.this, iApiCallback, null, new Cancelexpress(), orderId, true,
+                                StringUrlUtils.geturl(new HashMapUtils().putValue("username", AppData.getInstance().getUserEntity().getUsername()).putValue("expid", orderId).createMap())
+                        );
 
-                }
-            });
+                    }
+                });
 
-            findViewById(R.id.setting_exit_cancel).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dismiss();
-                }
-            });
+                findViewById(R.id.setting_exit_cancel).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismiss();
+                    }
+                });
+            }
+
         }
     }
 }

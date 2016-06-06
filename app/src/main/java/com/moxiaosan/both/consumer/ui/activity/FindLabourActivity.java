@@ -58,7 +58,7 @@ public class FindLabourActivity extends BaseActivity implements ExpandableListVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_labour);
         showActionBar(true);
-        setActionBarName("找劳力");
+        setActionBarName(getString(R.string.find_labour));
         getActionBarRightImage(R.mipmap.add_icon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

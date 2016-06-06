@@ -57,6 +57,8 @@
                 android:gravity="center_vertical"
                 android:layout_gravity="center_horizontal"
                 android:orientation="vertical"
+                android:paddingTop="@dimen/value_5dp"
+                android:paddingBottom="@dimen/value_5dp"
                 android:paddingLeft="@dimen/value_20dp"
                 android:paddingRight="@dimen/value_20dp">
 
@@ -81,6 +83,30 @@
                         android:textSize="@dimen/value_14sp" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/value_3dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/txt_333333"
+                        android:textSize="@dimen/value_12sp"
+                        android:text="详细地址:"/>
+
+                    <EditText
+                        android:id="@+id/gate_to_gate_from_location_detail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/value_10dp"
+                        android:hint="例如:门牌号、楼层"
+                        android:textColor="@color/txt_333333"
+                        android:background="@android:color/transparent"
+                        android:textSize="@dimen/value_12sp" />
+                </LinearLayout>
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/value_1dp"
@@ -88,7 +114,6 @@
                     android:layout_marginTop="@dimen/value_5dp"
                     android:scaleType="centerCrop"
                     android:src="@mipmap/divider_line_horizonal" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -110,6 +135,30 @@
                         android:textSize="@dimen/value_14sp" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/value_3dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/txt_333333"
+                        android:textSize="@dimen/value_12sp"
+                        android:text="详细地址:"/>
+
+                    <EditText
+                        android:id="@+id/gate_to_gate_to_location_detail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/value_10dp"
+                        android:hint="例如:门牌号、楼层"
+                        android:background="@android:color/transparent"
+                        android:textColor="@color/txt_333333"
+                        android:textSize="@dimen/value_12sp" />
+                </LinearLayout>
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/value_1dp"
@@ -117,7 +166,6 @@
                     android:layout_marginTop="@dimen/value_5dp"
                     android:scaleType="centerCrop"
                     android:src="@mipmap/divider_line_horizonal" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

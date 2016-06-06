@@ -208,6 +208,32 @@ public class CarReqUtils extends ReqBase {
         }
     }
 
+    /**
+     * @des   91、	修改车牌
+     * @param context
+     * @param callback
+     * @param handler
+     * @param modelBase
+     * @param input
+     * @param isNetWork 当需要获取网络数据是的时候发送true,当只需要获取缓存数据的时候放发送
+     * @return 如果是需要换成的， 返回ModelBaseCache对象，否则返回null；如果当前没缓存数据， 也返回null
+     */
+    public static ModelBaseCache updatePlatenum(Context context, IApiCallback callback,
+                                               Handler handler, ModelBase modelBase, Object input, boolean isNetWork, String str) {
+
+        String requestStr = "";
+        String url = null;
+        try{
+            url = getFullUrl("updateplatenum.php?"+str);
+
+            return doExecute(context, callback, modelBase,
+                    url, requestStr, handler, input,isNetWork);
+
+        } catch (Exception e) {
+            Log.d(TAG, e.getMessage());
+            return null;
+        }
+    }
 
     /**
      * @des   36  车主车的照片

@@ -24,6 +24,15 @@ public class RespUserInfo implements Serializable {
     private int userType;
     private int bind=3;
     private String appstatus;
+    private String platenum; //车牌号
+
+    public String getPlatenum() {
+        return platenum;
+    }
+
+    public void setPlatenum(String platenum) {
+        this.platenum = platenum;
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

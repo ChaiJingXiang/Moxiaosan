@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -54,6 +56,8 @@ import consumer.model.mqttobj.MQOrdernotify;
 public class GateToGateActivity extends BaseActivity implements View.OnClickListener {
     public final static int GATE_TO_GATE_FROM_ADDRESS = 9;
     public final static int GATE_TO_GATE_TO_ADDRESS = 8;
+    private final int ETGOODSPRICE_MIN_MARK = 0;  //  申报价值最小为0
+    private final int ETGOODSPRICE_MAX_MARK = 500;  //  申报价值最大为500
     private MapView mMapView = null;
     private BaiduMap mBaiduMap = null;
     private LocationClient locClient;  // 定位相关
@@ -62,6 +66,7 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
     private BaiduSDKReceiver baiduReceiver;
 
     private TextView tvFromAddress, tvToAddress;
+    private EditText etFromAddressDetail, etToAddressDetail;
     private EditText etPeopleName, etPhoneNum, etGoodsName, etGoodsPrice, etGoodsLong, etGoodsWidth, etGoodsheight, etGoodsWeight, etGoodsReward;
     private FrameLayout orderLayout, fLayoutGuessFree, fLayoutAfterLayout, fLayoutEnsureLayout;
     private TextView tvGuessMoney, tvGuessEnsure, tvGuessCancel, tvAfterOrderEnsure, tvAfterOrderCancel, tvNotifyNums;
@@ -81,6 +86,7 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
     public final static String NOTIFY_CAROWER_NUM = "notify_carower_num";
     public final static String ARRIVAL_TIME = "arrival_time";
     public final static String ORDER_NOTIFY = "order_notify";
+    public final static String NO_ORDERED = "no_ordered";
     private String orderId; //订单编号
     private GateToGateBroadReceiver gateToGateBroadReceiver;
 
@@ -102,7 +108,7 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gate_to_gate);
         showActionBar(true);
-        setActionBarName("门到门速递");
+        setActionBarName(getString(R.string.gate_to_gate));
         initMapView();
         initView();
         // 注册 SDK 广播监听者
@@ -116,6 +122,7 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
         iFilter2.addAction(NOTIFY_CAROWER_NUM);
         iFilter2.addAction(ARRIVAL_TIME);
         iFilter2.addAction(ORDER_NOTIFY);
+        iFilter2.addAction(NO_ORDERED);  //无人接单
         gateToGateBroadReceiver = new GateToGateBroadReceiver();
         registerReceiver(gateToGateBroadReceiver, iFilter2);
 
@@ -133,6 +140,34 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
         etPhoneNum = (EditText) findViewById(R.id.gate_to_gate_phone);
         etGoodsName = (EditText) findViewById(R.id.gate_to_gate_goods_name);
         etGoodsPrice = (EditText) findViewById(R.id.gate_to_gate_goods_price);
+        etGoodsPrice.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (start > 1){
+                    if (Double.valueOf(s.toString()) <= ETGOODSPRICE_MIN_MARK){
+                        EUtil.showToast("申报价值不能小于" + ETGOODSPRICE_MIN_MARK + "元");
+                        etGoodsPrice.setText(ETGOODSPRICE_MIN_MARK+"");
+                        etGoodsPrice.setSelection(etGoodsPrice.getText().toString().length());
+                    }
+                    if (Double.valueOf(s.toString()) >= ETGOODSPRICE_MAX_MARK) {
+                        EUtil.showToast("申报价值不能超过" + ETGOODSPRICE_MAX_MARK + "元");
+                        etGoodsPrice.setText(ETGOODSPRICE_MAX_MARK+"");
+                        etGoodsPrice.setSelection(etGoodsPrice.getText().toString().length());
+                    }
+                    return;
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         etGoodsLong = (EditText) findViewById(R.id.gate_to_gate_goods_long);
         etGoodsWidth = (EditText) findViewById(R.id.gate_to_gate_goods_weight);
         etGoodsheight = (EditText) findViewById(R.id.gate_to_gate_goods_height);
@@ -140,8 +175,10 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
         etGoodsReward = (EditText) findViewById(R.id.gate_to_gate_reward);
 
         tvFromAddress = (TextView) findViewById(R.id.gate_to_gate_from_location);
+        etFromAddressDetail = (EditText) findViewById(R.id.gate_to_gate_from_location_detail); //详细
         tvFromAddress.setOnClickListener(this);
         tvToAddress = (TextView) findViewById(R.id.gate_to_gate_to_location);
+        etToAddressDetail = (EditText) findViewById(R.id.gate_to_gate_to_location_detail);//详细
         tvToAddress.setOnClickListener(this);
         orderLayout = (FrameLayout) findViewById(R.id.gate_to_gate_order_layout);
 
@@ -247,18 +284,20 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
                 startActivityForResult(intent2, GATE_TO_GATE_TO_ADDRESS);
                 break;
             case R.id.gate_to_gate_guess_free_ensure:
-                if (!TextUtils.isEmpty(etGoodsReward.getText().toString())) {
+//                if (!TextUtils.isEmpty(etGoodsReward.getText().toString())) {
                     ConsumerReqUtil.express(this, iApiCallback, null, new Express(), "GateToGateActivity", true,
                             StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).putValue("b_x", fromPoiInfo.getLongitude()).putValue("b_y", fromPoiInfo.getLatitude())
-                                    .putValue("beginningplace", tvFromAddress.getText().toString()).putValue("destination", tvToAddress.getText().toString()).putValue("goodsname", etGoodsName.getText().toString()).putValue("weight", etGoodsWeight.getText().toString())
+                                    .putValue("beginningplace", tvFromAddress.getText().toString()).putValue("begin_specific",etFromAddressDetail.getText().toString())
+                                    .putValue("destination", tvToAddress.getText().toString()).putValue("dest_specific",etToAddressDetail.getText().toString())
+                                    .putValue("goodsname", etGoodsName.getText().toString()).putValue("weight", etGoodsWeight.getText().toString())
                                     .putValue("reward", etGoodsReward.getText().toString()).putValue("d_x", toPoiInfo.getLongitude()).putValue("d_y", toPoiInfo.getLatitude()).putValue("rec_tel", etPhoneNum.getText().toString())
                                     .putValue("declared", etGoodsPrice.getText().toString()).putValue("length", etGoodsLong.getText().toString()).putValue("width", etGoodsWidth.getText().toString())
                                     .putValue("height", etGoodsheight.getText().toString()).putValue("addressee", etPeopleName.getText().toString()).putValue("origin_region", fromCity).putValue("destination_region", toPoiInfo.getCity())
                                     .putValue("estcost", expressCost.getData().getCost()).putValue("reward", etGoodsReward.getText().toString()).createMap()));
                     showLoadingDialog();
-                } else {
-                    EUtil.showToast("打赏金额不能为空");
-                }
+//                } else {
+//                    EUtil.showToast("打赏金额不能为空");
+//                }
 
                 break;
             case R.id.gate_to_gate_guess_free_cancel:
@@ -271,7 +310,7 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
                 layoutNotifyNums.setVisibility(View.GONE);
                 break;
             case R.id.gate_to_gate_after_order_cancel:  //下单后  取消订单
-                CancelOrderDialog cancelOrderDialog = new CancelOrderDialog(GateToGateActivity.this, orderId);
+                CancelOrderDialog cancelOrderDialog = new CancelOrderDialog(GateToGateActivity.this, orderId, 2);
                 cancelOrderDialog.show();
                 break;
             case R.id.gate_to_gate_ensure_order_phone_layout:  //确认单后
@@ -284,7 +323,7 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
                 fLayoutEnsureLayout.setVisibility(View.GONE);
                 break;
             case R.id.gate_to_gate_ensure_order_cancel:  //确认单后   取消订单
-                CancelOrderDialog cancelOrderDialog2 = new CancelOrderDialog(GateToGateActivity.this, orderId);
+                CancelOrderDialog cancelOrderDialog2 = new CancelOrderDialog(GateToGateActivity.this, orderId, 2);
                 cancelOrderDialog2.show();
                 break;
         }
@@ -346,6 +385,9 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
                 tvEnsureName.setText(mqOrdernotify.getSurname());
                 tvEnsurePhone.setText(mqOrdernotify.getContact());
                 orderId = mqOrdernotify.getOrderid();
+            }else if (intent.getAction().equals(NO_ORDERED)){
+                CancelOrderDialog againDialog = new CancelOrderDialog(GateToGateActivity.this, orderId, 1);
+                againDialog.show();
             }
         }
     }
@@ -451,7 +493,7 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
         @Override
         public void onReceiveLocation(BDLocation location) {
             if (!GateToGateActivity.this.isFinishing()) {  //当前Activity没有被销毁
-                if (isLoadingDialogShowing()){
+                if (isLoadingDialogShowing()) {
                     dismissLoadingDialog();
                 }
                 if (location == null) {
@@ -462,10 +504,10 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
                 }
                 String address = location.getAddress().city + location.getAddress().district + location.getAddress().street;
                 if (!TextUtils.isEmpty(location.getAddress().streetNumber)) {
-                    address=address+location.getAddress().streetNumber+"号";
+                    address = address + location.getAddress().streetNumber + "号";
                 }
-                if (!TextUtils.isEmpty(location.getSemaAptag())){
-                    address=address+"("+location.getSemaAptag()+")";
+                if (!TextUtils.isEmpty(location.getSemaAptag())) {
+                    address = address + "(" + location.getSemaAptag() + ")";
                 }
                 fromPoiInfo.setAddress(address);
                 fromPoiInfo.setLatitude(location.getLatitude());
@@ -538,10 +580,12 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
     class CancelOrderDialog extends AlertDialog {
 
         String orderId;
+        int index;
 
-        public CancelOrderDialog(Context context, String id) {
+        public CancelOrderDialog(Context context, String id, int indexId) {
             super(context);
             this.orderId = id;
+            index = indexId;
         }
 
         @Override
@@ -549,28 +593,45 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
             super.onCreate(savedInstanceState);
             setContentView(R.layout.dialog_setting_exit);
             TextView tv = (TextView) findViewById(R.id.tvDialogActivity);
-            tv.setText("确认取消该订单");
-            findViewById(R.id.setting_exit_ensure).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dismiss();
-                    orderLayout.setVisibility(View.VISIBLE);
-                    fLayoutAfterLayout.setVisibility(View.GONE);
-                    fLayoutEnsureLayout.setVisibility(View.GONE);
-                    //网络
-                    ConsumerReqUtil.cancelexpress(GateToGateActivity.this, iApiCallback, null, new Cancelexpress(), orderId, true,
-                            StringUrlUtils.geturl(new HashMapUtils().putValue("username", AppData.getInstance().getUserEntity().getUsername()).putValue("expid", orderId).createMap())
-                    );
+            if (index == 1){
+                tv.setText("暂无车主接单，是否重新发送该订单");
+                findViewById(R.id.setting_exit_ensure).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        EUtil.showToast("重新发送该订单");
+                    }
+                });
+                findViewById(R.id.setting_exit_cancel).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        EUtil.showToast("取消该订单");
+                        dismiss();
+                    }
+                });
+            }else {
+                tv.setText("确认取消该订单");
+                findViewById(R.id.setting_exit_ensure).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismiss();
+                        orderLayout.setVisibility(View.VISIBLE);
+                        fLayoutAfterLayout.setVisibility(View.GONE);
+                        fLayoutEnsureLayout.setVisibility(View.GONE);
+                        //网络
+                        ConsumerReqUtil.cancelexpress(GateToGateActivity.this, iApiCallback, null, new Cancelexpress(), orderId, true,
+                                StringUrlUtils.geturl(new HashMapUtils().putValue("username", AppData.getInstance().getUserEntity().getUsername()).putValue("expid", orderId).createMap())
+                        );
 
-                }
-            });
+                    }
+                });
 
-            findViewById(R.id.setting_exit_cancel).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dismiss();
-                }
-            });
+                findViewById(R.id.setting_exit_cancel).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismiss();
+                    }
+                });
+            }
         }
     }
 }

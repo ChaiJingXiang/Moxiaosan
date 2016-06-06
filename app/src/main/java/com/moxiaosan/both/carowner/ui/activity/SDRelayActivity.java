@@ -12,13 +12,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.moxiaosan.both.R;
 import com.moxiaosan.both.carowner.ui.adapter.SDListViewAdapter;
 import com.moxiaosan.both.carowner.ui.consumer.MyListView;
-import com.moxiaosan.both.common.model.LocationBean;
 import com.moxiaosan.both.common.model.MyPoiInfo;
 import com.moxiaosan.both.common.ui.activity.SelectToAddessActivity;
 import com.moxiaosan.both.common.utils.DateTimePickDialogUtil;
@@ -42,8 +40,6 @@ import consumer.model.RespOrderDetail;
 import consumer.model.RespSDOrderDetail;
 import consumer.model.TakeOrder;
 import consumer.model.obj.RelayInfo;
-import consumer.model.obj.RespUserInfo;
-import lecho.lib.hellocharts.model.Line;
 
 /**
  * Created by chris on 16/3/1.
@@ -77,7 +73,7 @@ public class SDRelayActivity extends BaseActivity implements IApiCallback, OnCli
     private String lng_d;
     private String destination_region;
     private LinearLayout addressLinear;
-    private List<RelayInfo> lists =new ArrayList<>();
+    private List<RelayInfo> lists =new ArrayList<RelayInfo>();
     //    private LinearLayout bottomLinear;
 //    private TextView tvQuHuo,tvSongDa;
     private ExitDialog dialog;

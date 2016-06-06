@@ -1,5 +1,7 @@
 package com.moxiaosan.both.common.ui.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -28,21 +30,30 @@ public class UseHelpActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        Intent intent=new Intent(UseHelpActivity.this,WebViewActivity.class);
-        switch (v.getId()){
-            case R.id.user_help_rules:
-                intent.putExtra("title","法律条款");
-                intent.putExtra("webUrl","http://www.moxiaosan.com");
-                break;
+        switch (v.getId()) {
             case R.id.user_help_service:
-                intent.putExtra("title","客服信息");
-                intent.putExtra("webUrl","http://www.moxiaosan.com");
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);  //先得到构造器
+                builder.setTitle("客服信息"); //设置标题
+                builder.setMessage("客服热线：400-8925-108"); //设置内容
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() { //设置确定按钮
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss(); //关闭dialog
+                    }
+                });
+                builder.create().show();
                 break;
+            case R.id.user_help_rules:
+                Intent intent = new Intent(UseHelpActivity.this, WebViewActivity.class);
+                intent.putExtra("title", "用户注册协议");
+                intent.putExtra("webUrl", "file:///android_asset/agree.html");
+                startActivity(intent);
+                break;
+
             case R.id.user_help_question:
-                intent.putExtra("title","常见问题");
-                intent.putExtra("webUrl","http://www.moxiaosan.com");
+                startActivity(new Intent(UseHelpActivity.this, QuestionsActivity.class));
                 break;
         }
-        startActivity(intent);
+
     }
 }

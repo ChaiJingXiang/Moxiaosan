@@ -102,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/value_10dp"
                     android:background="@color/txt_white"
-                    android:hint="个"
+                    android:hint=""
                     android:textSize="@dimen/value_14sp" />
             </LinearLayout>
 

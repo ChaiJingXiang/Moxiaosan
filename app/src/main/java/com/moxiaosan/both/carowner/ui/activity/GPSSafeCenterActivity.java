@@ -66,6 +66,9 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
     private AlrmBroadReceiver alrmBroadReceiver;
     private SharedPreferences sp = null;
 
+    private boolean isFromMain = false; //判断从哪个页面跳转过来的
+    private ImageView imgUserPhoto;
+
     private class AlrmBroadReceiver extends BroadcastReceiver {
 
         @Override
@@ -83,7 +86,7 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
 
         setContentView(R.layout.b_gpssafecenter_layout);
         sp=getSharedPreferences("alarm", Activity.MODE_PRIVATE);
-
+        isFromMain=getIntent().getBooleanExtra("isFromMain",false);
         checkBox = (CheckBox) findViewById(R.id.checkBoxSafeId);
 
         showLoadingDialog();
@@ -100,7 +103,12 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
 
         tvLocation = (TextView) findViewById(R.id.tvLocationId);
 
-        findViewById(R.id.main_user_photo).setOnClickListener(this);
+        imgUserPhoto= (ImageView) findViewById(R.id.main_user_photo);
+        if (isFromMain){
+            imgUserPhoto.setPadding(20,0,0,0);
+            imgUserPhoto.setImageResource(R.mipmap.back_big);
+        }
+        imgUserPhoto.setOnClickListener(this);
         findViewById(R.id.main_city_location).setOnClickListener(this);
 
         findViewById(R.id.imgLocationId).setOnClickListener(this);
@@ -154,12 +162,15 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.main_user_photo:
-                if (!slidingMenu.isShown()) {
-                    slidingMenu.showMenu();
-                } else {
-                    slidingMenu.toggle();//关闭菜单
+                if (isFromMain){
+                    finish();
+                }else {
+                    if (!slidingMenu.isShown()) {
+                        slidingMenu.showMenu();
+                    } else {
+                        slidingMenu.toggle();//关闭菜单
+                    }
                 }
-
                 break;
             case R.id.main_city_location:
                 Intent intent = new Intent(GPSSafeCenterActivity.this, CityPositionActivity.class);
@@ -301,14 +312,14 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
                     if (mqtt.getRes().equals("0")) {
                         dialog.dismiss();
                         EUtil.showToast(mqtt.getErr());
-                        tvStutas.setText("开启防盗模式");
+                        tvStutas.setText("关闭防盗模式");
                     } else {
                         EUtil.showToast(mqtt.getErr());
                     }
                 } else if (input.equals("open")) {
 
                     if (mqtt.getRes().equals("0")) {
-                        tvStutas.setText("关闭防盗模式");
+                        tvStutas.setText("开启防盗模式");
 
                         EUtil.showToast(mqtt.getErr());
                     } else {
@@ -348,12 +359,12 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
                     if (AppData.getInstance().getUserEntity().getBind() == 1) {
                         if (guard.getData().getGuard().equals("1")) {
                             checkBox.setChecked(false);
-                            tvStutas.setText("关闭防盗模式");
+                            tvStutas.setText("开启防盗模式");
 
                         } else {
 
                             checkBox.setChecked(true);
-                            tvStutas.setText("开启防盗模式");
+                            tvStutas.setText("关闭防盗模式");
 
                         }
 

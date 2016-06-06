@@ -75,7 +75,7 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback {
     private boolean flag = true;
     private List<LatLng> points = null;
     private TextView tvAllKm, tvMAxSpeed, tvAverageSpeed;
-    private List<GuiJiObj> list = new ArrayList<>();
+    private List<GuiJiObj> list = new ArrayList<GuiJiObj>();
 
     //该程序模拟填充长度为100的数组
     private int[] array = new int[101];
@@ -334,7 +334,7 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback {
 
                     } else {
 
-                        points = new ArrayList<>();
+                        points = new ArrayList<LatLng>();
 
                         list = guiji.getData();
 

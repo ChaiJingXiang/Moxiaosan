@@ -53,7 +53,7 @@ public class CarOwnerInfoActivity extends BaseActivity implements View.OnClickLi
 
     private BottomDialog bottomDialog;
     private RoundImageView userPhoto;
-    private TextView tvName, tvPhone, tvAddress, tvCarType;
+    private TextView tvName, tvPhone, tvAddress, tvCarType, tvCarNm;
     private TextView tvKim;
 
     // 变量
@@ -103,6 +103,7 @@ public class CarOwnerInfoActivity extends BaseActivity implements View.OnClickLi
         findViewById(R.id.person_info_phone_mdify_layout).setOnClickListener(this);
         findViewById(R.id.person_info_password_modify_layout).setOnClickListener(this);
         findViewById(R.id.person_info_address_layout).setOnClickListener(this);
+        findViewById(R.id.person_info_car_num_layout).setOnClickListener(this);
         findViewById(R.id.person_info_car_type_layout).setOnClickListener(this);
         findViewById(R.id.person_info_car_photo_layout).setOnClickListener(this);
         findViewById(R.id.close).setOnClickListener(this);
@@ -116,6 +117,7 @@ public class CarOwnerInfoActivity extends BaseActivity implements View.OnClickLi
 
         tvAddress = (TextView) findViewById(R.id.person_info_address_txt);
         tvCarType = (TextView) findViewById(R.id.person_info_car_type_name_txt);
+        tvCarNm = (TextView) findViewById(R.id.person_info_car_num_txt);
 
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
 
@@ -165,6 +167,9 @@ public class CarOwnerInfoActivity extends BaseActivity implements View.OnClickLi
                 startActivity(new Intent(CarOwnerInfoActivity.this, AddressActivity.class));
                 break;
 
+            case R.id.person_info_car_num_layout:
+                startActivity(new Intent(CarOwnerInfoActivity.this, CarNumActivity.class).putExtra("carNum",tvCarNm.getText().toString()));
+                break;
             case R.id.person_info_car_type_layout:
                 startActivity(new Intent(CarOwnerInfoActivity.this, CarTypeActivity.class));
                 break;
@@ -366,7 +371,7 @@ public class CarOwnerInfoActivity extends BaseActivity implements View.OnClickLi
                         tvPhone.setText(userinfo.getData().getContact());
                         tvAddress.setText(userinfo.getData().getAddress());
                         tvCarType.setText(userinfo.getData().getCarbrand());
-
+                        tvCarNm.setText(userinfo.getData().getPlatenum());
                         carImg = userinfo.getData().getCarimg();
                     }
                 }

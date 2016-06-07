@@ -33,7 +33,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="需:"
+                    android:text="劳力信息:"
                     android:textColor="@color/main_color" />
 
                 <TextView

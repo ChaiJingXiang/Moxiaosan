@@ -178,7 +178,7 @@ public class NowLocationActivity extends BaseActivity implements IApiCallback {
 //                    }
                     if (mBaiduMap != null) {
                         // 构造定位数据
-                        MyLocationData locData = new MyLocationData.Builder().accuracy(40.0f)
+                        MyLocationData locData = new MyLocationData.Builder()
                                 // 此处设置开发者获取到的方向信息，顺时针0-360
                                 .direction(Float.parseFloat(location.getData().getDirection()))//Float.parseFloat(location.getData().getDirection())
                                 .latitude(llA.latitude)

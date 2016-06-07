@@ -11,7 +11,9 @@ public class RespShop implements Serializable {
     private static final long serialVersionUID = 2268243742088734665L;
     private String Id;
     private String title;
+    private String type; // 1买卖东西    2 找劳力
     private String fb_datetime;
+    private String contact;
     private String describes;
     private String nums;
     private String price;
@@ -107,5 +109,21 @@ public class RespShop implements Serializable {
 
     public void setOpenComments(boolean openComments) {
         isOpenComments = openComments;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

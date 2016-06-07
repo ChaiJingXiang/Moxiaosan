@@ -143,7 +143,7 @@ public class SellThingListAdapter extends BaseExpandableListAdapter {
         groupViewHolder.tvTitle.setText(respShop.getTitle());
         groupViewHolder.tvTime.setText(respShop.getFb_datetime());
         groupViewHolder.tvContent.setText(respShop.getDescribes());
-        groupViewHolder.tvPeopleNum.setText("数量：" + respShop.getNums() + "个");
+        groupViewHolder.tvPeopleNum.setText("数量：" + respShop.getNums());
         groupViewHolder.tvSalary.setText("价格：" + respShop.getPrice());
         groupViewHolder.tvAddress.setText("地址：" + respShop.getAddress());
         if (AppData.getInstance().getUserEntity().getUsername().equals(respShop.getUsername())) {
@@ -321,13 +321,13 @@ public class SellThingListAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    class GroupViewHolder {
+    static class GroupViewHolder {
         private TextView tvTitle, tvTime, tvContent, tvPeopleNum, tvSalary, tvAddress;
         private ImageView imgDelete, imgEdit, imgTalk, imgPic1, imgPic2, imgPic3;
         private LinearLayout groupDividerLayout, picsLayout;
     }
 
-    class ChildViewHolder {
+    static class ChildViewHolder {
         private LinearLayout dividerLayout, openCommentLayout;
         private TextView tvName, tvComment, tvOpenOrClose;
         private ImageView imgOpenOrClose;

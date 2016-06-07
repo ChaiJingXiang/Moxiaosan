@@ -16,6 +16,7 @@ import com.moxiaosan.both.R;
 import com.moxiaosan.both.carowner.ui.adapter.TakeOrderListAdapter;
 import com.utils.api.IApiCallback;
 import com.utils.common.EUtil;
+import com.utils.log.LLog;
 import com.utils.ui.base.BaseFragment_v4;
 
 import java.util.Date;
@@ -75,6 +76,7 @@ public class TakeOrderFragment extends BaseFragment_v4 implements IXListViewRefr
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(HAVE_NEW_ORDER)) {
+                LLog.i("新订单");
                 onRefresh();
             }
         }

@@ -49,7 +49,9 @@ import consumer.api.ConsumerReqUtil;
 import consumer.model.Cancelexpress;
 import consumer.model.Express;
 import consumer.model.ExpressCost;
+import consumer.model.Resend;
 import consumer.model.mqttobj.MQArrivaltime;
+import consumer.model.mqttobj.MQNoOrdered;
 import consumer.model.mqttobj.MQNotifyOwner;
 import consumer.model.mqttobj.MQOrdernotify;
 
@@ -89,6 +91,7 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
     public final static String NO_ORDERED = "no_ordered";
     private String orderId; //订单编号
     private GateToGateBroadReceiver gateToGateBroadReceiver;
+    private CancelOrderDialog againDialog; //重新发送订单窗口
 
     /**
      * 构造广播监听类，监听 SDK key 验证以及网络异常广播
@@ -148,15 +151,15 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (start > 1){
-                    if (Double.valueOf(s.toString()) <= ETGOODSPRICE_MIN_MARK){
+                if (start > 1) {
+                    if (Double.valueOf(s.toString()) <= ETGOODSPRICE_MIN_MARK) {
                         EUtil.showToast("申报价值不能小于" + ETGOODSPRICE_MIN_MARK + "元");
-                        etGoodsPrice.setText(ETGOODSPRICE_MIN_MARK+"");
+                        etGoodsPrice.setText(ETGOODSPRICE_MIN_MARK + "");
                         etGoodsPrice.setSelection(etGoodsPrice.getText().toString().length());
                     }
                     if (Double.valueOf(s.toString()) >= ETGOODSPRICE_MAX_MARK) {
                         EUtil.showToast("申报价值不能超过" + ETGOODSPRICE_MAX_MARK + "元");
-                        etGoodsPrice.setText(ETGOODSPRICE_MAX_MARK+"");
+                        etGoodsPrice.setText(ETGOODSPRICE_MAX_MARK + "");
                         etGoodsPrice.setSelection(etGoodsPrice.getText().toString().length());
                     }
                     return;
@@ -285,16 +288,16 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.gate_to_gate_guess_free_ensure:
 //                if (!TextUtils.isEmpty(etGoodsReward.getText().toString())) {
-                    ConsumerReqUtil.express(this, iApiCallback, null, new Express(), "GateToGateActivity", true,
-                            StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).putValue("b_x", fromPoiInfo.getLongitude()).putValue("b_y", fromPoiInfo.getLatitude())
-                                    .putValue("beginningplace", tvFromAddress.getText().toString()).putValue("begin_specific",etFromAddressDetail.getText().toString())
-                                    .putValue("destination", tvToAddress.getText().toString()).putValue("dest_specific",etToAddressDetail.getText().toString())
-                                    .putValue("goodsname", etGoodsName.getText().toString()).putValue("weight", etGoodsWeight.getText().toString())
-                                    .putValue("reward", etGoodsReward.getText().toString()).putValue("d_x", toPoiInfo.getLongitude()).putValue("d_y", toPoiInfo.getLatitude()).putValue("rec_tel", etPhoneNum.getText().toString())
-                                    .putValue("declared", etGoodsPrice.getText().toString()).putValue("length", etGoodsLong.getText().toString()).putValue("width", etGoodsWidth.getText().toString())
-                                    .putValue("height", etGoodsheight.getText().toString()).putValue("addressee", etPeopleName.getText().toString()).putValue("origin_region", fromCity).putValue("destination_region", toPoiInfo.getCity())
-                                    .putValue("estcost", expressCost.getData().getCost()).putValue("reward", etGoodsReward.getText().toString()).createMap()));
-                    showLoadingDialog();
+                ConsumerReqUtil.express(this, iApiCallback, null, new Express(), "GateToGateActivity", true,
+                        StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).putValue("b_x", fromPoiInfo.getLongitude()).putValue("b_y", fromPoiInfo.getLatitude())
+                                .putValue("beginningplace", tvFromAddress.getText().toString()).putValue("begin_specific", etFromAddressDetail.getText().toString())
+                                .putValue("destination", tvToAddress.getText().toString()).putValue("dest_specific", etToAddressDetail.getText().toString())
+                                .putValue("goodsname", etGoodsName.getText().toString()).putValue("weight", etGoodsWeight.getText().toString())
+                                .putValue("reward", etGoodsReward.getText().toString()).putValue("d_x", toPoiInfo.getLongitude()).putValue("d_y", toPoiInfo.getLatitude()).putValue("rec_tel", etPhoneNum.getText().toString())
+                                .putValue("declared", etGoodsPrice.getText().toString()).putValue("length", etGoodsLong.getText().toString()).putValue("width", etGoodsWidth.getText().toString())
+                                .putValue("height", etGoodsheight.getText().toString()).putValue("addressee", etPeopleName.getText().toString()).putValue("origin_region", fromCity).putValue("destination_region", toPoiInfo.getCity())
+                                .putValue("estcost", expressCost.getData().getCost()).putValue("reward", etGoodsReward.getText().toString()).createMap()));
+                showLoadingDialog();
 //                } else {
 //                    EUtil.showToast("打赏金额不能为空");
 //                }
@@ -363,6 +366,13 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
                     finish();
                 }
             }
+            if (output instanceof Resend) {  //重新发送订单
+                Resend resend = (Resend) output;
+                EUtil.showToast(resend.getErr());
+                if (resend.getRes().equals("0")) {
+                    againDialog.dismiss();
+                }
+            }
         }
     };
 
@@ -385,8 +395,10 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
                 tvEnsureName.setText(mqOrdernotify.getSurname());
                 tvEnsurePhone.setText(mqOrdernotify.getContact());
                 orderId = mqOrdernotify.getOrderid();
-            }else if (intent.getAction().equals(NO_ORDERED)){
-                CancelOrderDialog againDialog = new CancelOrderDialog(GateToGateActivity.this, orderId, 1);
+            } else if (intent.getAction().equals(NO_ORDERED)) {
+                MQNoOrdered mqNoOrdered = (MQNoOrdered) intent.getSerializableExtra("mqNoOrdered");
+//                LLog.i("mqNoOrdered"+mqNoOrdered.getOrderid());
+                againDialog = new CancelOrderDialog(GateToGateActivity.this, orderId, 1);
                 againDialog.show();
             }
         }
@@ -593,22 +605,27 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
             super.onCreate(savedInstanceState);
             setContentView(R.layout.dialog_setting_exit);
             TextView tv = (TextView) findViewById(R.id.tvDialogActivity);
-            if (index == 1){
+            if (index == 1) {
                 tv.setText("暂无车主接单，是否重新发送该订单");
                 findViewById(R.id.setting_exit_ensure).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        EUtil.showToast("重新发送该订单");
+                        ConsumerReqUtil.resend(GateToGateActivity.this, iApiCallback, null, new Resend(), orderId, true,
+                                StringUrlUtils.geturl(new HashMapUtils().putValue("orderid", orderId).createMap()));
+//                        EUtil.showToast("重新发送该订单");
                     }
                 });
                 findViewById(R.id.setting_exit_cancel).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        EUtil.showToast("取消该订单");
+                        ConsumerReqUtil.cancelexpress(GateToGateActivity.this, iApiCallback, null, new Cancelexpress(), orderId, true,
+                                StringUrlUtils.geturl(new HashMapUtils().putValue("username", AppData.getInstance().getUserEntity().getUsername()).putValue("expid", orderId).createMap())
+                        );
+//                        EUtil.showToast("取消该订单");
                         dismiss();
                     }
                 });
-            }else {
+            } else {
                 tv.setText("确认取消该订单");
                 findViewById(R.id.setting_exit_ensure).setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -189,18 +189,18 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
 
             case R.id.imgFindId:
 
-                if (AppData.getInstance().getUserEntity().getBind() == 1) {
-                    if (type == 1) {
-
-                        Toast.makeText(GPSSafeCenterActivity.this, "已经断电断油", Toast.LENGTH_SHORT).show();
-                        Intent intent2 = new Intent(GPSSafeCenterActivity.this, FindLocationActivity.class);
-                        startActivity(intent2);
-                    } else {
+                if (AppData.getInstance().getUserEntity().getBind() == 1) {   //已经绑定设备
+//                    if (type == 1) {
+//
+////                        Toast.makeText(GPSSafeCenterActivity.this, "已经断电断油", Toast.LENGTH_SHORT).show();
+//                        Intent intent2 = new Intent(GPSSafeCenterActivity.this, FindLocationActivity.class);
+//                        startActivity(intent2);
+//                    } else {
 
                         dialog = new ExitDialog(this, 3);
                         dialog.setCanceledOnTouchOutside(false);
                         dialog.show();
-                    }
+//                    }
 
                 } else {
                     EUtil.showToast("未绑定设备,请先绑定设备");
@@ -312,21 +312,21 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
                     if (mqtt.getRes().equals("0")) {
                         dialog.dismiss();
                         EUtil.showToast(mqtt.getErr());
-                        tvStutas.setText("关闭防盗模式");
+                        tvStutas.setText("防盗模式关闭");
                     } else {
                         EUtil.showToast(mqtt.getErr());
                     }
                 } else if (input.equals("open")) {
 
                     if (mqtt.getRes().equals("0")) {
-                        tvStutas.setText("开启防盗模式");
+                        tvStutas.setText("防盗模式开启");
 
                         EUtil.showToast(mqtt.getErr());
                     } else {
                         EUtil.showToast(mqtt.getErr());
                     }
 
-                } else if (input.equals("r_close")) {
+                } else if (input.equals("r_close")) { //切断供油电  返回
 
                     if (mqtt.getRes().equals("0")) {
 
@@ -359,12 +359,12 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
                     if (AppData.getInstance().getUserEntity().getBind() == 1) {
                         if (guard.getData().getGuard().equals("1")) {
                             checkBox.setChecked(false);
-                            tvStutas.setText("开启防盗模式");
+                            tvStutas.setText("防盗模式开启");
 
                         } else {
 
                             checkBox.setChecked(true);
-                            tvStutas.setText("关闭防盗模式");
+                            tvStutas.setText("防盗模式关闭");
 
                         }
 
@@ -435,7 +435,7 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
                 textView.setText("开启防盗模式，请确认！");
             } else if (index == 2) {
                 textView.setText("关闭防盗模式，请确认！");
-            } else {
+            } else {   //3
                 textView.setText("本操作会执行远程切断供\n油供电操作，请确认！");
             }
 
@@ -455,7 +455,7 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
                                 StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).
                                         putValue("type", 2).createMap()));
 
-                    } else if (index == 3) {
+                    } else if (index == 3) {  //切断供油电
                         CarReqUtils.recoverlost(GPSSafeCenterActivity.this, GPSSafeCenterActivity.this, null, new Mqtt(), "r_close", true,
                                 StringUrlUtils.geturl(new HashMapUtils().putValue("username", AppData.getInstance().getUserEntity().getUsername()).
                                         putValue("type", "1").createMap()));

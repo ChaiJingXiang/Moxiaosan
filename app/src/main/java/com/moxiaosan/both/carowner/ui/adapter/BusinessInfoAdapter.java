@@ -3,6 +3,7 @@ package com.moxiaosan.both.carowner.ui.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -105,8 +106,10 @@ public class BusinessInfoAdapter extends BaseExpandableListAdapter{
         if (convertView == null) {
             groupViewHolder = new GroupViewHolder();
             convertView = inflater.inflate(R.layout.businessinfo_list_group_item, null);
+            groupViewHolder.tvType = (TextView) convertView.findViewById(R.id.businessinfo_list_item_type_txt);
             groupViewHolder.tvTitle = (TextView) convertView.findViewById(R.id.sell_thing_list_group_title);
             groupViewHolder.tvTime = (TextView) convertView.findViewById(R.id.sell_thing_list_group_time);
+            groupViewHolder.tvContactPhone = (TextView) convertView.findViewById(R.id.businessinfo_list_item_contact_phone);
             groupViewHolder.tvContent = (TextView) convertView.findViewById(R.id.sell_thing_list_group_content);
             groupViewHolder.tvPeopleNum = (TextView) convertView.findViewById(R.id.sell_thing_list_group_people_num);
             groupViewHolder.tvSalary = (TextView) convertView.findViewById(R.id.sell_thing_list_group_salary);
@@ -126,10 +129,26 @@ public class BusinessInfoAdapter extends BaseExpandableListAdapter{
         }
         final RespShop respShop = lists.get(groupPosition);
         final ArrayList<String> imgsURL = new ArrayList<String>();
+        if (respShop.getType().equals("1")){
+            groupViewHolder.tvType.setText("买卖信息：");
+        }else if (respShop.getType().equals("2")){
+            groupViewHolder.tvType.setText("劳力信息：");
+        }
+
         groupViewHolder.tvTitle.setText(respShop.getTitle());
         groupViewHolder.tvTime.setText(respShop.getFb_datetime());
+        groupViewHolder.tvContactPhone.setText(respShop.getContact());
+        groupViewHolder.tvContactPhone.setTag(respShop.getContact());
+        groupViewHolder.tvContactPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //用intent启动拨打电话
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+v.getTag()));
+                mContext.startActivity(intent);
+            }
+        });
         groupViewHolder.tvContent.setText(respShop.getDescribes());
-        groupViewHolder.tvPeopleNum.setText("数量：" + respShop.getNums() + "个");
+        groupViewHolder.tvPeopleNum.setText("数量：" + respShop.getNums());
         groupViewHolder.tvSalary.setText("价格：" + respShop.getPrice());
         groupViewHolder.tvAddress.setText("地址：" + respShop.getAddress());
         if (AppData.getInstance().getUserEntity().getUsername().equals(respShop.getUsername())) {
@@ -308,13 +327,13 @@ public class BusinessInfoAdapter extends BaseExpandableListAdapter{
         return false;
     }
 
-    class GroupViewHolder {
-        private TextView tvTitle, tvTime, tvContent, tvPeopleNum, tvSalary, tvAddress;
+   static class GroupViewHolder {
+        private TextView tvType, tvTitle, tvTime, tvContactPhone, tvContent, tvPeopleNum, tvSalary, tvAddress;
         private ImageView imgDelete, imgEdit, imgTalk, imgPic1, imgPic2, imgPic3;
         private LinearLayout groupDividerLayout, picsLayout;
     }
 
-    class ChildViewHolder {
+    static class ChildViewHolder {
         private LinearLayout dividerLayout, openCommentLayout;
         private TextView tvName, tvComment, tvOpenOrClose;
         private ImageView imgOpenOrClose;

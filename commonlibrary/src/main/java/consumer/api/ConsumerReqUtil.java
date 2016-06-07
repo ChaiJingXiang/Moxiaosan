@@ -434,6 +434,31 @@ public class ConsumerReqUtil extends ReqBase {
      * @param input
      * @param isNetWork 当需要获取网络数据是的时候发送true,当只需要获取缓存数据的时候放发送
      * @return 如果是需要换成的， 返回ModelBaseCache对象，否则返回null；如果当前没缓存数据， 也返回null
+     * @des 92、	重新发送该订单
+     */
+    public static ModelBaseCache resend(Context context, IApiCallback callback, Handler handler, ModelBase modelBase, Object input, boolean isNetWork, String reqParam) {
+        String requestStr = "";
+        String url = null;
+        try {
+            url = getFullUrl("resend.php?" + reqParam);
+
+            return doExecute(context, callback, modelBase,
+                    url, requestStr, handler, input, isNetWork);
+
+        } catch (Exception e) {
+            Log.d(TAG, e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * @param context
+     * @param callback
+     * @param handler
+     * @param modelBase
+     * @param input
+     * @param isNetWork 当需要获取网络数据是的时候发送true,当只需要获取缓存数据的时候放发送
+     * @return 如果是需要换成的， 返回ModelBaseCache对象，否则返回null；如果当前没缓存数据， 也返回null
      * @des  11、	找劳力评论
      */
     public static ModelBaseCache labourcomments(Context context, IApiCallback callback, Handler handler, ModelBase modelBase, Object input, boolean isNetWork, String reqParam) {

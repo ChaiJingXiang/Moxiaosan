@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 public class MQNoOrdered implements Serializable {
     private static final long serialVersionUID = 5050981277336182900L;
-    private int orderid;
+    private String orderid;
     private String res;
 
     public String getRes() {
@@ -19,11 +19,11 @@ public class MQNoOrdered implements Serializable {
         this.res = res;
     }
 
-    public int getOrderid() {
+    public String getOrderid() {
         return orderid;
     }
 
-    public void setOrderid(int orderid) {
+    public void setOrderid(String orderid) {
         this.orderid = orderid;
     }
 }

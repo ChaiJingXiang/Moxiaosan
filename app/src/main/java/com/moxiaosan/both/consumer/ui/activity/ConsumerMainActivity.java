@@ -19,6 +19,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.moxiaosan.both.APP;
 import com.moxiaosan.both.R;
 import com.moxiaosan.both.common.ui.activity.CityPositionActivity;
 import com.moxiaosan.both.common.ui.activity.MessagesActivity;
@@ -58,7 +59,7 @@ public class ConsumerMainActivity extends BaseFragmentActivity implements View.O
     private List<ResPictrue> subLists = new ArrayList<ResPictrue>(); //viewpager专题对象
     private TextView tvCityName, tvMessageCount;
     private SharedPreferences sp;
-    private SharedPreferences.Editor editor = null;
+    private SharedPreferences.Editor editorLocation = null;
 
     private Mynews mynews;
 
@@ -92,7 +93,7 @@ public class ConsumerMainActivity extends BaseFragmentActivity implements View.O
 
     private void initView() {
         sp = getSharedPreferences("location", Context.MODE_PRIVATE);
-        editor = sp.edit();
+        editorLocation = sp.edit();
         tvCityName = (TextView) findViewById(R.id.main_city_name_txt);
         if (!TextUtils.isEmpty(sp.getString("city", ""))) {
             tvCityName.setText(sp.getString("city", ""));
@@ -245,7 +246,6 @@ public class ConsumerMainActivity extends BaseFragmentActivity implements View.O
                 break;
             case R.id.main_city_location:
                 Intent intent = new Intent(ConsumerMainActivity.this, CityPositionActivity.class);
-//                intent.putExtra("maincity", tvCityName.getText().toString());
                 startActivityForResult(intent, CITY_GET_CODE); //requestCode
                 break;
             case R.id.main_gatetogate_layout:
@@ -276,8 +276,8 @@ public class ConsumerMainActivity extends BaseFragmentActivity implements View.O
                 tvCityName.setText(data.getStringExtra("city"));
                 data.getDoubleExtra("lng", 0.0);
                 data.getDoubleExtra("lat", 0.0);
-                editor.putString("city", data.getStringExtra("city"));
-                editor.commit();
+                editorLocation.putString("city", data.getStringExtra("city"));
+                editorLocation.commit();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -313,6 +313,7 @@ public class ConsumerMainActivity extends BaseFragmentActivity implements View.O
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        APP.getInstance().stopLocationClient(); //关闭定位
         //关闭 mqtt 服务
         if (MqttService.wasStarted()){
             LLog.i("===ConsumerMainActivity===onDestroy()==stopService()");

@@ -28,28 +28,31 @@ import java.util.ArrayList;
 import consumer.StringUrlUtils;
 import consumer.api.CarReqUtils;
 import consumer.model.BecomeApply;
+import consumer.model.Modiyapply;
 import picture.PictureGalleryActivity;
 
-public class BecomeCarOwnerActivity extends BaseActivity implements View.OnClickListener,FileUploader.OnFileUploadListener,IApiCallback{
+public class BecomeCarOwnerActivity extends BaseActivity implements View.OnClickListener, FileUploader.OnFileUploadListener, IApiCallback {
 
-    private EditText etName,etCardNumber,etCarNumber,etDriverNumber,etCarType;
-    private ImageView imgCard,imgDriver,imgCar,imgOther;
+    private EditText etName, etCardNumber, etCarNumber, etDriverNumber, etCarType;
+    private ImageView imgCard, imgDriver, imgCar, imgOther;
 
-    private final static int REQ_CARD_NUMBER=1;
-    private final static int REQ_DRIVER_NUMBER=2;
-    private final static int REQ_CAR_NUMBER=3;
-    private final static int REQ_OTHER_NUMBER=4;
-    private int type =1;
+    private final static int REQ_CARD_NUMBER = 1;
+    private final static int REQ_DRIVER_NUMBER = 2;
+    private final static int REQ_CAR_NUMBER = 3;
+    private final static int REQ_OTHER_NUMBER = 4;
+    private int type = 1;
 
     private ArrayList<String> imageList;
 
     // 变量
-    private String cardUrl,driveUrl,carUrl,otherUrl ; // 网络文件地址
+    private String cardUrl, driveUrl, carUrl, otherUrl; // 网络文件地址
     private String mLocalFilePath; // 本地文件地址
     private AvatarUploader mUploader; // 文件上传对象
 
     private final static int UPLOAD_OK = 1;
     private final static int UPLOAD_FAIL = 2;
+
+    private String appstatus = "";
 
 
     @Override
@@ -58,20 +61,21 @@ public class BecomeCarOwnerActivity extends BaseActivity implements View.OnClick
         setContentView(R.layout.b_becomecarowner_layout);
         showActionBar(true);
         setActionBarName("申请资料");
+        appstatus = getIntent().getStringExtra("appstatus");
 
-        etName =(EditText)findViewById(R.id.nameId);
-        etCardNumber =(EditText)findViewById(R.id.cardId);
-        etCarNumber =(EditText)findViewById(R.id.carNumerId);
-        etDriverNumber =(EditText)findViewById(R.id.driveNumerId);
-        etCarType =(EditText)findViewById(R.id.carTypeId);
+        etName = (EditText) findViewById(R.id.nameId);
+        etCardNumber = (EditText) findViewById(R.id.cardId);
+        etCarNumber = (EditText) findViewById(R.id.carNumerId);
+        etDriverNumber = (EditText) findViewById(R.id.driveNumerId);
+        etCarType = (EditText) findViewById(R.id.carTypeId);
 
-        imgCard =(ImageView)findViewById(R.id.imgCardId);
+        imgCard = (ImageView) findViewById(R.id.imgCardId);
         imgCard.setOnClickListener(this);
-        imgDriver =(ImageView)findViewById(R.id.imgDriverId);
+        imgDriver = (ImageView) findViewById(R.id.imgDriverId);
         imgDriver.setOnClickListener(this);
-        imgCar =(ImageView)findViewById(R.id.imgCarId);
+        imgCar = (ImageView) findViewById(R.id.imgCarId);
         imgCar.setOnClickListener(this);
-        imgOther =(ImageView)findViewById(R.id.imgOtherId);
+        imgOther = (ImageView) findViewById(R.id.imgOtherId);
         imgOther.setOnClickListener(this);
 
         findViewById(R.id.sureId).setOnClickListener(this);
@@ -80,9 +84,9 @@ public class BecomeCarOwnerActivity extends BaseActivity implements View.OnClick
         mLocalFilePath = "";
         // 网络文件地址
         cardUrl = "";
-        driveUrl ="";
-        carUrl ="";
-        otherUrl ="";
+        driveUrl = "";
+        carUrl = "";
+        otherUrl = "";
 
         // 文件上传对象
         mUploader = new AvatarUploader(this);
@@ -92,7 +96,7 @@ public class BecomeCarOwnerActivity extends BaseActivity implements View.OnClick
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.imgCardId:
                 startActivityForResult(new Intent(BecomeCarOwnerActivity.this, PictureGalleryActivity.class).putExtra("maxNum", 1), REQ_CARD_NUMBER);
 
@@ -111,50 +115,64 @@ public class BecomeCarOwnerActivity extends BaseActivity implements View.OnClick
                 break;
 
             case R.id.sureId:
-                if(!TextUtils.isEmpty(etName.getText().toString().trim())){
-                    if(!TextUtils.isEmpty(etCardNumber.getText().toString().trim())){
-                        if(!TextUtils.isEmpty(etCarNumber.getText().toString().trim())){
-                            if(!TextUtils.isEmpty(etDriverNumber.getText().toString().trim())){
-                                if(!TextUtils.isEmpty(etCarType.getText().toString().trim())){
-                                    if(!TextUtils.isEmpty(cardUrl)){
-                                        if(!TextUtils.isEmpty(driveUrl)){
-                                            if(!TextUtils.isEmpty(carUrl)){
+                if (!TextUtils.isEmpty(etName.getText().toString().trim())) {
+                    if (!TextUtils.isEmpty(etCardNumber.getText().toString().trim())) {
+                        if (!TextUtils.isEmpty(etCarNumber.getText().toString().trim())) {
+                            if (!TextUtils.isEmpty(etDriverNumber.getText().toString().trim())) {
+                                if (!TextUtils.isEmpty(etCarType.getText().toString().trim())) {
+                                    if (!TextUtils.isEmpty(cardUrl)) {
+                                        if (!TextUtils.isEmpty(driveUrl)) {
+                                            if (!TextUtils.isEmpty(carUrl)) {
 
                                                 showLoadingDialog();
-                                                CarReqUtils.apply(this,this,null,new BecomeApply(),"Apply",true,
-                                                        StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).
-                                                                putValue("surname",etName.getText().toString().trim()).
-                                                                putValue("cardnum",etCardNumber.getText().toString().trim()).
-                                                                putValue("platenum",etCarNumber.getText().toString().trim()).
-                                                                putValue("drivingnum",etDriverNumber.getText().toString().trim()).
-                                                                putValue("cartype",etCarType.getText().toString().trim()).
-                                                                putValue("cardimg",cardUrl).putValue("drivingimg",driveUrl).
-                                                                putValue("carimg",carUrl).putValue("otherimg",otherUrl).createMap()));
+                                                if (appstatus.equals("1") || appstatus.equals("2") || appstatus.equals("5")) {   //修改
+                                                    CarReqUtils.modiyapply(this, this, null, new Modiyapply(), "modiyapply", true,
+                                                            StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).
+                                                                    putValue("surname", etName.getText().toString().trim()).
+                                                                    putValue("cardnum", etCardNumber.getText().toString().trim()).
+                                                                    putValue("platenum", etCarNumber.getText().toString().trim()).
+                                                                    putValue("drivingnum", etDriverNumber.getText().toString().trim()).
+                                                                    putValue("cartype", etCarType.getText().toString().trim()).
+                                                                    putValue("cardimg", cardUrl).putValue("drivingimg", driveUrl).
+                                                                    putValue("carimg", carUrl).putValue("otherimg", otherUrl).createMap()));
+                                                } else if (appstatus.equals("4")){  //申请
+                                                    CarReqUtils.apply(this, this, null, new BecomeApply(), "Apply", true,
+                                                            StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).
+                                                                    putValue("surname", etName.getText().toString().trim()).
+                                                                    putValue("cardnum", etCardNumber.getText().toString().trim()).
+                                                                    putValue("platenum", etCarNumber.getText().toString().trim()).
+                                                                    putValue("drivingnum", etDriverNumber.getText().toString().trim()).
+                                                                    putValue("cartype", etCarType.getText().toString().trim()).
+                                                                    putValue("cardimg", cardUrl).putValue("drivingimg", driveUrl).
+                                                                    putValue("carimg", carUrl).putValue("otherimg", otherUrl).createMap()));
+                                                }else {
+                                                    EUtil.showToast("该功能有问题!请联系客服人员");
+                                                }
 
-                                            }else{
+                                            } else {
                                                 EUtil.showToast("请先上传车辆照片");
                                             }
-                                        }else{
+                                        } else {
                                             EUtil.showToast("请先上传行驶证照片");
                                         }
-                                    }else{
+                                    } else {
                                         EUtil.showToast("请先上传身份证照片");
                                     }
 
-                                }else{
+                                } else {
                                     EUtil.showToast("车辆类型不能为空");
                                 }
-                            }else{
+                            } else {
                                 EUtil.showToast("行驶证编号不能为空");
                             }
 
-                        }else{
+                        } else {
                             EUtil.showToast("车牌号不能为空");
                         }
-                    }else{
+                    } else {
                         EUtil.showToast("身份证号不能为空");
                     }
-                }else{
+                } else {
                     EUtil.showToast("车主姓名不能为空");
                 }
 
@@ -166,33 +184,33 @@ public class BecomeCarOwnerActivity extends BaseActivity implements View.OnClick
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == Activity.RESULT_OK){
-            if(data !=null){
+        if (resultCode == Activity.RESULT_OK) {
+            if (data != null) {
                 imageList = new ArrayList<String>();
                 imageList.addAll(data.getStringArrayListExtra("imageList"));
 
-                if(requestCode ==REQ_CARD_NUMBER){
-                    type =REQ_CARD_NUMBER;
+                if (requestCode == REQ_CARD_NUMBER) {
+                    type = REQ_CARD_NUMBER;
                     Log.i("info", imageList.get(0) + "");
-                    Bitmap bitmap =BitmapFactory.decodeFile(imageList.get(0));
+                    Bitmap bitmap = BitmapFactory.decodeFile(imageList.get(0));
                     imgCard.setImageBitmap(bitmap);
                     mUploader.start(imageList.get(0));
-                }else if(requestCode ==REQ_DRIVER_NUMBER){
-                    type =REQ_DRIVER_NUMBER;
-                    Log.i("info",imageList.get(0)+"");
-                    Bitmap bitmap =BitmapFactory.decodeFile(imageList.get(0));
+                } else if (requestCode == REQ_DRIVER_NUMBER) {
+                    type = REQ_DRIVER_NUMBER;
+                    Log.i("info", imageList.get(0) + "");
+                    Bitmap bitmap = BitmapFactory.decodeFile(imageList.get(0));
                     imgDriver.setImageBitmap(bitmap);
                     mUploader.start(imageList.get(0));
-                }else if(requestCode ==REQ_CAR_NUMBER){
-                    type =REQ_CAR_NUMBER;
-                    Log.i("info",imageList.get(0)+"");
-                    Bitmap bitmap =BitmapFactory.decodeFile(imageList.get(0));
+                } else if (requestCode == REQ_CAR_NUMBER) {
+                    type = REQ_CAR_NUMBER;
+                    Log.i("info", imageList.get(0) + "");
+                    Bitmap bitmap = BitmapFactory.decodeFile(imageList.get(0));
                     imgCar.setImageBitmap(bitmap);
                     mUploader.start(imageList.get(0));
-                }else{
-                    type =REQ_OTHER_NUMBER;
-                    Log.i("info",imageList.get(0)+"");
-                    Bitmap bitmap =BitmapFactory.decodeFile(imageList.get(0));
+                } else {
+                    type = REQ_OTHER_NUMBER;
+                    Log.i("info", imageList.get(0) + "");
+                    Bitmap bitmap = BitmapFactory.decodeFile(imageList.get(0));
                     imgOther.setImageBitmap(bitmap);
                     mUploader.start(imageList.get(0));
                 }
@@ -228,14 +246,14 @@ public class BecomeCarOwnerActivity extends BaseActivity implements View.OnClick
 
     @Override
     public void onSuccess(String fileUrl) {
-        if(type ==REQ_CARD_NUMBER){
-            cardUrl =fileUrl;
-        }else if(type ==REQ_DRIVER_NUMBER){
-            driveUrl =fileUrl;
-        }else if(type ==REQ_CAR_NUMBER){
-            carUrl =fileUrl;
-        }else{
-            otherUrl =fileUrl;
+        if (type == REQ_CARD_NUMBER) {
+            cardUrl = fileUrl;
+        } else if (type == REQ_DRIVER_NUMBER) {
+            driveUrl = fileUrl;
+        } else if (type == REQ_CAR_NUMBER) {
+            carUrl = fileUrl;
+        } else {
+            otherUrl = fileUrl;
         }
         handler.sendEmptyMessage(UPLOAD_OK);
     }
@@ -274,23 +292,29 @@ public class BecomeCarOwnerActivity extends BaseActivity implements View.OnClick
     @Override
     public void onData(Object output, Object input) {
 
-        if(output!=null){
+        if (output != null) {
             dismissLoadingDialog();
-            if (output instanceof BecomeApply){
-                BecomeApply apply= (BecomeApply) output;
+            if (output instanceof BecomeApply) {
+                BecomeApply apply = (BecomeApply) output;
                 EUtil.showToast(apply.getErr());
-                if (apply.getRes() == 0){
-                    SharedPreferences sp =getSharedPreferences("request",Activity.MODE_PRIVATE);
+                if (apply.getRes() == 0) {
+                    SharedPreferences sp = getSharedPreferences("request", Activity.MODE_PRIVATE);
 
-                    SharedPreferences.Editor editor =sp.edit();
-                    editor.putBoolean("carer",true);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putBoolean("carer", true);
                     editor.commit();
 
                     finish();
 
                 }
+            }else if (output instanceof Modiyapply){
+                Modiyapply modiyapply= (Modiyapply) output;
+                EUtil.showToast(modiyapply.getErr());
+                if (modiyapply.getRes() == 0){
+                    finish();
+                }
             }
-        }else{
+        } else {
             EUtil.showToast("网络错误，请稍后重试");
         }
     }

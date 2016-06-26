@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
@@ -141,6 +142,16 @@ public class ShunFengOrderDetailActivity extends BaseActivity implements View.On
         tvToPlace.setText(respUserOrderInfo.getDestination());
         tvJiedanRen.setText(respUserOrderInfo.getCommentsid());
         tvJieDanPhone.setText(respUserOrderInfo.getCom_tel());
+        if (!TextUtils.isEmpty(tvJieDanPhone.getText().toString())) {
+            tvJieDanPhone.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //用intent启动拨打电话
+                    Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + tvJieDanPhone.getText().toString()));
+                    startActivity(intent);
+                }
+            });
+        }
         tvPrice.setText(respUserOrderInfo.getEstcost());
         tvWard.setText(respUserOrderInfo.getDashang());
         if (!TextUtils.isEmpty(respUserOrderInfo.getServicestatus())) {

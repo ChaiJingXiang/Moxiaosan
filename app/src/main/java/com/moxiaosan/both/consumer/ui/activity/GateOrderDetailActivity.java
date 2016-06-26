@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
@@ -164,6 +165,16 @@ public class GateOrderDetailActivity extends BaseActivity implements View.OnClic
         tvWardMoney.setText(respUserOrderInfo.getDashang() + "元");
         tvJiedanren.setText(respUserOrderInfo.getCommentsid());
         tvJieDanPhone.setText(respUserOrderInfo.getCom_tel());
+        if (!TextUtils.isEmpty(tvJieDanPhone.getText().toString())){
+            tvJieDanPhone.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //用intent启动拨打电话
+                    Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+tvJieDanPhone.getText().toString()));
+                    startActivity(intent);
+                }
+            });
+        }
 
         if (!TextUtils.isEmpty(respUserOrderInfo.getServicestatus())) {
             tvCancle.setVisibility(View.GONE);

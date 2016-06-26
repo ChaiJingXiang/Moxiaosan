@@ -3,16 +3,18 @@ package com.moxiaosan.both.carowner.ui.activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -66,29 +68,23 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback {
     private ArrayAdapter<String> arrayAdapter;
 
     private LineChartView chart;
-    private int numberOfPoints;
+
     float[] speedArray = null;
     private boolean hasAxes = true;
     private boolean hasAxesNames = true;
     private ValueShape shape = ValueShape.CIRCLE;
-    private ProgressBar progressBar;
-    private boolean flag = true;
-    private List<LatLng> points = null;
+    //    private ProgressBar progressBar;
+    private SeekBar seekBar;
     private TextView tvAllKm, tvMAxSpeed, tvAverageSpeed;
     private List<GuiJiObj> list = new ArrayList<GuiJiObj>();
 
-    //该程序模拟填充长度为100的数组
-    private int[] array = new int[101];
-    int hasData = 0;
-    //记录ProgressBar的完成进度
-    int status = 0;
-
-    BitmapDescriptor bd = BitmapDescriptorFactory.fromResource(R.mipmap.icon_dingwei);
-    private LatLng ll1 = null;
-    private LatLng ll2 = null;
-    private LatLng ll3 = null;
-    private LatLng ll4 = null;
-    private LatLng ll5 = null;
+    private List<LatLng> points = null;
+    private BitmapDescriptor icon = null;
+    private Marker mMarker;//标注
+    private boolean flag = false;
+    private int index = 0;// 第几个点
+    private int numberOfPoints;
+    private LatLng llMiddle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,8 +97,24 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback {
         checkBox = (CheckBox) findViewById(R.id.guiji_checkbox);
         spinner = (Spinner) findViewById(R.id.spinnerId);
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBarId);
+//        progressBar = (ProgressBar) findViewById(R.id.progressBarId);
+        seekBar = (SeekBar) findViewById(R.id.seekBarId);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                index = progress;
+            }
 
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
         // 地图初始化
         mMapView = (MapView) findViewById(R.id.mapViewId);
 
@@ -156,80 +168,157 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback {
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                if (isChecked) {
-
-                    hasData = 0;
-                    status = 0;
-                    flag = true;
-
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            super.run();
-                            while (flag) {
-
-                                if (status < 100) {
-                                    // 获取耗时操作的完成百分比
-                                    status = doWork();
-                                    // 发送消息到Handler
-                                    handler.sendEmptyMessage(0);
-
-                                } else {
-                                    handler.sendEmptyMessage(1);
-                                }
-
-                            }
-
-                        }
-                    }.start();
-
-                } else {
-
-                    handler.sendEmptyMessage(1);
-                }
-
+                resetOverlay();
             }
         });
     }
 
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-
-            if (msg.what == 0) {
-                if(list.size()==0){
-                    return;
-                }else{
-                    progressBar.setProgress(status);
-                    if (status > 0 && status <= 20) {
-                        OverlayOptions oo = new MarkerOptions().position(ll1).icon(bd).zIndex(9).draggable(true);
-                        Marker markers = (Marker) (mBaiduMap.addOverlay(oo));
-                    } else if (status > 20 && status <= 40) {
-                        OverlayOptions oo = new MarkerOptions().position(ll2).icon(bd).zIndex(9).draggable(true);
-                        Marker markers = (Marker) (mBaiduMap.addOverlay(oo));
-                    } else if (status > 40 && status <= 60) {
-                        OverlayOptions oo = new MarkerOptions().position(ll3).icon(bd).zIndex(9).draggable(true);
-                        Marker markers = (Marker) (mBaiduMap.addOverlay(oo));
-                    } else if (status > 60 && status <= 80) {
-                        OverlayOptions oo = new MarkerOptions().position(ll4).icon(bd).zIndex(9).draggable(true);
-                        Marker markers = (Marker) (mBaiduMap.addOverlay(oo));
+    public void resetOverlay() {
+        if (!flag) {
+            if (points != null) {
+                if (points.size() != 0) {
+                    if (index == points.size()) {
+                        mBaiduMap.clear();
+                        index = 0;
+                        initOverlay(llMiddle);// 初始化
+                    }
+                    checkBox.setChecked(true);
+                    if (points.size() >= 3) {
+                        Message message = new Message();
+                        message.what = 1;
+                        handler.sendMessage(message);
                     } else {
-                        OverlayOptions oo = new MarkerOptions().position(ll5).icon(bd).zIndex(9).draggable(true);
-                        Marker markers = (Marker) (mBaiduMap.addOverlay(oo));
+                        EUtil.showToast("轨迹点数量必须大于2");
                     }
                 }
-
             } else {
-                flag = false;
-                status = 100;
-                progressBar.setProgress(status);
-                checkBox.setChecked(false);
+                //无数据
             }
 
+        } else {
+            checkBox.setChecked(false);
+            Message message = new Message();
+            message.what = 2;
+            handler.sendMessage(message);
         }
-    };
+    }
+
+    // 初始化
+    public void initOverlay(LatLng middleLatLng) {
+//        progressBar.setMax(points.size());
+        seekBar.setMax(points.size());
+        index = 0;
+        seekBar.setProgress(index);
+//        progressBar.setProgress(index);
+        OverlayOptions ooPolyline = new PolylineOptions().width(5).color(0xAAFF0000).points(points);
+        mBaiduMap.addOverlay(ooPolyline);
+        MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(middleLatLng);
+        mBaiduMap.setMapStatus(u);
+        icon = BitmapDescriptorFactory.fromResource(R.mipmap.location_indicator);
+        OverlayOptions ooA = new MarkerOptions().position(points.get(index)).zIndex(7)
+                .icon(icon).draggable(false);
+        mMarker = (Marker) (mBaiduMap.addOverlay(ooA));
+    }
+
+    Handler handler = new Handler(new Handler.Callback() {
+
+        @Override
+        public boolean handleMessage(Message msg) {
+            if (msg.what == 1) {
+                flag = true;
+                new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        start();
+                    }
+                }).start();
+            }
+            if (msg.what == 2) {
+                flag = false;
+            }
+            if (msg.what == 3) {   //自动播放完全了
+                checkBox.setChecked(false);
+                flag = false;
+            }
+            return false;
+        }
+    });
+
+    // 画轨迹
+    public void start() {
+        if (flag) {
+            if (mMarker != null) {
+                mMarker.remove();
+            }
+            /**
+             * 计算角度
+             */
+            Bitmap bitmapOrg = BitmapFactory.decodeResource(getResources(),
+                    R.mipmap.location_indicator);
+            Matrix matrix = new Matrix();
+            double x1 = points.get(index).latitude, x2 = points
+                    .get(index + 1 == points.size() ? index - 2 : index + 1).latitude; // 点1坐标;
+            double y1 = points.get(index).longitude, y2 = points
+                    .get(index + 1 == points.size() ? index - 2 : index + 1).longitude;// 点2坐标
+            double x = Math.abs(x1 - x2);
+            double y = Math.abs(y1 - y2);
+            double z = Math.sqrt(x * x + y * y);
+            int jiaodu = Math.round((float) (Math.asin(y / z) / Math.PI * 180));// 最终角度
+            x = y1 - y2;
+            y = x1 - x2;
+
+            if (x > 0 && y < 0) {// 在第二象限
+                jiaodu = 0 - jiaodu;
+            }
+            if (x > 0 && y > 0) {// 在第三象限
+                jiaodu = jiaodu + 90;
+            }
+            if (x < 0 && y > 0) {// 在第四象限
+                jiaodu = 180 + (90 - jiaodu);
+            }
+            /**
+             * 计算角度
+             */
+
+
+            /**
+             * 旋转图标
+             */
+            matrix.postRotate(jiaodu);
+            Bitmap resizedBitmap = Bitmap.createBitmap(bitmapOrg, 0, 0,
+                    bitmapOrg.getWidth(), bitmapOrg.getHeight(), matrix, true);
+            icon = BitmapDescriptorFactory.fromBitmap(resizedBitmap);
+            /**
+             * 旋转图标
+             */
+
+            OverlayOptions ooA = new MarkerOptions()
+                    .position(points.get(index)).icon(icon).draggable(true);
+            mMarker = (Marker) (mBaiduMap.addOverlay(ooA));
+//            MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(points.get(index));
+            float f = mBaiduMap.getMaxZoomLevel();//最大比例尺
+            //float m = mBaiduMap.getMinZoomLevel();//3.0
+            MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(points.get(index), f - 2);
+            mBaiduMap.setMapStatus(u);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            index++;
+//            progressBar.setProgress(index); //设置进度条
+            seekBar.setProgress(index); //设置进度条
+            if (index != points.size()) {
+                start();
+            } else {
+                Message message = new Message();
+                message.what = 3;
+                handler.sendMessage(message);
+            }
+        }
+    }
+
 
     @Override
     protected String getUrl(String nameUrl) {
@@ -253,9 +342,6 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback {
 
                         list = guiji.getData();
                         numberOfPoints = list.size();
-
-                        Log.i("info---==--", list.size() + "");
-
                         tvAllKm.setText(guiji.getJourney() + "km");
                         tvMAxSpeed.setText(guiji.getMaxspeed() + "km/h");
                         tvAverageSpeed.setText(guiji.getAveragespeed() + "km/h");
@@ -267,47 +353,27 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback {
                         generateValues();
 
                         generateData();
-
+                        if (points == null) {
+                            points = new ArrayList<LatLng>();
+                        }
                         if (points.size() != 0) {
                             mBaiduMap.clear();
 
                             points.clear();
-
-                            Log.i("info===---", points.size() + "");
-
                         }
 
                         for (int i = 0; i < list.size(); i++) {
                             double[] db = BaiduLocation.wgs2bd(list.get(i).getLat(), list.get(i).getLng());
                             points.add(new LatLng(db[0], db[1]));
 //                            points.add(new LatLng(list.get(i).getLat(),list.get(i).getLng()));
-
                         }
-
-                        Log.i("info===---", points.size() + "");
-
-                        if (list.size() > 30) {
-                            ll1 = new LatLng(points.get(1).latitude, points.get(1).longitude);
-                            ll2 = new LatLng(points.get(list.size() / 4).latitude, points.get(list.size() / 4).longitude);
-                            ll3 = new LatLng(points.get(list.size() / 3).latitude, points.get(list.size() / 3).longitude);
-                            ll4 = new LatLng(points.get(list.size() / 2).latitude, points.get(list.size() / 2).longitude);
-                            ll5 = new LatLng(points.get(list.size() - 1).latitude, points.get(list.size() - 1).longitude);
-
-                        } else if(list.size()==0){
-
+                        if (list.size() == 0) {
                             return;
-
-                        }else{
-
-                            ll1 = new LatLng(points.get(0).latitude, points.get(0).longitude);
-                            ll2 = new LatLng(points.get(0).latitude, points.get(0).longitude);
-                            ll3 = new LatLng(points.get(0).latitude, points.get(0).longitude);
-                            ll4 = new LatLng(points.get(0).latitude, points.get(0).longitude);
-                            ll5 = new LatLng(points.get(0).latitude, points.get(0).longitude);
                         }
 
                         if (points.size() >= 2) {
-                            OverlayOptions ooStart = new MarkerOptions().position(new LatLng(points.get(0).latitude, points.get(0).longitude)).icon(BitmapDescriptorFactory
+                            LatLng llStart = new LatLng(points.get(0).latitude, points.get(0).longitude);
+                            OverlayOptions ooStart = new MarkerOptions().position(llStart).icon(BitmapDescriptorFactory
                                     .fromResource(R.mipmap.ic_photograph_coordinate)).zIndex(4).draggable(false);
 
                             if (mBaiduMap != null) {
@@ -323,13 +389,8 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback {
                                 mBaiduMap.addOverlay(ooEnd);
                             }
 
-                            MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(llA, 14.0f);
-                            mBaiduMap.animateMapStatus(u);
-
-                            OverlayOptions ooPolyline = new PolylineOptions().width(10)
-                                    .color(0xAAFF0000).points(points);
-                            mBaiduMap.addOverlay(ooPolyline);
-
+                            llMiddle = new LatLng((points.get(0).latitude + points.get(points.size() - 1).latitude) / 2, (points.get(0).longitude + points.get(points.size() - 1).longitude) / 2);
+                            initOverlay(llMiddle);
                         }
 
                     } else {
@@ -337,9 +398,6 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback {
                         points = new ArrayList<LatLng>();
 
                         list = guiji.getData();
-
-                        Log.i("info---==--", list.size() + "");
-
                         numberOfPoints = list.size();
 
                         for (int i = 0; i < list.size(); i++) {
@@ -348,57 +406,29 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback {
 //                            points.add(new LatLng(list.get(i).getLat(),list.get(i).getLng()));
 
                         }
-
-                        if (list.size() > 30) {
-                            ll1 = new LatLng(points.get(1).latitude, points.get(1).longitude);
-                            ll2 = new LatLng(points.get(list.size() / 4).latitude, points.get(list.size() / 4).longitude);
-                            ll3 = new LatLng(points.get(list.size() / 3).latitude, points.get(list.size() / 3).longitude);
-                            ll4 = new LatLng(points.get(list.size() / 2).latitude, points.get(list.size() / 2).longitude);
-                            ll5 = new LatLng(points.get(list.size() - 1).latitude, points.get(list.size() - 1).longitude);
-
-                        } else {
-
-                            ll1 = new LatLng(points.get(0).latitude, points.get(0).longitude);
-                            ll2 = new LatLng(points.get(0).latitude, points.get(0).longitude);
-                            ll3 = new LatLng(points.get(0).latitude, points.get(0).longitude);
-                            ll4 = new LatLng(points.get(0).latitude, points.get(0).longitude);
-                            ll5 = new LatLng(points.get(0).latitude, points.get(0).longitude);
-                        }
-
-
-                        Log.i("info-----", list.toString());
-
                         tvAllKm.setText(guiji.getJourney() + "km");
                         tvMAxSpeed.setText(guiji.getMaxspeed() + "km/h");
                         tvAverageSpeed.setText(guiji.getAveragespeed() + "km/h");
 
                         if (points.size() >= 2) {
-                            OverlayOptions ooStart = new MarkerOptions().position(new LatLng(points.get(0).latitude, points.get(0).longitude)).icon(BitmapDescriptorFactory
+                            LatLng llStart = new LatLng(points.get(0).latitude, points.get(0).longitude);
+                            OverlayOptions ooStart = new MarkerOptions().position(llStart).icon(BitmapDescriptorFactory
                                     .fromResource(R.mipmap.ic_photograph_coordinate)).zIndex(4).draggable(false);
 
                             if (mBaiduMap != null) {
                                 mBaiduMap.addOverlay(ooStart);
                             }
 
-                            LatLng llA = new LatLng(points.get(points.size() - 1).latitude, points.get(points.size() - 1).longitude);
-
-                            OverlayOptions ooEnd = new MarkerOptions().position(llA).icon(BitmapDescriptorFactory
+                            LatLng llEnd = new LatLng(points.get(points.size() - 1).latitude, points.get(points.size() - 1).longitude);
+                            OverlayOptions ooEnd = new MarkerOptions().position(llEnd).icon(BitmapDescriptorFactory
                                     .fromResource(R.mipmap.chufa_small)).zIndex(4).draggable(false);
 
                             if (mBaiduMap != null) {
                                 mBaiduMap.addOverlay(ooEnd);
                             }
 
-                            MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(llA, 14.0f);
-                            mBaiduMap.animateMapStatus(u);
-                            //起点与终点
-//                    final PlanNode stNode = PlanNode.withCityNameAndPlaceName("深圳", "宝安中心");
-//                    final PlanNode enNode = PlanNode.withCityNameAndPlaceName("深圳", "高新园地铁站");
-//
-//                    mSearch.drivingSearch(new DrivingRoutePlanOption().from(stNode).to(enNode));
-                            OverlayOptions ooPolyline = new PolylineOptions().width(10)
-                                    .color(0xAAFF0000).points(points);
-                            mBaiduMap.addOverlay(ooPolyline);
+                            llMiddle = new LatLng((points.get(0).latitude + points.get(points.size() - 1).latitude) / 2, (points.get(0).longitude + points.get(points.size() - 1).longitude) / 2);
+                            initOverlay(llMiddle);
                         }
 
                         resetViewport();
@@ -411,6 +441,20 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback {
                 } else {
                     dismissLoadingDialog();
                     EUtil.showToast(guiji.getErr());
+
+                    //原来有数据  后来没有
+//                    progressBar.setMax(0);
+//                    progressBar.setProgress(0);
+                    seekBar.setMax(0);
+                    seekBar.setProgress(0);
+                    index = 0;
+                    if (points != null) {
+                        points.clear();
+                    }
+                    mBaiduMap.clear();
+                    Message message = new Message();
+                    message.what = 3;
+                    handler.sendMessage(message);
 //                    finish();
                 }
             }
@@ -440,10 +484,15 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback {
         mMapView.removeViewAt(1); //隐藏百度logo
         mMapView.setLongClickable(true);
         mBaiduMap = mMapView.getMap();
-        MapStatusUpdate msu = MapStatusUpdateFactory.newLatLngZoom(new LatLng(22.553719, 113.925328), 17.0f);
+        MapStatusUpdate msu = MapStatusUpdateFactory.newLatLngZoom(new LatLng(22.553719, 113.925328), 15.0f);
         mBaiduMap.setMapStatus(msu);
         mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, null));
-
+        mBaiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                return false;
+            }
+        });
     }
 
 
@@ -463,6 +512,7 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback {
 
     @Override
     public void onPause() {
+        flag = false;
         //在activity执行onPause时执行mMapView. onPause ()，实现地图生命周期管理
         mMapView.onPause();
         super.onPause();
@@ -566,15 +616,15 @@ public class GuiJiActivity extends BaseActivity implements IApiCallback {
 
 
     //模拟一个耗时的操作。
-    public int doWork() {
-        //为数组元素赋值
-        array[hasData += 10] = (int) (Math.random() * 100);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return hasData;
-
-    }
+//    public int doWork() {
+//        //为数组元素赋值
+//        array[hasData += 10] = (int) (Math.random() * 100);
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        return hasData;
+//
+//    }
 }

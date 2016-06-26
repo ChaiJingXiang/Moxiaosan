@@ -11,8 +11,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
@@ -35,7 +38,6 @@ import com.moxiaosan.both.consumer.ui.activity.GateToGateActivity;
 import com.moxiaosan.both.consumer.ui.activity.ShunFengCheActivity;
 import com.moxiaosan.both.consumer.ui.activity.ShunFengOrderDetailActivity;
 import com.utils.common.AppData;
-import com.utils.common.EUtil;
 import com.utils.log.LLog;
 import com.utils.ui.base.ActivityHolder;
 
@@ -47,6 +49,7 @@ import consumer.model.mqttobj.MQArrivaltime;
 import consumer.model.mqttobj.MQCancelOrder;
 import consumer.model.mqttobj.MQComment;
 import consumer.model.mqttobj.MQDelivery;
+import consumer.model.mqttobj.MQNewBusines;
 import consumer.model.mqttobj.MQNewOrderNotify;
 import consumer.model.mqttobj.MQNewsNotify;
 import consumer.model.mqttobj.MQNoOrdered;
@@ -482,7 +485,7 @@ public class MqttService extends Service {
                 topicList.add("moxsan/alarm/" + AppData.getInstance().getUserEntity().getIMEI());  //20、	警情推送
             }
             topicList.add("moxsan/noordered/" + AppData.getInstance().getUserEntity().getUsername());//21、	无人接单（用户端）
-
+            topicList.add("moxsan/newbusines/" + AppData.getInstance().getUserEntity().getUsername());//商业白板 有新内容（车主端）
 
             String[] topics = topicList.toArray(new String[topicList.size()]);
             subscribeToTopic(topics);
@@ -526,8 +529,8 @@ public class MqttService extends Service {
                         respUserOrder.setOrderid(mqOrdernotify.getOrderid());
                         intent1.putExtra("respUserOrder", respUserOrder);
                         intent1.putExtra("isPayed", false);
-                        PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, intent1, 0);
-                        showNotification("订单号：" + mqOrdernotify.getOrderid() + "已被接单啦", pi);
+//                        PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, intent1, 0);
+//                        showNotification("订单号：" + mqOrdernotify.getOrderid() + "已被接单啦", pi);
                     } else if (mqOrdernotify.getType().equals("2")) {  //顺风车
                         Intent intent1 = new Intent(MqttService.this, ShunFengOrderDetailActivity.class);
                         RespUserOrder respUserOrder = new RespUserOrder();
@@ -535,7 +538,7 @@ public class MqttService extends Service {
                         intent1.putExtra("respUserOrder", respUserOrder);
                         intent1.putExtra("isPayed", false);
                         PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, intent1, 0);
-                        showNotification("订单号：" + mqOrdernotify.getOrderid() + "已被接单啦", pi);
+//                        showNotification("订单号：" + mqOrdernotify.getOrderid() + "已被接单啦", pi);
                     }
                 }
 
@@ -571,10 +574,15 @@ public class MqttService extends Service {
 
             } else if (topicName.equals("moxsan/newordernotify/" + AppData.getInstance().getUserEntity().getUsername())) {  //10
                 MQNewOrderNotify mqNewOrderNotify = gson.fromJson(s, MQNewOrderNotify.class);
-                if (ActivityHolder.getInstance().getTop() instanceof BusinessMainActivity){
+                if (ActivityHolder.getInstance().getTop() instanceof BusinessMainActivity) {
                     intent.setAction(TakeOrderFragment.HAVE_NEW_ORDER);
                     intent.putExtra("mqNewOrderNotify", mqNewOrderNotify);
                 }
+                //提示声音
+                Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+                r.play();
+
 //                if (mqNewOrderNotify.getType().equals("1")) {
 //                    PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, ReceiveOrderActivity.class).
 //                            putExtra("name", "直达速递").putExtra("orderId", mqNewOrderNotify.getOrderid()), 0);
@@ -611,42 +619,42 @@ public class MqttService extends Service {
             } else if (topicName.equals("moxsan/arm/" + AppData.getInstance().getUserEntity().getIMEI())) {  //12
 //                PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, SettingActivity.class), 0);
 //                showNotification("参数设置成功", pi);
-                EUtil.showToast("参数设置成功");
+//                EUtil.showToast("参数设置成功");
 
             } else if (topicName.equals("moxsan/mmlieage/" + AppData.getInstance().getUserEntity().getIMEI())) {  //13
 //                PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, SettingActivity.class), 0);
 //                showNotification("参数设置成功", pi);
-                EUtil.showToast("参数设置成功");
+//                EUtil.showToast("参数设置成功");
 
             } else if (topicName.equals("moxsan/sos/" + AppData.getInstance().getUserEntity().getIMEI())) {  //14
 //                PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, SettingActivity.class), 0);
 //                showNotification("参数设置成功", pi);
-                EUtil.showToast("参数设置成功");
+//                EUtil.showToast("参数设置成功");
 
             } else if (topicName.equals("moxsan/cut/" + AppData.getInstance().getUserEntity().getIMEI())) {  //15
 //                PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, SettingActivity.class), 0);
 //                showNotification("参数设置成功", pi);
-                EUtil.showToast("参数设置成功");
+//                EUtil.showToast("参数设置成功");
 
             } else if (topicName.equals("moxsan/vbsen/" + AppData.getInstance().getUserEntity().getIMEI())) {  //16
 //                PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, SettingActivity.class), 0);
 //                showNotification("参数设置成功", pi);
-                EUtil.showToast("参数设置成功");
+//                EUtil.showToast("参数设置成功");
 
             } else if (topicName.equals("moxsan/circle/" + AppData.getInstance().getUserEntity().getIMEI())) {  //17
 //                PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, SettingActivity.class), 0);
 //                showNotification("参数设置成功", pi);
-                EUtil.showToast("参数设置成功");
+//                EUtil.showToast("参数设置成功");
 
             } else if (topicName.equals("moxsan/power/" + AppData.getInstance().getUserEntity().getIMEI())) {  //18
 //                PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, SettingActivity.class), 0);
 //                showNotification("参数设置成功", pi);
-                EUtil.showToast("参数设置成功");
+//                EUtil.showToast("参数设置成功");
 
             } else if (topicName.equals("moxsan/factory/" + AppData.getInstance().getUserEntity().getIMEI())) {  //19
 //                PendingIntent pi = PendingIntent.getActivity(MqttService.this, 0, new Intent(MqttService.this, SettingActivity.class), 0);
 //                showNotification("参数设置成功", pi);
-                EUtil.showToast("参数设置成功");
+//                EUtil.showToast("参数设置成功");
 
             } else if (topicName.equals("moxsan/alarm/" + AppData.getInstance().getUserEntity().getIMEI())) {  //20 警情推送
                 MQAlarm mqAlarm = gson.fromJson(s, MQAlarm.class);
@@ -657,21 +665,24 @@ public class MqttService extends Service {
                 int num = sp.getInt("alarmNum", 0);
                 num += 1;
                 SharedPreferences.Editor editor = sp.edit();
-                editor.putInt("alarmNum",num);
+                editor.putInt("alarmNum", num);
                 editor.commit();
 
                 if (ActivityHolder.getInstance().getTop() instanceof GPSSafeCenterActivity) {
                     intent.setAction(GPSSafeCenterActivity.ALRM_NOTITY);
                 }
-            }else if (topicName.equals("moxsan/noordered/" + AppData.getInstance().getUserEntity().getUsername())){//21、	无人接单（用户端）
+            } else if (topicName.equals("moxsan/noordered/" + AppData.getInstance().getUserEntity().getUsername())) {//21、	无人接单（用户端）
                 MQNoOrdered mqNoOrdered = gson.fromJson(s, MQNoOrdered.class);
                 if (ActivityHolder.getInstance().getTop() instanceof ShunFengCheActivity ||
                         ActivityHolder.getInstance().getTop() instanceof GateToGateActivity) {
                     intent.setAction(ShunFengCheActivity.NO_ORDERED); //无人接单
                     intent.putExtra("mqNoOrdered", mqNoOrdered);
                 }
+            } else if (topicName.equals("moxsan/newbusines/" + AppData.getInstance().getUserEntity().getUsername())) { //商业白板 有新内容（车主端）
+                MQNewBusines mqNewBusines = gson.fromJson(s, MQNewBusines.class);
+                intent.setAction(BusinessMainActivity.BUSINESS_MESSAGE_COUNT);
+                intent.putExtra("mqNewBusines", mqNewBusines);
             }
-
             sendBroadcast(intent);  //发送广播
         }
 

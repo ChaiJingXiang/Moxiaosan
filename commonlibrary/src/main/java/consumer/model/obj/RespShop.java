@@ -14,6 +14,7 @@ public class RespShop implements Serializable {
     private String type; // 1买卖东西    2 找劳力
     private String fb_datetime;
     private String contact;
+    private String datetime;
     private String describes;
     private String nums;
     private String price;
@@ -125,5 +126,13 @@ public class RespShop implements Serializable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getDatetime() {
+        return datetime;
+    }
+
+    public void setDatetime(String datetime) {
+        this.datetime = datetime;
     }
 }

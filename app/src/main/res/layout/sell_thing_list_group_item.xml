@@ -29,6 +29,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/sell_thing_list_group_delete"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -81,7 +82,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:scaleType="centerCrop" />
+                android:scaleType="fitXY" />
 
             <ImageView
                 android:id="@+id/sell_thing_list_group_pic2"
@@ -90,14 +91,14 @@
                 android:layout_marginLeft="@dimen/value_10dp"
                 android:layout_marginRight="@dimen/value_10dp"
                 android:layout_weight="1"
-                android:scaleType="centerCrop" />
+                android:scaleType="fitXY" />
 
             <ImageView
                 android:id="@+id/sell_thing_list_group_pic3"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:scaleType="centerCrop" />
+                android:scaleType="fitXY" />
         </LinearLayout>
 
         <LinearLayout

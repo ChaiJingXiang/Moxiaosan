@@ -70,8 +70,8 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
     private TextView tvFromAddress, tvToAddress;
     private EditText etFromAddressDetail, etToAddressDetail;
     private EditText etPeopleName, etPhoneNum, etGoodsName, etGoodsPrice, etGoodsLong, etGoodsWidth, etGoodsheight, etGoodsWeight, etGoodsReward;
-    private FrameLayout orderLayout, fLayoutGuessFree, fLayoutAfterLayout, fLayoutEnsureLayout;
-    private TextView tvGuessMoney, tvGuessEnsure, tvGuessCancel, tvAfterOrderEnsure, tvAfterOrderCancel, tvNotifyNums;
+    private FrameLayout orderLayout, fLayoutGuessFree, fLayoutEnsureLayout;//, fLayoutAfterLayout
+    private TextView tvGuessMoney, tvGuessEnsure, tvGuessCancel, tvNotifyNums;//, tvAfterOrderEnsure, tvAfterOrderCancel
     private TextView tvEnsureCarNum, tvEnsureName, tvEnsurePhone, tvEnsurePut, tvEnsureCancel;
     private LinearLayout layoutPhone, layoutNotifyNums;
 
@@ -172,7 +172,7 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
             }
         });
         etGoodsLong = (EditText) findViewById(R.id.gate_to_gate_goods_long);
-        etGoodsWidth = (EditText) findViewById(R.id.gate_to_gate_goods_weight);
+        etGoodsWidth = (EditText) findViewById(R.id.gate_to_gate_goods_width);
         etGoodsheight = (EditText) findViewById(R.id.gate_to_gate_goods_height);
         etGoodsWeight = (EditText) findViewById(R.id.gate_to_gate_goods_weight);
         etGoodsReward = (EditText) findViewById(R.id.gate_to_gate_reward);
@@ -192,11 +192,11 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
         tvGuessCancel = (TextView) findViewById(R.id.gate_to_gate_guess_free_cancel);
         tvGuessCancel.setOnClickListener(this);
 
-        fLayoutAfterLayout = (FrameLayout) findViewById(R.id.gate_to_gate_after_order_layout);
-        tvAfterOrderEnsure = (TextView) findViewById(R.id.gate_to_gate_after_order_put);
-        tvAfterOrderEnsure.setOnClickListener(this);
-        tvAfterOrderCancel = (TextView) findViewById(R.id.gate_to_gate_after_order_cancel);
-        tvAfterOrderCancel.setOnClickListener(this);
+//        fLayoutAfterLayout = (FrameLayout) findViewById(R.id.gate_to_gate_after_order_layout);
+//        tvAfterOrderEnsure = (TextView) findViewById(R.id.gate_to_gate_after_order_put);
+//        tvAfterOrderEnsure.setOnClickListener(this);
+//        tvAfterOrderCancel = (TextView) findViewById(R.id.gate_to_gate_after_order_cancel);
+//        tvAfterOrderCancel.setOnClickListener(this);
 
         layoutNotifyNums = (LinearLayout) findViewById(R.id.gate_to_gate_notify_nums_layout);
         tvNotifyNums = (TextView) findViewById(R.id.gate_to_gate_notify_nums);
@@ -307,15 +307,15 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
                 orderLayout.setVisibility(View.VISIBLE);
                 fLayoutGuessFree.setVisibility(View.GONE);
                 break;
-            case R.id.gate_to_gate_after_order_put:  //下单后  放入订单
-                orderLayout.setVisibility(View.VISIBLE);
-                fLayoutAfterLayout.setVisibility(View.GONE);
-                layoutNotifyNums.setVisibility(View.GONE);
-                break;
-            case R.id.gate_to_gate_after_order_cancel:  //下单后  取消订单
-                CancelOrderDialog cancelOrderDialog = new CancelOrderDialog(GateToGateActivity.this, orderId, 2);
-                cancelOrderDialog.show();
-                break;
+//            case R.id.gate_to_gate_after_order_put:  //下单后  放入订单
+//                orderLayout.setVisibility(View.VISIBLE);
+//                fLayoutAfterLayout.setVisibility(View.GONE);
+//                layoutNotifyNums.setVisibility(View.GONE);
+//                break;
+//            case R.id.gate_to_gate_after_order_cancel:  //下单后  取消订单
+//                CancelOrderDialog cancelOrderDialog = new CancelOrderDialog(GateToGateActivity.this, orderId, 2);
+//                cancelOrderDialog.show();
+//                break;
             case R.id.gate_to_gate_ensure_order_phone_layout:  //确认单后
                 Intent consultPhoneIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + tvEnsurePhone.getText().toString()));
                 startActivity(consultPhoneIntent);
@@ -346,7 +346,7 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
                 EUtil.showToast(express.getErr());
                 if ("0".equals(express.getRes())) {
                     fLayoutGuessFree.setVisibility(View.GONE);
-                    fLayoutAfterLayout.setVisibility(View.VISIBLE);
+//                    fLayoutAfterLayout.setVisibility(View.VISIBLE);
                     layoutNotifyNums.setVisibility(View.VISIBLE);  //通知0位车主。。。
                     orderId = express.getData().getOrderid();
                 }
@@ -389,7 +389,7 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
 
             } else if (intent.getAction().equals(ORDER_NOTIFY)) {
                 MQOrdernotify mqOrdernotify = (MQOrdernotify) intent.getSerializableExtra("mqOrdernotify");
-                fLayoutAfterLayout.setVisibility(View.GONE);
+//                fLayoutAfterLayout.setVisibility(View.GONE);
                 fLayoutEnsureLayout.setVisibility(View.VISIBLE);
                 tvEnsureCarNum.setText(mqOrdernotify.getPlatenum());
                 tvEnsureName.setText(mqOrdernotify.getSurname());
@@ -632,7 +632,7 @@ public class GateToGateActivity extends BaseActivity implements View.OnClickList
                     public void onClick(View v) {
                         dismiss();
                         orderLayout.setVisibility(View.VISIBLE);
-                        fLayoutAfterLayout.setVisibility(View.GONE);
+//                        fLayoutAfterLayout.setVisibility(View.GONE);
                         fLayoutEnsureLayout.setVisibility(View.GONE);
                         //网络
                         ConsumerReqUtil.cancelexpress(GateToGateActivity.this, iApiCallback, null, new Cancelexpress(), orderId, true,

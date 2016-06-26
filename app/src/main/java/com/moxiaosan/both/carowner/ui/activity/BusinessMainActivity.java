@@ -1,11 +1,15 @@
 package com.moxiaosan.both.carowner.ui.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -21,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.moxiaosan.both.APP;
 import com.moxiaosan.both.R;
 import com.moxiaosan.both.carowner.ui.fragment.LeftFragment_two;
 import com.moxiaosan.both.carowner.ui.fragment.OrderFragment;
@@ -49,8 +54,9 @@ import consumer.model.obj.RespUserInfo;
  * Created by chris on 16/2/29.
  */
 
-public class BusinessMainActivity extends BaseFragmentActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener,IApiCallback {
+public class BusinessMainActivity extends BaseFragmentActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, IApiCallback {
     public final static int CITY_GET_CODE = 1;
+    public final static String BUSINESS_MESSAGE_COUNT = "business_message_count";  //mqtt推送
 
     private SlidingMenu slidingMenu;
     private FragmentManager fm;
@@ -60,12 +66,26 @@ public class BusinessMainActivity extends BaseFragmentActivity implements View.O
     private OrderFragment orderFragment;
     private RadioGroup radioGroup;
     private RadioButton takeOrderButton, orderButton;
-    private LinearLayout messageLinear,safeLinear;
-    private TextView tvOrder,tvMoney;
+    private LinearLayout messageLinear, safeLinear;
+    private TextView tvOrder, tvMoney, tvMessageCount;
     private Animation animation;
     private ImageView imgZhuan;
     private CheckBox checkBox;
     private TextView tvLocation;
+
+    private SharedPreferences sp;
+    private SharedPreferences.Editor editorLocation = null;
+
+    private BusinessBroadReceiver businessBroadReceiver;
+    private class BusinessBroadReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(BUSINESS_MESSAGE_COUNT)) {
+                tvMessageCount.setVisibility(View.VISIBLE);
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +93,10 @@ public class BusinessMainActivity extends BaseFragmentActivity implements View.O
 
         setContentView(R.layout.b_activity_main);
         showActionBar(false);
+        sp = getSharedPreferences("location", Context.MODE_PRIVATE);
+        editorLocation = sp.edit();
 
-        CarReqUtils.checkdeviced(this,this,null,new BindDevice(),"checkdeviced",true,StringUrlUtils.geturl(new HashMapUtils().putValue("username",AppData.getInstance().getUserEntity().getUsername()).createMap()));
+        CarReqUtils.checkdeviced(this, this, null, new BindDevice(), "checkdeviced", true, StringUrlUtils.geturl(new HashMapUtils().putValue("username", AppData.getInstance().getUserEntity().getUsername()).createMap()));
 
         //友盟自动更新
         UmengUpdateAgent.update(this);
@@ -86,14 +108,17 @@ public class BusinessMainActivity extends BaseFragmentActivity implements View.O
         findViewById(R.id.businessMessageId).setOnClickListener(this);
         findViewById(R.id.safeCenterId).setOnClickListener(this);
 
-        tvLocation =(TextView)findViewById(R.id.tvLocationId);
+        tvLocation = (TextView) findViewById(R.id.tvLocationId);
+        if (!TextUtils.isEmpty(sp.getString("city", ""))) {
+            tvLocation.setText(sp.getString("city", ""));
+        }
+        imgZhuan = (ImageView) findViewById(R.id.zhuandongId);
+        checkBox = (CheckBox) findViewById(R.id.orderBox);
 
-        imgZhuan =(ImageView)findViewById(R.id.zhuandongId);
-        checkBox =(CheckBox)findViewById(R.id.orderBox);
-
-        tvOrder =(TextView)findViewById(R.id.tvDanId);
-        tvMoney =(TextView)findViewById(R.id.tvMoneyId);
-
+        tvOrder = (TextView) findViewById(R.id.tvDanId);
+        tvMoney = (TextView) findViewById(R.id.tvMoneyId);
+        tvMessageCount = (TextView) findViewById(R.id.main_my_message_count);
+        tvMessageCount.setOnClickListener(this);
         radioGroup = (RadioGroup) findViewById(R.id.radioGroupId);
         takeOrderButton = (RadioButton) findViewById(R.id.jiedanId);
         orderButton = (RadioButton) findViewById(R.id.dingdanId);
@@ -130,6 +155,10 @@ public class BusinessMainActivity extends BaseFragmentActivity implements View.O
             }
         });
 
+        IntentFilter iFilter = new IntentFilter();
+        iFilter.addAction(BUSINESS_MESSAGE_COUNT);
+        businessBroadReceiver=new BusinessBroadReceiver();
+        registerReceiver(businessBroadReceiver,iFilter);
     }
 
 
@@ -213,13 +242,16 @@ public class BusinessMainActivity extends BaseFragmentActivity implements View.O
                 break;
 
             case R.id.businessMessageId:
+                tvMessageCount.setVisibility(View.GONE);
                 startActivity(new Intent(BusinessMainActivity.this, BusinessInfoActivity.class));
                 break;
 
             case R.id.safeCenterId:
-                startActivity(new Intent(BusinessMainActivity.this, GPSSafeCenterActivity.class).putExtra("isFromMain",true));
+                startActivity(new Intent(BusinessMainActivity.this, GPSSafeCenterActivity.class).putExtra("isFromMain", true));
                 break;
-
+            case R.id.main_my_message_count:
+                tvMessageCount.setVisibility(View.GONE);
+                break;
         }
     }
 
@@ -314,37 +346,39 @@ public class BusinessMainActivity extends BaseFragmentActivity implements View.O
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(businessBroadReceiver);
+        APP.getInstance().stopLocationClient(); //关闭定位
         //关闭 mqtt 服务
-        if (MqttService.wasStarted()){
+        if (MqttService.wasStarted()) {
             LLog.i("===BusinessMainActivity===onDestroy()==stopService()");
-            stopService(new Intent(this,MqttService.class));
+            stopService(new Intent(this, MqttService.class));
         }
     }
 
     @Override
     public void onData(Object output, Object input) {
 
-        if(output!=null){
-            if(output instanceof Achievement){
-                Achievement achievement =(Achievement)output;
+        if (output != null) {
+            if (output instanceof Achievement) {
+                Achievement achievement = (Achievement) output;
 //                EUtil.showToast(achievement.getErr());
-                if(achievement.getRes().equals("0")){
+                if (achievement.getRes().equals("0")) {
                     tvOrder.setText(achievement.getData().getOrders());
                     tvMoney.setText(achievement.getData().getIncome());
 
                 }
             }
 
-            if(output instanceof BindDevice){
-                BindDevice device =(BindDevice)output;
+            if (output instanceof BindDevice) {
+                BindDevice device = (BindDevice) output;
 
-                if(device.getRes().equals("0")){
+                if (device.getRes().equals("0")) {
 
                     RespUserInfo userInfo = AppData.getInstance().getUserEntity();
                     userInfo.setBind(1);
                     AppData.getInstance().saveUserEntity(userInfo);
 
-                }else{
+                } else {
 
                     RespUserInfo userInfo = AppData.getInstance().getUserEntity();
                     userInfo.setBind(2);
@@ -354,19 +388,19 @@ public class BusinessMainActivity extends BaseFragmentActivity implements View.O
             }
 
 
-            if(output instanceof SetOrder){
-                SetOrder setOrder =(SetOrder)output;
-                if(setOrder.getRes().equals("0")){
-                    if(input.equals("start")){
+            if (output instanceof SetOrder) {
+                SetOrder setOrder = (SetOrder) output;
+                if (setOrder.getRes().equals("0")) {
+                    if (input.equals("start")) {
                         imgZhuan.startAnimation(animation);
-
-                    }else{
+                        TakeOrderFragment.isCanTakeOrder = false;
+                    } else {
                         imgZhuan.clearAnimation();
-
+                        TakeOrderFragment.isCanTakeOrder = true;
                     }
                 }
             }
-        }else{
+        } else {
 
 //            EUtil.showToast("网络错误，请稍后重试");
         }

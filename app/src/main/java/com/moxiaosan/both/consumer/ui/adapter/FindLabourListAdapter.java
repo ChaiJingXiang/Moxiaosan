@@ -119,7 +119,7 @@ public class FindLabourListAdapter extends BaseExpandableListAdapter {
         groupViewHolder.tvTime.setText(respLabour.getDatetime());
         groupViewHolder.tvPublishTime.setText(respLabour.getFb_datetime());
         groupViewHolder.tvContent.setText(respLabour.getTechnique());
-        groupViewHolder.tvPeopleNum.setText("人数：" + respLabour.getNums() + "人");
+        groupViewHolder.tvPeopleNum.setText("人数：" + respLabour.getNums());
         groupViewHolder.tvSalary.setText("薪资：" + respLabour.getSalary());
         groupViewHolder.tvAddress.setText("地址：" + respLabour.getAddress());
         if (AppData.getInstance().getUserEntity().getUsername().equals(respLabour.getUsername())) {

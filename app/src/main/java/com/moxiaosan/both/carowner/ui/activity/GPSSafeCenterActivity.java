@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.moxiaosan.both.APP;
 import com.moxiaosan.both.R;
 import com.moxiaosan.both.carowner.ui.fragment.LeftFragment_two;
 import com.moxiaosan.both.common.ui.activity.CityPositionActivity;
@@ -64,7 +66,9 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
     private TextView tvStutas;
 
     private AlrmBroadReceiver alrmBroadReceiver;
-    private SharedPreferences sp = null;
+    private SharedPreferences spAlarmNum = null;  //警情数量
+    private SharedPreferences sp;  //定位的
+    private SharedPreferences.Editor editorLocation = null;//定位的
 
     private boolean isFromMain = false; //判断从哪个页面跳转过来的
     private ImageView imgUserPhoto;
@@ -75,7 +79,7 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(ALRM_NOTITY)) {
                 tvMessage.setVisibility(View.VISIBLE);
-                tvMessage.setText(sp.getInt("alarmNum", 0)+"");
+                tvMessage.setText(spAlarmNum.getInt("alarmNum", 0) + "");
             }
         }
     }
@@ -85,8 +89,11 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.b_gpssafecenter_layout);
-        sp=getSharedPreferences("alarm", Activity.MODE_PRIVATE);
-        isFromMain=getIntent().getBooleanExtra("isFromMain",false);
+        spAlarmNum = getSharedPreferences("alarm", Activity.MODE_PRIVATE);
+        sp = getSharedPreferences("location", Context.MODE_PRIVATE);
+        editorLocation = sp.edit();
+
+        isFromMain = getIntent().getBooleanExtra("isFromMain", false);
         checkBox = (CheckBox) findViewById(R.id.checkBoxSafeId);
 
         showLoadingDialog();
@@ -102,10 +109,13 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
 
 
         tvLocation = (TextView) findViewById(R.id.tvLocationId);
+        if (!TextUtils.isEmpty(sp.getString("city", ""))) {
+            tvLocation.setText(sp.getString("city", ""));
+        }
 
-        imgUserPhoto= (ImageView) findViewById(R.id.main_user_photo);
-        if (isFromMain){
-            imgUserPhoto.setPadding(20,0,0,0);
+        imgUserPhoto = (ImageView) findViewById(R.id.main_user_photo);
+        if (isFromMain) {
+            imgUserPhoto.setPadding(20, 0, 0, 0);
             imgUserPhoto.setImageResource(R.mipmap.back_big);
         }
         imgUserPhoto.setOnClickListener(this);
@@ -134,9 +144,9 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
         super.onResume();
         CarReqUtils.checkdeviced(this, this, null, new BindDevice(), "checkdeviced", true, StringUrlUtils.geturl(new HashMapUtils().putValue("username", AppData.getInstance().getUserEntity().getUsername()).createMap()));
 
-        if (sp.getInt("alarmNum", 0)>0){
-            tvMessage.setText(sp.getInt("alarmNum", 0)+"");
-        }else {
+        if (spAlarmNum.getInt("alarmNum", 0) > 0) {
+            tvMessage.setText(spAlarmNum.getInt("alarmNum", 0) + "");
+        } else {
             tvMessage.setVisibility(View.GONE);
         }
 
@@ -162,9 +172,9 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.main_user_photo:
-                if (isFromMain){
+                if (isFromMain) {
                     finish();
-                }else {
+                } else {
                     if (!slidingMenu.isShown()) {
                         slidingMenu.showMenu();
                     } else {
@@ -197,9 +207,9 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
 //                        startActivity(intent2);
 //                    } else {
 
-                        dialog = new ExitDialog(this, 3);
-                        dialog.setCanceledOnTouchOutside(false);
-                        dialog.show();
+                    dialog = new ExitDialog(this, 3);
+                    dialog.setCanceledOnTouchOutside(false);
+                    dialog.show();
 //                    }
 
                 } else {
@@ -480,7 +490,7 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(alrmBroadReceiver);
-
+        APP.getInstance().stopLocationClient(); //关闭定位
         //关闭 mqtt 服务
         if (MqttService.wasStarted()) {
             LLog.i("===ConsumerMainActivity===onDestroy()==stopService()");

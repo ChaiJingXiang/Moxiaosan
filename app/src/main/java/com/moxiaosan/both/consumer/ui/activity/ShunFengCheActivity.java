@@ -47,6 +47,7 @@ import consumer.api.ConsumerReqUtil;
 import consumer.model.Cancelexpress;
 import consumer.model.Hitchhiking;
 import consumer.model.Ranging;
+import consumer.model.Resend;
 import consumer.model.mqttobj.MQArrivaltime;
 import consumer.model.mqttobj.MQNotifyOwner;
 import consumer.model.mqttobj.MQOrdernotify;
@@ -81,12 +82,13 @@ public class ShunFengCheActivity extends BaseActivity implements View.OnClickLis
 
     private FrameLayout fLayoutMain, fLayoutGuessFree, fLayoutEnsureOrder;
     private LinearLayout layoutLeaveTime, layoutPhone;
-    private TextView tvGuessEnsure, tvGuessCancle, tvEnsureCancel, tvPhone, tvMoney, tvLeaveTime, tvEnsureCarNum, tvEnsureName;
+    private TextView tvGuessEnsure, tvGuessCancle, tvEnsurePut, tvEnsureCancel, tvPhone, tvMoney, tvLeaveTime, tvEnsureCarNum, tvEnsureName;
 
     private Ranging ranging;
 
     private ShunFengBroadReceiver shunFengBroadReceiver;
     private String orderId; //订单编号
+    private CancelOrderDialog againDialog;
 
 
     /**
@@ -155,7 +157,9 @@ public class ShunFengCheActivity extends BaseActivity implements View.OnClickLis
 
         layoutPhone = (LinearLayout) findViewById(R.id.shun_feng_che_ensure_order_phone_layout);
         layoutPhone.setOnClickListener(this);
-        tvEnsureCancel = (TextView) findViewById(R.id.shun_feng_che_cancle_order_put);
+        tvEnsurePut = (TextView) findViewById(R.id.shun_feng_che_order_put);
+        tvEnsurePut.setOnClickListener(this);
+        tvEnsureCancel = (TextView) findViewById(R.id.shun_feng_che_order_cancle);
         tvEnsureCancel.setOnClickListener(this);
         tvPhone = (TextView) findViewById(R.id.shun_feng_che_ensure_order_phone_num);
         tvEnsureCarNum = (TextView) findViewById(R.id.shun_feng_che_ensure_order_car_num);
@@ -210,9 +214,14 @@ public class ShunFengCheActivity extends BaseActivity implements View.OnClickLis
                 Intent consultPhoneIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + tvPhone.getText().toString()));
                 startActivity(consultPhoneIntent);
                 break;
-            case R.id.shun_feng_che_cancle_order_put:
+            case R.id.shun_feng_che_order_cancle:
                 CancelOrderDialog cancelOrderDialog = new CancelOrderDialog(ShunFengCheActivity.this, orderId, 2);
                 cancelOrderDialog.show();
+                break;
+            case R.id.shun_feng_che_order_put:
+                layoutLeaveTime.setVisibility(View.GONE);
+                fLayoutEnsureOrder.setVisibility(View.GONE);
+                fLayoutMain.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -261,7 +270,7 @@ public class ShunFengCheActivity extends BaseActivity implements View.OnClickLis
             if (output == null) {
                 return;
             }
-            if (output instanceof Hitchhiking) {
+            if (output instanceof Hitchhiking) { //下单
                 Hitchhiking hitchhiking = (Hitchhiking) output;
                 EUtil.showToast(hitchhiking.getErr());
                 if ("0".equals(hitchhiking.getRes())) {
@@ -270,7 +279,7 @@ public class ShunFengCheActivity extends BaseActivity implements View.OnClickLis
                     tvLeaveTime.setText("已通知0位车主");
                 }
             }
-            if (output instanceof Ranging) {
+            if (output instanceof Ranging) {  //预估费用
                 ranging = (Ranging) output;
                 //EUtil.showToast(ranging.getErr());
                 if (ranging.getRes().equals("0")) {
@@ -279,11 +288,18 @@ public class ShunFengCheActivity extends BaseActivity implements View.OnClickLis
                     tvMoney.setText("¥" + ranging.getData().getCost());
                 }
             }
-            if (output instanceof Cancelexpress) {
+            if (output instanceof Cancelexpress) {   //取消订单
                 Cancelexpress cancelexpress = (Cancelexpress) output;
                 EUtil.showToast(cancelexpress.getErr());
                 if (cancelexpress.getRes().equals("0")) {
                     finish();
+                }
+            }
+            if (output instanceof Resend) { //重新发送订单
+                Resend resend = (Resend) output;
+                EUtil.showToast(resend.getErr());
+                if (resend.getRes().equals("0")) {
+                    againDialog.dismiss();
                 }
             }
         }
@@ -308,7 +324,7 @@ public class ShunFengCheActivity extends BaseActivity implements View.OnClickLis
                 tvPhone.setText(mqOrdernotify.getContact());
                 orderId = mqOrdernotify.getOrderid();
             } else if (intent.getAction().equals(NO_ORDERED)) {
-                CancelOrderDialog againDialog = new CancelOrderDialog(ShunFengCheActivity.this, orderId, 1);
+                againDialog = new CancelOrderDialog(ShunFengCheActivity.this, orderId, 1);
                 againDialog.show();
             }
         }
@@ -482,17 +498,20 @@ public class ShunFengCheActivity extends BaseActivity implements View.OnClickLis
                 findViewById(R.id.setting_exit_ensure).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        EUtil.showToast("重新发送该订单");
+                        ConsumerReqUtil.resend(ShunFengCheActivity.this, iApiCallback, null, new Resend(), orderId, true,
+                                StringUrlUtils.geturl(new HashMapUtils().putValue("orderid", orderId).createMap()));
                     }
                 });
                 findViewById(R.id.setting_exit_cancel).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        EUtil.showToast("取消该订单");
+                        ConsumerReqUtil.cancelexpress(ShunFengCheActivity.this, iApiCallback, null, new Cancelexpress(), orderId, true,
+                                StringUrlUtils.geturl(new HashMapUtils().putValue("username", AppData.getInstance().getUserEntity().getUsername()).putValue("expid", orderId).createMap())
+                        );
                         dismiss();
                     }
                 });
-            } else {
+            } else { // =2
                 tv.setText("确认取消该订单");
                 findViewById(R.id.setting_exit_ensure).setOnClickListener(new View.OnClickListener() {
                     @Override

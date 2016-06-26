@@ -77,7 +77,7 @@
                     android:id="@+id/tvLocationId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="深圳"
+                    android:text=""
                     android:textColor="@color/txt_white"
                     android:textSize="@dimen/value_18sp" />
 
@@ -229,12 +229,12 @@
 
                         <TextView
                             android:id="@+id/main_my_message_count"
-                            android:layout_width="@dimen/value_15dp"
-                            android:layout_height="@dimen/value_15dp"
+                            android:layout_width="@dimen/value_8dp"
+                            android:layout_height="@dimen/value_8dp"
                             android:layout_alignParentRight="true"
                             android:background="@mipmap/main_bottom_red_tag"
                             android:gravity="center"
-                            android:text="1"
+                            android:text=""
                             android:textColor="@color/txt_white"
                             android:visibility="gone"
                             android:textSize="@dimen/value_12sp" />

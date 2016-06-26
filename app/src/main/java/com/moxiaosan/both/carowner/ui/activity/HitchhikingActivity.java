@@ -3,7 +3,9 @@ package com.moxiaosan.both.carowner.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -113,6 +115,16 @@ public class HitchhikingActivity extends BaseActivity implements IApiCallback{
                     tvEnd.setText(detail.getData().getDestination());
                     tvTakeOrderPerson.setText(detail.getData().getName());
                     tvTakeOrderPhone.setText(detail.getData().getContact());
+                    if (!TextUtils.isEmpty(tvTakeOrderPhone.getText().toString())){
+                        tvTakeOrderPhone.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //用intent启动拨打电话
+                                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+tvTakeOrderPhone.getText().toString()));
+                                startActivity(intent);
+                            }
+                        });
+                    }
                     tvAllMoney.setText(detail.getData().getReward());
                 }
             }
@@ -123,6 +135,10 @@ public class HitchhikingActivity extends BaseActivity implements IApiCallback{
 
                 if (order.getRes().equals("0")) {
                     EUtil.showToast("成功接单");
+                    Intent intent = new Intent(HitchhikingActivity.this, ReceiveOrderOkActivity.class);
+                    intent.putExtra("name", name);
+                    intent.putExtra("orderId", orderId);
+                    startActivity(intent);
                     finish();
                 }else{
                     EUtil.showToast(order.getErr());

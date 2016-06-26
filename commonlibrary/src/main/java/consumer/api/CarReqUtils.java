@@ -99,6 +99,60 @@ public class CarReqUtils extends ReqBase {
         }
     }
 
+
+    /**
+     * @des   93  车主资料详情
+     * @param context
+     * @param callback
+     * @param handler
+     * @param modelBase
+     * @param input
+     * @param isNetWork 当需要获取网络数据是的时候发送true,当只需要获取缓存数据的时候放发送
+     * @return 如果是需要换成的， 返回ModelBaseCache对象，否则返回null；如果当前没缓存数据， 也返回null
+     */
+    public static ModelBaseCache  applyinfo(Context context, IApiCallback callback,
+                                       Handler handler, ModelBase modelBase, Object input, boolean isNetWork,String str) {
+
+        String requestStr = "";
+        String url = null;
+        try{
+            url = getFullUrl("applyinfo.php?"+str);
+
+            return doExecute(context, callback, modelBase,
+                    url, requestStr, handler, input,isNetWork);
+
+        } catch (Exception e) {
+            Log.d(TAG, e.getMessage());
+            return null;
+        }
+    }
+    /**
+     * @des   94、	车主资料修改申请
+     * @param context
+     * @param callback
+     * @param handler
+     * @param modelBase
+     * @param input
+     * @param isNetWork 当需要获取网络数据是的时候发送true,当只需要获取缓存数据的时候放发送
+     * @return 如果是需要换成的， 返回ModelBaseCache对象，否则返回null；如果当前没缓存数据， 也返回null
+     */
+    public static ModelBaseCache  modiyapply(Context context, IApiCallback callback,
+                                            Handler handler, ModelBase modelBase, Object input, boolean isNetWork,String str) {
+
+        String requestStr = "";
+        String url = null;
+        try{
+            url = getFullUrl("modiyapply.php?"+str);
+
+            return doExecute(context, callback, modelBase,
+                    url, requestStr, handler, input,isNetWork);
+
+        } catch (Exception e) {
+            Log.d(TAG, e.getMessage());
+            return null;
+        }
+    }
+
     /**
      * @des   32  新订单列表
      * @param context
@@ -405,7 +459,7 @@ public class CarReqUtils extends ReqBase {
 
 
     /**
-     * @des   49  个人资料
+     * @des   49  车主端  个人资料
      * @param context
      * @param callback
      * @param handler
@@ -1167,6 +1221,32 @@ public class CarReqUtils extends ReqBase {
         }
     }
 
+    /**
+     * @des   97、	上传车主坐标  时间间隔40秒发送一次给服务器
+     * @param context
+     * @param callback
+     * @param handler
+     * @param modelBase
+     * @param input
+     * @param isNetWork 当需要获取网络数据是的时候发送true,当只需要获取缓存数据的时候放发送
+     * @return 如果是需要换成的， 返回ModelBaseCache对象，否则返回null；如果当前没缓存数据， 也返回null
+     */
+
+    public static ModelBaseCache updateposi(Context context, IApiCallback callback,
+                                        Handler handler, ModelBase modelBase, Object input, boolean isNetWork, String str) {
+        String requestStr = "";
+        String url = null;
+        try{
+            url = getFullUrl("updateposi.php?"+str);
+
+            return doExecute(context, callback, modelBase,
+                    url, requestStr, handler, input,isNetWork);
+
+        } catch (Exception e) {
+            Log.d(TAG, e.getMessage());
+            return null;
+        }
+    }
     private static String getFullUrl(String method) {
         return EAPIConsts.getUserUrl() + method;
     }

@@ -15,16 +15,19 @@ public class RespUserInfo implements Serializable {
     private String nickname;  //昵称
     private String contact;  //联系方式
     private String balance;   //余额
-    private int type; //身份类型
+    private int type; //身份类型   //用户身份类型  1 普通用户 2 普通车主 3 运营车主
     private String address;
     private String carbrand;
     private String carimg;
     private String mileage;
+    private String platenum; //车牌号
+    private String appstatus;
+
     private String IMEI;
     private int userType;
     private int bind=3;
-    private String appstatus;
-    private String platenum; //车牌号
+
+
 
     public String getPlatenum() {
         return platenum;

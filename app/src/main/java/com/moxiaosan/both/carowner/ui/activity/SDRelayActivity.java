@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -258,7 +259,7 @@ public class SDRelayActivity extends BaseActivity implements IApiCallback, OnCli
 
             CarReqUtils.relayOrder(this, this, null, new TakeOrder(), "relayOrder", true,
                     StringUrlUtils.geturl(new HashMapUtils().putValue("username", AppData.getInstance().getUserEntity().getUsername()).
-                            putValue("orderid", orderId).putValue("handoveraddress",destination_region).
+                            putValue("orderid", orderId).putValue("handoveraddress",respSDOrderDetail.getData().getDestination()).
                             putValue("handover", s.format(date)).
                             putValue("lat", lat_d).putValue("lng", lng_d).
                             putValue("destination_region", destination_region).putValue("cost", tvAllMoney).
@@ -299,7 +300,7 @@ public class SDRelayActivity extends BaseActivity implements IApiCallback, OnCli
 
             lat_d =respSDOrderDetail.getData().getLat_d();
             lng_d =respSDOrderDetail.getData().getLng_d();
-            destination_region =respSDOrderDetail.getData().getDestination_region();
+            destination_region =respSDOrderDetail.getData().getDestination();
 
             CarReqUtils.relexpressost(this, this, null, new ExpressCost(), "relexpressCost", true,
                     StringUrlUtils.geturl(hashMapUtils.putValue("lat_o", lat_o).putValue("lng_o", lng_o).
@@ -349,6 +350,16 @@ public class SDRelayActivity extends BaseActivity implements IApiCallback, OnCli
                     tvGoodsWeight.setText(respOrderDetail.getData().getWeight() + "kg");
                     tvReceiveName.setText(respOrderDetail.getData().getAddressee());
                     tvReceivePhone.setText(respOrderDetail.getData().getRec_tel());
+                    if (!TextUtils.isEmpty(tvReceivePhone.getText().toString())){
+                        tvReceivePhone.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //用intent启动拨打电话
+                                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+tvReceivePhone.getText().toString()));
+                                startActivity(intent);
+                            }
+                        });
+                    }
 
                     lat_o = respOrderDetail.getData().getLat_o();
                     lng_o = respOrderDetail.getData().getLng_o();
@@ -410,7 +421,10 @@ public class SDRelayActivity extends BaseActivity implements IApiCallback, OnCli
                 TakeOrder order = (TakeOrder) output;
                 if (order.getRes().equals("0")) {
                     EUtil.showToast("接单成功");
-
+                    Intent intent = new Intent(SDRelayActivity.this, ReceiveOrderOkActivity.class);
+                    intent.putExtra("name", name);
+                    intent.putExtra("orderId", orderId);
+                    startActivity(intent);
                     finish();
 
 //                    tvSure.setVisibility(View.GONE);

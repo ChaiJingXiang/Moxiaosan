@@ -43,6 +43,7 @@ public class TakeOrderFragment extends BaseFragment_v4 implements IXListViewRefr
     private List<OrderObj> lists;
 
     private BusinessMainBroadReceiver businessMainBroadReceiver;
+    public static boolean isCanTakeOrder = true; //能否接单  默认可以接单
 
     @Nullable
     @Override
@@ -98,18 +99,25 @@ public class TakeOrderFragment extends BaseFragment_v4 implements IXListViewRefr
 
     @Override
     public void onLoadMore() {
-
-        page += 1;
-        reqData(page, "loadMore");
+        if (isCanTakeOrder){
+            page += 1;
+            reqData(page, "loadMore");
+        }else {
+            listView.stopLoadMore();
+            EUtil.showToast("还未开始接单");
+        }
     }
 
     @Override
     public void onRefresh() {
-
-        page = 1;
-        listView.setPullLoadEnable(this);
-        reqData(page, "onRefresh");
-
+        if (isCanTakeOrder){
+            page = 1;
+            listView.setPullLoadEnable(this);
+            reqData(page, "onRefresh");
+        }else {
+            listView.stopRefresh(new Date());
+            EUtil.showToast("还未开始接单");
+        }
     }
 
 

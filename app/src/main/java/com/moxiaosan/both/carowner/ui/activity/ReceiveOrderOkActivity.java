@@ -3,7 +3,9 @@ package com.moxiaosan.both.carowner.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -75,13 +77,24 @@ public class ReceiveOrderOkActivity extends BaseActivity implements IApiCallback
         tvGoodsWeight = (TextView) findViewById(R.id.weightId);
         tvReceiveName = (TextView) findViewById(R.id.shoujianrenId);
         tvReceivePhone = (TextView) findViewById(R.id.shoujianPhoneId);
+        if (!TextUtils.isEmpty(tvReceivePhone.getText().toString())){
+            tvReceivePhone.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //用intent启动拨打电话
+                    Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+tvReceivePhone.getText().toString()));
+                    startActivity(intent);
+                }
+            });
+        }
+
         tvAllMoney = (TextView) findViewById(R.id.allMoney);
 
         tvMoneyPay = (TextView) findViewById(R.id.moneyPayId);
         bottomLinear = (LinearLayout) findViewById(R.id.bottomLinearId);
         tvQuHuo = (TextView) findViewById(R.id.yisonghuoId);
         tvSongDa = (TextView) findViewById(R.id.yisongdaId);
-        if (name.equals("顺风车")) {
+        if (name.equals(getResources().getString(R.string.shun_feng_che))) {
             hideLinear.setVisibility(View.GONE);
             tvQuHuo.setText("已接乘客");
         }
@@ -144,12 +157,13 @@ public class ReceiveOrderOkActivity extends BaseActivity implements IApiCallback
                 tvReceivePhone.setText(detail.getData().getRec_tel() + "");
                 tvAllMoney.setText(detail.getData().getReward());
 
-                if (detail.getData().getServicestatus().equals("1")) {
+                if (detail.getData().getServicestatus().equals("1")) {  //已取货、已接乘客
 
                     tvQuHuo.setTextColor(getResources().getColor(R.color.txt_666666));
                     tvSongDa.setTextColor(getResources().getColor(R.color.txt_white));
 
                     tvQuHuo.setBackgroundResource(R.mipmap.yisongda_pic);
+                    tvQuHuo.setClickable(false);
                     tvSongDa.setBackgroundResource(R.mipmap.yiquhuo_pic);
 
                 } else if (detail.getData().getServicestatus().equals("2")) {
@@ -174,16 +188,21 @@ public class ReceiveOrderOkActivity extends BaseActivity implements IApiCallback
 
         }
 
-        if (output instanceof PickUp) {
+        if (output instanceof PickUp) {  //   已取货/已接乘客  、  已送达
 
             PickUp pickUp = (PickUp) output;
 
-            if (pickUp.getRes().equals("0")) {
+            if (pickUp.getRes().equals("0")) {  //  已取货/已接乘客
                 if (input.equals("PickUp")) {
-                    EUtil.showToast("取货成功");
-                    finish();
+                    EUtil.showToast("操作成功");
+                    tvQuHuo.setTextColor(getResources().getColor(R.color.txt_666666));
+                    tvQuHuo.setBackgroundResource(R.mipmap.yisongda_pic);
+                    tvQuHuo.setClickable(false);
+                    tvSongDa.setBackgroundResource(R.mipmap.yiquhuo_pic);
+                    tvSongDa.setTextColor(getResources().getColor(R.color.txt_white));
+//                    finish();
 
-                } else {
+                } else {  //  已送达
 
                     EUtil.showToast("送达成功");
 
@@ -211,7 +230,7 @@ public class ReceiveOrderOkActivity extends BaseActivity implements IApiCallback
 
         }
 
-        if (output instanceof CashPay) {
+        if (output instanceof CashPay) {  //现金支付
             CashPay cashPay = (CashPay) output;
             if (cashPay.getRes().equals("0")) {
                 EUtil.showToast(cashPay.getErr());

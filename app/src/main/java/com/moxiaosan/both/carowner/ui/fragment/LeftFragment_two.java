@@ -17,9 +17,7 @@ import android.widget.TextView;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.moxiaosan.both.R;
 import com.moxiaosan.both.carowner.ui.activity.BecomeCarOwnerActivity;
-import com.moxiaosan.both.carowner.ui.activity.BusinessMainActivity;
 import com.moxiaosan.both.carowner.ui.activity.CarOwnerInfoActivity;
-import com.moxiaosan.both.carowner.ui.activity.GPSSafeCenterActivity;
 import com.moxiaosan.both.carowner.ui.activity.SettingActivity;
 import com.moxiaosan.both.common.ui.activity.AboutUsActivity;
 import com.moxiaosan.both.common.ui.activity.AddGPSPhoneActivity;
@@ -32,7 +30,6 @@ import com.utils.api.IApiCallback;
 import com.utils.common.AppData;
 import com.utils.common.EUtil;
 import com.utils.image.RoundImageView;
-import com.utils.ui.base.ActivityHolder;
 import com.utils.ui.base.BaseFragment_v4;
 
 import consumer.StringUrlUtils;
@@ -45,7 +42,9 @@ import consumer.model.Userinfo;
 public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickListener, IApiCallback {
     private RoundImageView imgHead;
     private TextView tvNickName, phoneNumber, tvYunying;
-    SlidingMenu slidingMen;
+    private SlidingMenu slidingMen;
+    private Userinfo userinfo;
+    private ExitDialog dialog;
 
     public LeftFragment_two() {
 
@@ -102,7 +101,7 @@ public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickLis
         view.findViewById(R.id.left_frag_menu_layout6).setOnClickListener(this);
         view.findViewById(R.id.left_frag_menu_layout7).setOnClickListener(this);
         view.findViewById(R.id.left_frag_menu_layout8).setOnClickListener(this);
-        tvYunying= (TextView) view.findViewById(R.id.left_menu_changeto_yunying);
+        tvYunying = (TextView) view.findViewById(R.id.left_menu_changeto_yunying);
     }
 
     @Override
@@ -128,24 +127,24 @@ public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickLis
                 SharedPreferences sp = getActivity().getSharedPreferences("request", Activity.MODE_PRIVATE);
 
                 boolean flag = sp.getBoolean("carer", false);
-
-                if (AppData.getInstance().getUserEntity().getUserType() == 3) { //已经是运营车主
-                    ExitDialog dialog = new ExitDialog(getActivity(), 1);
+                if (flag && AppData.getInstance().getUserEntity().getType() == 2) {  //在审核中   2普通车主
+                    dialog = new ExitDialog(getActivity(), 2);
                     dialog.setCanceledOnTouchOutside(false);
                     dialog.show();
-
-                } else if (flag && AppData.getInstance().getUserEntity().getType() == 2) {  //在审核中
-
-                    ExitDialog dialog = new ExitDialog(getActivity(), 2);
-                    dialog.setCanceledOnTouchOutside(false);
-                    dialog.show();
-
-                } else {
-
-                    startActivity(new Intent(getActivity(), BecomeCarOwnerActivity.class));
-
+                } else { // getType()=2  或者  getType()=3
+                    if (userinfo.getData().getAppstatus().equals("1") || userinfo.getData().getAppstatus().equals("2") || userinfo.getData().getAppstatus().equals("5")
+                            || userinfo.getData().getAppstatus().equals("4")) {
+                        //0申请中 1未通过 2 通过 4是未申请过 5 修改申请未通过
+                        //已经是运营车主去修改资料或者申请成为运营车主
+                        startActivity(new Intent(getActivity(), BecomeCarOwnerActivity.class).putExtra("appstatus", userinfo.getData().getAppstatus()));
+                    } else if (userinfo.getData().getAppstatus().equals("0")){
+                        dialog = new ExitDialog(getActivity(), 2);
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.show();
+                    }else if (userinfo.getData().getAppstatus().equals("3")){
+                        EUtil.showToast("车主暂停使用");
+                    }
                 }
-
 
                 break;
             case R.id.left_frag_menu_layout5:
@@ -182,7 +181,7 @@ public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickLis
     public void onData(Object output, Object input) {
         if (output != null) {
             if (output instanceof Userinfo) {
-                Userinfo userinfo = (Userinfo) output;
+                userinfo = (Userinfo) output;
                 dismissLoadingDialog();
                 if (userinfo.getRes() == 0) {
 //                    EUtil.showToast(userinfo.getErr());
@@ -192,6 +191,12 @@ public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickLis
 
                     tvNickName.setText(userinfo.getData().getNickname());
                     phoneNumber.setText(userinfo.getData().getContact());
+                    if (userinfo.getData().getAppstatus().equals("2") || userinfo.getData().getAppstatus().equals("5")) {
+                        //0申请中 1未通过 2 通过 4是未申请过 5 修改申请未通过
+                        tvYunying.setText("修改运营资料");
+                    } else {
+                        tvYunying.setText("成为运营车主");
+                    }
                 }
             }
         } else {
@@ -202,7 +207,6 @@ public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickLis
     // dialog
     class ExitDialog extends AlertDialog {
         int index;
-
 
         public ExitDialog(Context context, int index) {
             super(context);
@@ -219,8 +223,6 @@ public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickLis
 
             if (index == 2) {
                 textView.setText("你已提交申请，请等待审核");
-            } else {
-                textView.setText("你已经是运营车主，去接单");
             }
 
             ViewGroup.LayoutParams layoutParams = getWindow().getAttributes();
@@ -229,20 +231,20 @@ public class LeftFragment_two extends BaseFragment_v4 implements View.OnClickLis
             findViewById(R.id.setting_exit_ensure).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (AppData.getInstance().getUserEntity().getUserType() == 3) {
-                        if (AppData.getInstance().getUserEntity().getType() == 3) {
-                            dismiss();
-                            slidingMen.toggle();
-                        } else {
-                            dismiss();
-                            startActivity(new Intent(getActivity(), BusinessMainActivity.class));
-                            ActivityHolder.getInstance().pop(new GPSSafeCenterActivity());
-                        }
-
-                    } else {
-                        dismiss();
-                        slidingMen.toggle();
-                    }
+//                    if (AppData.getInstance().getUserEntity().getUserType() == 3) {
+//                        if (AppData.getInstance().getUserEntity().getType() == 3) {
+//                            dismiss();
+//                            slidingMen.toggle();
+//                        } else {
+//                            dismiss();
+//                            startActivity(new Intent(getActivity(), BusinessMainActivity.class));
+//                            ActivityHolder.getInstance().pop(new GPSSafeCenterActivity());
+//                        }
+//
+//                    } else {
+                    dismiss();
+//                        slidingMen.toggle();
+//                    }
 
                 }
             });

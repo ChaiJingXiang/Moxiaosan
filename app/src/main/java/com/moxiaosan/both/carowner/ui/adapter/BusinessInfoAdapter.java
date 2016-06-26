@@ -109,6 +109,8 @@ public class BusinessInfoAdapter extends BaseExpandableListAdapter{
             groupViewHolder.tvType = (TextView) convertView.findViewById(R.id.businessinfo_list_item_type_txt);
             groupViewHolder.tvTitle = (TextView) convertView.findViewById(R.id.sell_thing_list_group_title);
             groupViewHolder.tvTime = (TextView) convertView.findViewById(R.id.sell_thing_list_group_time);
+            groupViewHolder.tvServerTime = (TextView) convertView.findViewById(R.id.sell_thing_list_group_server_time);
+            groupViewHolder.serverLayout= (LinearLayout) convertView.findViewById(R.id.sell_thing_list_group_server_layout);
             groupViewHolder.tvContactPhone = (TextView) convertView.findViewById(R.id.businessinfo_list_item_contact_phone);
             groupViewHolder.tvContent = (TextView) convertView.findViewById(R.id.sell_thing_list_group_content);
             groupViewHolder.tvPeopleNum = (TextView) convertView.findViewById(R.id.sell_thing_list_group_people_num);
@@ -131,8 +133,17 @@ public class BusinessInfoAdapter extends BaseExpandableListAdapter{
         final ArrayList<String> imgsURL = new ArrayList<String>();
         if (respShop.getType().equals("1")){
             groupViewHolder.tvType.setText("买卖信息：");
+            groupViewHolder.serverLayout.setVisibility(View.GONE);
+            groupViewHolder.tvPeopleNum.setText("数量：" + respShop.getNums());
+
+            groupViewHolder.tvSalary.setText("价格：" + respShop.getPrice());
         }else if (respShop.getType().equals("2")){
             groupViewHolder.tvType.setText("劳力信息：");
+            groupViewHolder.serverLayout.setVisibility(View.VISIBLE);
+            groupViewHolder.tvServerTime.setText(respShop.getDatetime());
+            groupViewHolder.tvPeopleNum.setText("人数：" + respShop.getNums());
+
+            groupViewHolder.tvSalary.setText("薪资：" + respShop.getPrice());
         }
 
         groupViewHolder.tvTitle.setText(respShop.getTitle());
@@ -148,8 +159,8 @@ public class BusinessInfoAdapter extends BaseExpandableListAdapter{
             }
         });
         groupViewHolder.tvContent.setText(respShop.getDescribes());
-        groupViewHolder.tvPeopleNum.setText("数量：" + respShop.getNums());
-        groupViewHolder.tvSalary.setText("价格：" + respShop.getPrice());
+
+
         groupViewHolder.tvAddress.setText("地址：" + respShop.getAddress());
         if (AppData.getInstance().getUserEntity().getUsername().equals(respShop.getUsername())) {
             groupViewHolder.imgEdit.setVisibility(View.VISIBLE);
@@ -328,9 +339,9 @@ public class BusinessInfoAdapter extends BaseExpandableListAdapter{
     }
 
    static class GroupViewHolder {
-        private TextView tvType, tvTitle, tvTime, tvContactPhone, tvContent, tvPeopleNum, tvSalary, tvAddress;
+        private TextView tvType, tvTitle, tvServerTime, tvTime, tvContactPhone, tvContent, tvPeopleNum, tvSalary, tvAddress;
         private ImageView imgDelete, imgEdit, imgTalk, imgPic1, imgPic2, imgPic3;
-        private LinearLayout groupDividerLayout, picsLayout;
+        private LinearLayout groupDividerLayout, picsLayout, serverLayout;
     }
 
     static class ChildViewHolder {

@@ -9,6 +9,7 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.EditText;
 
+import com.moxiaosan.both.APP;
 import com.moxiaosan.both.R;
 import com.moxiaosan.both.carowner.ui.activity.BusinessMainActivity;
 import com.moxiaosan.both.carowner.ui.activity.GPSSafeCenterActivity;
@@ -105,7 +106,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     userInfo.setUserType(AppData.getInstance().getUserEntity().getType());
                     AppData.getInstance().saveUserEntity(userInfo);
 
-
+                    APP.getInstance().requestLocationInfo(); //登录完后开始更新用户位置
                     if (login.getData().getAppstatus().equals("1") || login.getData().getAppstatus().equals("4")) {
                         SharedPreferences sp = getSharedPreferences("request", Activity.MODE_PRIVATE);
 
@@ -140,7 +141,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
                 }
 
-                finish();
+//                finish();
 
             }
 

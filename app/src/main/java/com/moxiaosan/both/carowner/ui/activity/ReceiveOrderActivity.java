@@ -3,7 +3,9 @@ package com.moxiaosan.both.carowner.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -129,6 +131,17 @@ public class ReceiveOrderActivity extends BaseActivity implements IApiCallback, 
                     tvGoodsWeight.setText(detail.getData().getWeight() + "kg");
                     tvReceiveName.setText(detail.getData().getAddressee() + "");
                     tvReceivePhone.setText(detail.getData().getRec_tel() + "");
+                    if (!TextUtils.isEmpty(tvReceivePhone.getText().toString())){
+                        tvReceivePhone.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //用intent启动拨打电话
+                                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+tvReceivePhone.getText().toString()));
+                                startActivity(intent);
+                            }
+                        });
+                    }
+
                     tvAllMoney.setText(detail.getData().getReward());
                 }
             }
@@ -137,7 +150,10 @@ public class ReceiveOrderActivity extends BaseActivity implements IApiCallback, 
                 TakeOrder order = (TakeOrder) output;
                 if (order.getRes().equals("0")) {
                     EUtil.showToast("成功接单");
-
+                    Intent intent = new Intent(ReceiveOrderActivity.this, ReceiveOrderOkActivity.class);
+                    intent.putExtra("name", name);
+                    intent.putExtra("orderId", orderId);
+                    startActivity(intent);
                     finish();
 //                    tvSure.setVisibility(View.GONE);
 //                    bottomLinear.setVisibility(View.VISIBLE);

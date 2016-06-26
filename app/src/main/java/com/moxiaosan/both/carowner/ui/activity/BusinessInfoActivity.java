@@ -154,16 +154,13 @@ public class BusinessInfoActivity extends BaseActivity implements ExpandableList
                 RespBusinissInfo businissInfo = (RespBusinissInfo) output;
                 if (businissInfo.getRes().equals("0")) {
                     dismissLoadingDialog();
-                    businessList = businissInfo.getData();
 
                     if (input.equals("onFirst")) {
+                        businessList = businissInfo.getData();
+                        initView();
                         if (businessList.size() == 0) {
-                            businessList = businissInfo.getData();
-                            initView();
                             noLayout.setVisibility(View.VISIBLE);
                         } else {
-                            businessList = businissInfo.getData();
-                            initView();
                             expandableListView.setPullLoadEnable(this);
                             noLayout.setVisibility(View.GONE);
                         }

@@ -17,10 +17,17 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.utils.StorageUtils;
+import com.utils.api.IApiCallback;
+import com.utils.common.AppData;
 import com.utils.common.KeelApplication;
 import com.utils.file.FileConstants;
 
 import java.io.File;
+
+import consumer.HashMapUtils;
+import consumer.StringUrlUtils;
+import consumer.api.CarReqUtils;
+import consumer.model.Updateposi;
 
 /**
  * Created by qiangfeng on 16/2/29.
@@ -81,7 +88,7 @@ public class APP extends KeelApplication {
         public void onReceiveLocation(BDLocation location) {
             SharedPreferences sp = getSharedPreferences("location", Context.MODE_PRIVATE);
             final SharedPreferences.Editor editor = sp.edit();
-            stopLocationClient();
+//            stopLocationClient();
             if (location == null) {
                 return;
             }
@@ -97,6 +104,10 @@ public class APP extends KeelApplication {
             editor.putString("longitude", String.valueOf(longitude));
             editor.commit();
             sendBroadCast(location.getCity(), latitude, longitude);
+            if (AppData.getInstance().getUserEntity() != null){
+                updateLocation(latitude,longitude);
+            }
+//            LLog.i("latitude=="+latitude+"==longitude=="+longitude);
         }
     }
 
@@ -106,7 +117,7 @@ public class APP extends KeelApplication {
      * @param address
      */
     public void sendBroadCast(String address, Double latitude, Double longitude) {
-        stopLocationClient();
+//        stopLocationClient();
 
         Intent intent = new Intent(CityPositionActivity.LOCATION_BCR);
         intent.putExtra("address", address);
@@ -149,6 +160,7 @@ public class APP extends KeelApplication {
         option.setOpenGps(true); // 打开gps
         option.setCoorType("bd09ll"); // 设置坐标类型
         option.setServiceName("com.baidu.location.service_v2.9");
+        option.setScanSpan(40*1000);  //40秒定位一次
 //        option.setPoiExtraInfo(true);
         option.setAddrType("all");
 //        option.setPoiNumber(10);
@@ -160,5 +172,25 @@ public class APP extends KeelApplication {
         return mInstance;
     }
 
+    private void updateLocation(double lat,double lng){
+        CarReqUtils.updateposi(this,iApiCallback,null,new Updateposi(),"updateposi",true,
+                StringUrlUtils.geturl(new HashMapUtils().putValue("username", AppData.getInstance().getUserEntity().getUsername())
+                        .putValue("lat", lat).putValue("lng",lng).createMap())
+        );
+    }
 
+    IApiCallback iApiCallback=new IApiCallback() {
+        @Override
+        public void onData(Object output, Object input) {
+            if (output == null){
+                return;
+            }
+            if (output instanceof Updateposi){
+                Updateposi updateposi= (Updateposi) output;
+                if (updateposi.getRes().equals("0")){
+//                    LLog.i("username=="+AppData.getInstance().getUserEntity().getUsername()+"成功更新定位");
+                }
+            }
+        }
+    };
 }

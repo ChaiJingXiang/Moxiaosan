@@ -42,7 +42,7 @@
                 android:id="@+id/tvLocationId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="深圳"
+                android:text=""
                 android:textColor="@color/txt_white"
                 android:textSize="@dimen/value_18sp" />
 

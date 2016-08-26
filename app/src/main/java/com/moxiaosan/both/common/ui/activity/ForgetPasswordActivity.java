@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.moxiaosan.both.R;
+import com.moxiaosan.both.common.utils.Security;
 import com.utils.api.IApiCallback;
 import com.utils.common.EUtil;
 import com.utils.ui.base.BaseActivity;
@@ -49,7 +50,7 @@ public class ForgetPasswordActivity extends BaseActivity implements IApiCallback
                 //发送验证码
                 if (etPhone.getText().toString().trim().length() == 11) {
                     UserReqUtil.getPhoneCode(ForgetPasswordActivity.this, ForgetPasswordActivity.this, null, new PhoneCode(), "Code", true, StringUrlUtils.geturl(hashMapUtils.putValue("username", etPhone.getText().toString())
-                            .putValue("type", 3).createMap()));
+                            .putValue("type", 3).putValue("encryption", Security.encrypt(etPhone.getText().toString(), etPhone.getText().toString() + "12345")).createMap()));
 
                 } else {
                     EUtil.showToast("请输入正确格式的手机号");

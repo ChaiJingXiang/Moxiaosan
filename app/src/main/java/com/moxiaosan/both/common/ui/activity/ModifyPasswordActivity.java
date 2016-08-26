@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.moxiaosan.both.R;
+import com.moxiaosan.both.common.utils.Security;
 import com.utils.api.IApiCallback;
 import com.utils.common.AppData;
 import com.utils.common.EUtil;
@@ -45,7 +46,7 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
         findViewById(R.id.modify_password_ensure_txt).setOnClickListener(this);
 
         etPhoneNum.setText(AppData.getInstance().getUserEntity().getUsername());
-
+        etPhoneNum.setSelection(etPhoneNum.getText().toString().length());
     }
 
     @Override
@@ -59,7 +60,7 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
             case R.id.modify_password_get_code_txt:
                 if (etPhoneNum.getText().toString().trim().length() == 11) {
                     UserReqUtil.getPhoneCode(this, this, null, new PhoneCode(), "Code", true, StringUrlUtils.geturl(hashMapUtils.putValue("username", etPhoneNum.getText().toString())
-                            .putValue("type", 2).createMap()));
+                            .putValue("type", 2).putValue("encryption", Security.encrypt(etPhoneNum.getText().toString(),etPhoneNum.getText().toString() + "12345")).createMap()));
 
                 } else {
                     EUtil.showToast("请输入正确格式的手机号");

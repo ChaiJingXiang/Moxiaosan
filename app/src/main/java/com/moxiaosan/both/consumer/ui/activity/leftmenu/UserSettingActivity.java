@@ -28,6 +28,9 @@ import java.math.BigDecimal;
 
 import consumer.model.obj.RespUserInfo;
 
+/**
+ *
+ */
 public class UserSettingActivity extends BaseActivity implements View.OnClickListener {
     private String count;
     private TextView tvCLeanNum;

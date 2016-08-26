@@ -57,7 +57,7 @@ public class ConsumerMainActivity extends BaseFragmentActivity implements View.O
     private AutoViewPagerListener autoViewPagerListener;
     private RadioGroup radio_group;
     private List<ResPictrue> subLists = new ArrayList<ResPictrue>(); //viewpager专题对象
-    private TextView tvCityName, tvMessageCount;
+    private TextView tvCityName, tvMessageCount,tvDistrictName;
     private SharedPreferences sp;
     private SharedPreferences.Editor editorLocation = null;
 
@@ -95,8 +95,12 @@ public class ConsumerMainActivity extends BaseFragmentActivity implements View.O
         sp = getSharedPreferences("location", Context.MODE_PRIVATE);
         editorLocation = sp.edit();
         tvCityName = (TextView) findViewById(R.id.main_city_name_txt);
+        tvDistrictName = (TextView) findViewById(R.id.main_district_name_txt);
         if (!TextUtils.isEmpty(sp.getString("city", ""))) {
             tvCityName.setText(sp.getString("city", ""));
+        }
+        if (!TextUtils.isEmpty(sp.getString("district", ""))) {
+            tvDistrictName.setText(sp.getString("district", ""));
         }
         tvMessageCount = (TextView) findViewById(R.id.main_my_message_count);
         findViewById(R.id.main_user_photo).setOnClickListener(this);

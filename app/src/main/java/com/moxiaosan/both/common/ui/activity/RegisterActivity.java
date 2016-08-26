@@ -17,6 +17,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.moxiaosan.both.R;
+import com.moxiaosan.both.common.utils.Security;
 import com.utils.api.IApiCallback;
 import com.utils.common.EUtil;
 import com.utils.ui.base.BaseActivity;
@@ -128,7 +129,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
                 if (etPhoneNum.getText().toString().trim().length() == 11) {
                     UserReqUtil.getPhoneCode(this, this, null, new PhoneCode(), "Code", true, StringUrlUtils.geturl(hashMapUtils.putValue("username", etPhoneNum.getText().toString())
-                            .putValue("type", 1).createMap()));
+                            .putValue("type", 1).putValue("encryption", Security.encrypt(etPhoneNum.getText().toString(), etPhoneNum.getText().toString() + "12345")).createMap()));
 
                 } else {
                     EUtil.showToast("请输入正确格式的手机号");
@@ -144,7 +145,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                                         //网络接口
                                         showLoadingDialog();
                                         UserReqUtil.reqNetData(this, iApiCallback, null, new Register(), "RegisterActivity", true, getUrl(Interface.REGISTER));
-                                    }else {
+                                    } else {
                                         EUtil.showToast("未同意用户协议");
                                     }
                                 } else {

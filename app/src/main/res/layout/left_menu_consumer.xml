@@ -163,6 +163,7 @@
                 android:src="@mipmap/left_frag_layout5_icon" />
 
             <TextView
+                android:id="@+id/left_frag_menu_car_owner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/value_10dp"

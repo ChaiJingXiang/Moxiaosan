@@ -18,7 +18,7 @@ public class EAPIConsts {
 
 	public static int HOME_ENVIRONMENT = DEV;
 //	private final static String HOME_URL_DEV = "http://192.168.30.211:8080/"; 120.76.101.90  114.215.158.238       //开发环境
-	private final static String HOME_URL_DEV = "http://114.215.158.238:8005/";   //开发环境
+	private final static String HOME_URL_DEV = "http://120.76.101.90:8005/";   //开发环境
     private final static String TEST_URL_DEV = "https://beta.quncaotech.com/";//测试地址
 
 	private final static String HOME_URL_ONLINE = "https://app.quncaotech.com/";

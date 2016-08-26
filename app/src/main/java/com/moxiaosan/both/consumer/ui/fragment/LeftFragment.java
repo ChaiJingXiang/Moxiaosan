@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.moxiaosan.both.R;
+import com.moxiaosan.both.carowner.ui.activity.GPSSafeCenterActivity;
 import com.moxiaosan.both.common.ui.activity.AboutUsActivity;
 import com.moxiaosan.both.common.ui.activity.AddGPSPhoneActivity;
 import com.moxiaosan.both.common.ui.activity.MessagesActivity;
@@ -33,7 +34,8 @@ import consumer.model.Userinfo;
  */
 public class LeftFragment extends Fragment implements View.OnClickListener {
     private ImageView imgPhoto;
-    private TextView tvNickName, tvPhone;
+    private TextView tvNickName, tvPhone, tvCarOwner;
+    private Userinfo userinfo;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,6 +70,7 @@ public class LeftFragment extends Fragment implements View.OnClickListener {
         view.findViewById(R.id.left_frag_menu_layout3).setOnClickListener(this);
         view.findViewById(R.id.left_frag_menu_layout4).setOnClickListener(this);
         view.findViewById(R.id.left_frag_menu_layout5).setOnClickListener(this);
+        tvCarOwner = (TextView) view.findViewById(R.id.left_frag_menu_car_owner);
         view.findViewById(R.id.left_frag_menu_layout6).setOnClickListener(this);
         view.findViewById(R.id.left_frag_menu_layout7).setOnClickListener(this);
         view.findViewById(R.id.left_frag_menu_layout8).setOnClickListener(this);
@@ -83,12 +86,15 @@ public class LeftFragment extends Fragment implements View.OnClickListener {
                 return;
             }
             if (output instanceof Userinfo) {
-                Userinfo userinfo = (Userinfo) output;
+                userinfo = (Userinfo) output;
                 if (!TextUtils.isEmpty(userinfo.getData().getHeadportrait())) {
                     ImageLoader.getInstance().displayImage(userinfo.getData().getHeadportrait(), imgPhoto);
                 }
                 tvNickName.setText(userinfo.getData().getNickname());
                 tvPhone.setText(userinfo.getData().getUsername());
+                if (userinfo.getData().getType() != 1) {
+                    tvCarOwner.setText("GPS安全中心");
+                }
             }
         }
     };
@@ -112,7 +118,11 @@ public class LeftFragment extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(getActivity(), MessagesActivity.class));
                 break;
             case R.id.left_frag_menu_layout5:
-                startActivity(new Intent(getActivity(), AddGPSPhoneActivity.class));
+                if (userinfo.getData().getType() != 1) {
+                    startActivity(new Intent(getActivity(), GPSSafeCenterActivity.class));
+                } else {
+                    startActivity(new Intent(getActivity(), AddGPSPhoneActivity.class));
+                }
                 break;
             case R.id.left_frag_menu_layout6:
                 startActivity(new Intent(getActivity(), AboutUsActivity.class));

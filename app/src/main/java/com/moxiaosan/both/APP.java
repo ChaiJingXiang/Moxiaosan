@@ -100,10 +100,11 @@ public class APP extends KeelApplication {
             }
             editor.putString("province", location.getProvince());
             editor.putString("city", city);
+            editor.putString("district", location.getDistrict());
             editor.putString("latitude", String.valueOf(latitude));
             editor.putString("longitude", String.valueOf(longitude));
             editor.commit();
-            sendBroadCast(location.getCity(), latitude, longitude);
+            sendBroadCast(location.getCity(),location.getDistrict(), latitude, longitude);
             if (AppData.getInstance().getUserEntity() != null){
                 updateLocation(latitude,longitude);
             }
@@ -116,11 +117,12 @@ public class APP extends KeelApplication {
      *
      * @param address
      */
-    public void sendBroadCast(String address, Double latitude, Double longitude) {
+    public void sendBroadCast(String address,String district, Double latitude, Double longitude) {
 //        stopLocationClient();
 
         Intent intent = new Intent(CityPositionActivity.LOCATION_BCR);
         intent.putExtra("address", address);
+        intent.putExtra("district", district);
         intent.putExtra("latitude", latitude + "");
         intent.putExtra("longitude", longitude + "");
         sendBroadcast(intent);

@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.moxiaosan.both.R;
+import com.moxiaosan.both.common.utils.Security;
 import com.utils.api.IApiCallback;
 import com.utils.common.AppData;
 import com.utils.common.EUtil;
@@ -49,7 +50,7 @@ public class ModifyPhoneActivity extends BaseActivity implements View.OnClickLis
 
                 if(etPhoneNum.getText().toString().trim().length() ==11){
                     UserReqUtil.getPhoneCode(this,this,null,new PhoneCode(),"Code",true,StringUrlUtils.geturl(hashMapUtils.putValue("username",etPhoneNum.getText().toString())
-                            .putValue("type",2).createMap()));
+                            .putValue("type",2).putValue("encryption", Security.encrypt(etPhoneNum.getText().toString(),etPhoneNum.getText().toString() + "12345")).createMap()));
 
                 }else{
                     EUtil.showToast("请输入正确格式的手机号");

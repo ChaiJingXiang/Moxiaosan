@@ -34,7 +34,7 @@ public class UserReqUtil extends ReqBase {
         String requestStr = "";
         String url = null;
         try{
-            url = getFullUrl("dayu/code.php?"+str);
+            url = getFullUrl("dayu_dx/code_an.php?"+str);
 
             return doExecute(context, callback, modelBase,
                     url, requestStr, handler, input,isNetWork);

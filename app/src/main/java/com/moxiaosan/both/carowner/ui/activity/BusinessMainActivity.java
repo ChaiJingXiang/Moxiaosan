@@ -71,7 +71,7 @@ public class BusinessMainActivity extends BaseFragmentActivity implements View.O
     private Animation animation;
     private ImageView imgZhuan;
     private CheckBox checkBox;
-    private TextView tvLocation;
+    private TextView tvLocation,tvDistrict;
 
     private SharedPreferences sp;
     private SharedPreferences.Editor editorLocation = null;
@@ -109,8 +109,12 @@ public class BusinessMainActivity extends BaseFragmentActivity implements View.O
         findViewById(R.id.safeCenterId).setOnClickListener(this);
 
         tvLocation = (TextView) findViewById(R.id.tvLocationId);
+        tvDistrict = (TextView) findViewById(R.id.tvDistrictId);
         if (!TextUtils.isEmpty(sp.getString("city", ""))) {
             tvLocation.setText(sp.getString("city", ""));
+        }
+        if (!TextUtils.isEmpty(sp.getString("district", ""))) {
+            tvDistrict.setText(sp.getString("district", ""));
         }
         imgZhuan = (ImageView) findViewById(R.id.zhuandongId);
         checkBox = (CheckBox) findViewById(R.id.orderBox);

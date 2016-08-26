@@ -58,7 +58,7 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
     private LeftFragment_two lf;
     private FragmentTransaction ft;
     private CheckBox checkBox;
-    private TextView tvLocation;
+    private TextView tvLocation,tvDistrict;
     private ExitDialog dialog;
     private int type;
     private ImageView imgWarn;
@@ -109,8 +109,12 @@ public class GPSSafeCenterActivity extends BaseFragmentActivity implements View.
 
 
         tvLocation = (TextView) findViewById(R.id.tvLocationId);
+        tvDistrict = (TextView) findViewById(R.id.tvDistrictId);
         if (!TextUtils.isEmpty(sp.getString("city", ""))) {
             tvLocation.setText(sp.getString("city", ""));
+        }
+        if (!TextUtils.isEmpty(sp.getString("district", ""))) {
+            tvDistrict.setText(sp.getString("district", ""));
         }
 
         imgUserPhoto = (ImageView) findViewById(R.id.main_user_photo);

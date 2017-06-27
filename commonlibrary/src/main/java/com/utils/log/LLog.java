@@ -19,7 +19,7 @@ import java.text.SimpleDateFormat;
 public class LLog {
 	private static final String TAG ="moxiaosanLog";
 	private static LLog gLog 		 = null;
-	private boolean 		mOutputLog   = false;
+	private boolean 		mOutputLog   = true;
 	private String			mTagName	 = "moxiaosanLog";
 	private FileWriter		mLogFileWrite= null;
 	private static String	mLogFileName = FileConstants.getApiSaveFilePath() + "/moxiaosanlog.txt";

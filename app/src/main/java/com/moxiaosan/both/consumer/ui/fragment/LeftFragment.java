@@ -54,7 +54,9 @@ public class LeftFragment extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
 //        Log.i("LeftFragment", "onResume");
-        UserReqUtil.userinfo(getActivity(), iApiCallback, null, new Userinfo(), "LeftFragment", true, "username=" + AppData.getInstance().getUserEntity().getUsername());
+        if (AppData.getInstance().getUserEntity() != null) {
+            UserReqUtil.userinfo(getActivity(), iApiCallback, null, new Userinfo(), "LeftFragment", true, "username=" + AppData.getInstance().getUserEntity().getUsername());
+        }
     }
 
     @Override
@@ -139,7 +141,6 @@ public class LeftFragment extends Fragment implements View.OnClickListener {
                 this.startActivity(shareIntent);
                 getActivity().overridePendingTransition(R.anim.share_pop_in, 0);
                 break;
-
         }
     }
 }

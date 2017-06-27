@@ -57,7 +57,7 @@ public class ConsumerMainActivity extends BaseFragmentActivity implements View.O
     private AutoViewPagerListener autoViewPagerListener;
     private RadioGroup radio_group;
     private List<ResPictrue> subLists = new ArrayList<ResPictrue>(); //viewpager专题对象
-    private TextView tvCityName, tvMessageCount,tvDistrictName;
+    private TextView tvCityName, tvMessageCount, tvDistrictName;
     private SharedPreferences sp;
     private SharedPreferences.Editor editorLocation = null;
 
@@ -160,8 +160,10 @@ public class ConsumerMainActivity extends BaseFragmentActivity implements View.O
         super.onResume();
         autoScrollViewPager.startAutoScroll();
         //请求我的信息接口
-        ConsumerReqUtil.mynews(this, iApiCallback, null, new Mynews(), "ConsumerMainActivity", true,
-                StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).putValue("pageNow", 1).createMap()));
+        if (AppData.getInstance().getUserEntity() != null) {
+            ConsumerReqUtil.mynews(this, iApiCallback, null, new Mynews(), "ConsumerMainActivity", true,
+                    StringUrlUtils.geturl(hashMapUtils.putValue("username", AppData.getInstance().getUserEntity().getUsername()).putValue("pageNow", 1).createMap()));
+        }
     }
 
     @Override
@@ -319,9 +321,9 @@ public class ConsumerMainActivity extends BaseFragmentActivity implements View.O
         super.onDestroy();
         APP.getInstance().stopLocationClient(); //关闭定位
         //关闭 mqtt 服务
-        if (MqttService.wasStarted()){
+        if (MqttService.wasStarted()) {
             LLog.i("===ConsumerMainActivity===onDestroy()==stopService()");
-            stopService(new Intent(this,MqttService.class));
+            stopService(new Intent(this, MqttService.class));
         }
     }
 
